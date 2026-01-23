@@ -168,7 +168,8 @@ cdef class LexborNode:
 
         """
         cdef unsigned char * text
-        cdef lxb_dom_node_t * node = <lxb_dom_node_t *> self.node.first_child
+        cdef LexborNode start_node = self._get_node()
+        cdef lxb_dom_node_t * node = <lxb_dom_node_t *> start_node.node.first_child
 
         if not deep:
             container = TextContainer(separator, strip)
@@ -197,7 +198,7 @@ cdef class LexborNode:
                         container.append(text.decode(_ENCODING))
 
             lxb_dom_node_simple_walk(
-                <lxb_dom_node_t *> self.node,
+                <lxb_dom_node_t *> start_node.node,
                 <lxb_dom_node_simple_walker_f> text_callback,
                 <void *> container
             )
@@ -468,7 +469,8 @@ cdef class LexborNode:
             to the provided options.
         """
 
-        cdef lxb_dom_node_t *node = self.node.first_child
+        cdef LexborNode start_node = self._get_node()
+        cdef lxb_dom_node_t *node = start_node.node.first_child
         cdef LexborNode next_node
 
         while node != NULL:

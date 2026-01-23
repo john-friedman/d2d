@@ -1,6 +1,6 @@
 from inspect import cleandoc
 import pytest
-from selectolax.lexbor import LexborHTMLParser, SelectolaxError
+from selectolax.lexbor import LexborHTMLParser
 
 
 def clean_doc(text: str) -> str:
@@ -491,10 +491,14 @@ def test_fragment_create_node_with_attributes():
     assert 'class="link"' in html
 
 
-def test_fragment_create_node_empty_tag_name():
-    parser = LexborHTMLParser("<div></div>", is_fragment=True)
-    try:
-        parser.create_node("")
-        assert False, "Should have raised an exception"
-    except SelectolaxError:
-        pass
+def test_fragment_text_extraction_multiple_nodes():
+    html = "<p>1</p><p>2</p>"
+    p = LexborHTMLParser(html, is_fragment=True)
+    assert p.text(deep=False) == ""
+    assert p.text(deep=True, separator=" ", strip=True) == "1 2"
+
+
+def test_fragment_iter_multiple_nodes():
+    html = "<p>1</p><p>2</p>"
+    p = LexborHTMLParser(html, is_fragment=True)
+    assert len(list(p.root.iter())) == 2

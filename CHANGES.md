@@ -1,5 +1,7 @@
 # selectolax Changelog
 
+- Fix `.text()` and `iter()` for HTML fragments when there are multiple nodes at the root level.
+
 # Version 0.4.6
 
 
