@@ -1,6 +1,6 @@
 from inspect import cleandoc
 import pytest
-from selectolax.lexbor import LexborHTMLParser
+from selectolax.lexbor import LexborHTMLParser, SelectolaxError
 
 
 def clean_doc(text: str) -> str:
@@ -70,8 +70,8 @@ def test_fragment_parser_whole_doc():
 
 def test_fragment_parser_empty_doc():
     html = ""
-    parser = LexborHTMLParser(html, is_fragment=True)
-    assert parser.html is None
+    with pytest.raises(SelectolaxError):
+        LexborHTMLParser(html, is_fragment=True)
 
 
 @pytest.mark.parametrize(
@@ -375,12 +375,6 @@ def test_fragment_parser_malformed_html():
     html_result = parser.html
     assert html_result is not None
     assert "content" in html_result
-
-
-def test_fragment_parser_empty_input():
-    parser = LexborHTMLParser("", is_fragment=True)
-    assert parser.root is None
-    assert parser.html is None
 
 
 def test_attributes_access_on_non_element():
