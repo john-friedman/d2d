@@ -1,6 +1,11 @@
 cimport cython
 from cpython.exc cimport PyErr_SetNone
 
+from libc.string cimport memcpy
+# remove later
+from libc.stdio cimport printf
+
+
 import logging
 
 logger = logging.getLogger("selectolax")
@@ -605,6 +610,85 @@ cdef class LexborNode:
                 LexborNode.new(node, self.parser).merge_text_nodes()
             node = next_node
 
+    def traverse_benchmark(self, bool include_text = False, bool skip_empty = False):
+        """Pure C traversal benchmark without Python overhead.
+        
+        Returns the count of nodes traversed.
+        """
+        cdef lxb_dom_node_t * root = self.node
+        cdef lxb_dom_node_t * node = root
+
+        while node != NULL:
+            if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                if not skip_empty or not is_empty_text_node(node):
+                    pass
+
+            if node.first_child != NULL:
+                node = node.first_child
+            else:
+                while node != root and node.next == NULL:
+                    node = node.parent
+                if node == root:
+                    break
+                node = node.next
+        
+
+    def extract_all_attributes_to_file_fast(self, str filepath):
+        """Fastest attribute extraction - no string decoding."""
+        cdef lxb_dom_node_t *root = self.node
+        cdef lxb_dom_node_t *node = root
+        cdef lxb_dom_attr_t *attr
+        cdef const lxb_char_t *key
+        cdef const lxb_char_t *value
+        cdef size_t key_len, value_len
+        
+        # Pre-allocate 2MB buffer
+        cdef bytearray buffer = bytearray(2 * 1024 * 1024)
+        cdef size_t pos = 0
+        cdef size_t capacity = len(buffer)
+        
+        with open(filepath, 'wb') as f:
+            while node != NULL:
+                if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+                    attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+                    while attr != NULL:
+                        key = lxb_dom_attr_local_name_noi(attr, &key_len)
+                        value = lxb_dom_attr_value_noi(attr, &value_len)
+                        
+                        # Flush if needed (leave 4KB safety margin)
+                        if pos + key_len + value_len + 100 > capacity:
+                            f.write(buffer[:pos])
+                            pos = 0
+                        
+                        # Copy raw bytes
+                        memcpy(&buffer[pos], key, key_len)
+                        pos += key_len
+                        buffer[pos] = ord(b'=')
+                        pos += 1
+                        if value:
+                            memcpy(&buffer[pos], value, value_len)
+                            pos += value_len
+                        buffer[pos] = ord(b'\n')
+                        pos += 1
+                        
+                        attr = attr.next
+                
+                # Traverse
+                if node.first_child != NULL:
+                    node = node.first_child
+                else:
+                    while node != root and node.next == NULL:
+                        node = node.parent
+                    if node == root:
+                        break
+                    node = node.next
+            
+            # Final flush
+            if pos > 0:
+                f.write(buffer[:pos])
+
+    
+    
     def traverse(self, bool include_text = False, bool skip_empty = False):
         """Depth-first traversal starting at the current node.
 
@@ -643,31 +727,167 @@ cdef class LexborNode:
                     break
                 node = node.next
 
-    def traverse_signals(LexborNode node):
-        """Yields (signal, node) tuples like walk() but using native traverse()"""
-        cdef list stack = []
-        cdef LexborNode current_node
-        cdef LexborNode parent
+
+    def extract_all_attributes(self, str filepath):
+        """Extract all attributes and write to file in one pass."""
+        cdef lxb_dom_node_t *root = self.node
+        cdef lxb_dom_node_t *node = root
+        cdef lxb_dom_attr_t *attr
+        cdef const lxb_char_t *key
+        cdef const lxb_char_t *value
+        cdef size_t key_len, value_len
+        cdef list lines = []
+        
+        while node != NULL:
+            if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+                attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+                while attr != NULL:
+                    key = lxb_dom_attr_local_name_noi(attr, &key_len)
+                    value = lxb_dom_attr_value_noi(attr, &value_len)
+                    
+                    # Decode and store
+                    key_str = key[:key_len].decode('utf-8')
+                    value_str = value[:value_len].decode('utf-8') if value else ''
+                    lines.append(f"{key_str}={value_str}\n")
+                    
+                    attr = attr.next
+            
+            # Traverse
+            if node.first_child != NULL:
+                node = node.first_child
+            else:
+                while node != root and node.next == NULL:
+                    node = node.parent
+                if node == root:
+                    break
+                node = node.next
+        
+
+
+    def traverse_attributes_benchmark(self, bool include_text = False, bool skip_empty = False):
+        """Pure C traversal that accesses all attributes without storing them."""
+        cdef lxb_dom_node_t *root = self.node
+        cdef lxb_dom_node_t *node = root
+        cdef lxb_dom_attr_t *attr
+        cdef const lxb_char_t *key
+        cdef const lxb_char_t *value
+        cdef size_t str_len = 0
+        
+        while node != NULL:
+            if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                if not skip_empty or not is_empty_text_node(node):
+                    # Access all attributes
+                    if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+                        attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+                        while attr != NULL:
+                            key = lxb_dom_attr_local_name_noi(attr, &str_len)
+                            value = lxb_dom_attr_value_noi(attr, &str_len)
+                            # Just access, don't decode or store
+                            attr = attr.next
+            
+            # Traverse tree
+            if node.first_child != NULL:
+                node = node.first_child
+            else:
+                while node != root and node.next == NULL:
+                    node = node.parent
+                if node == root:
+                    break
+                node = node.next
+
+
+    def traverse_signals(self, bool include_text = False, bool skip_empty = False):
+        """Depth-first traversal emitting enter/exit signals for each node.
+
+        Parameters
+        ----------
+        include_text : bool, optional
+            When ``True``, include text nodes in the traversal sequence. Defaults
+            to ``False``.
+        skip_empty : bool, optional
+            Skip text nodes that contain only ASCII whitespace (space, tab,
+            newline, form feed or carriage return) when ``include_text`` is
+            ``True``. Defaults to ``False``.
+
+        Yields
+        ------
+        tuple[bool, LexborNode]
+            Tuples of (is_entering, node) where is_entering is True for entry
+            signals and False for exit signals.
+        """
+        cdef lxb_dom_node_t * root = self.node
+        cdef lxb_dom_node_t * node = root
+        cdef lxb_dom_node_t * parent_ptr
+        cdef LexborNode lxb_node
         cdef size_t parent_mem_id
-        cdef tuple stack_item
-        
-        for current_node in node.traverse(include_text=True):
-            parent = current_node.parent
-            parent_mem_id = parent.mem_id if parent else 0
+
+        while node != NULL:
+            parent_ptr = node.parent
+            parent_mem_id = <size_t>parent_ptr
             
-            # Emit "end" signals for nodes we've exited
-            while stack and (<tuple>stack[-1])[0] != parent_mem_id:
-                stack_item = stack.pop()
-                yield ("end", <LexborNode>stack_item[1])
+            if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                if not skip_empty or not is_empty_text_node(node):
+                    lxb_node = LexborNode.new(<lxb_dom_node_t *> node, self.parser)
+                    # Emit enter signal (True, node, parent_mem_id)
+                    yield (True, lxb_node, parent_mem_id)
+
+            if node.first_child != NULL:
+                node = node.first_child
+            else:
+                # Exit current node before moving up
+                while True:
+                    if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                        if not skip_empty or not is_empty_text_node(node):
+                            parent_ptr = node.parent
+                            parent_mem_id = <size_t>parent_ptr
+                            lxb_node = LexborNode.new(<lxb_dom_node_t *> node, self.parser)
+                            # Emit exit signal (False, node, parent_mem_id)
+                            yield (False, lxb_node, parent_mem_id)
+                    
+                    if node == root or node.next != NULL:
+                        break
+                    node = node.parent
+                
+                if node == root:
+                    break
+                node = node.next
+
+    def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):
+        """Pure C traversal benchmark for signals without Python overhead."""
+        cdef lxb_dom_node_t * root = self.node
+        cdef lxb_dom_node_t * node = root
+        cdef lxb_dom_node_t * parent_ptr
+        cdef size_t parent_mem_id
+
+        while node != NULL:
+            parent_ptr = node.parent
+            parent_mem_id = <size_t>parent_ptr
             
-            # Emit "start" signal for current node
-            yield ("start", current_node)
-            stack.append((current_node.mem_id, current_node))
-        
-        # Emit remaining "end" signals
-        while stack:
-            stack_item = stack.pop()
-            yield ("end", <LexborNode>stack_item[1])
+            if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                if not skip_empty or not is_empty_text_node(node):
+                    # Enter signal - just traverse, don't count
+                    pass
+
+            if node.first_child != NULL:
+                node = node.first_child
+            else:
+                # Exit current node before moving up
+                while True:
+                    if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
+                        if not skip_empty or not is_empty_text_node(node):
+                            parent_ptr = node.parent
+                            parent_mem_id = <size_t>parent_ptr
+                            # Exit signal - just traverse, don't count
+                            pass
+                    
+                    if node == root or node.next != NULL:
+                        break
+                    node = node.parent
+                
+                if node == root:
+                    break
+                node = node.next
+
 
     def replace_with(self, str_or_LexborNode value):
         """Replace current Node with specified value.
