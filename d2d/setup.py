@@ -1,0 +1,140 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import os
+import platform
+import logging
+
+import sys
+from setuptools import setup, find_packages, Extension
+
+
+logging.basicConfig(level=logging.INFO)
+
+
+# Setup flags
+USE_STATIC = False
+USE_CYTHON = False
+PLATFORM = "windows_nt" if platform.system() == "Windows" else "posix"
+INCLUDE_LEXBOR = bool(os.environ.get("USE_LEXBOR", True))
+
+ARCH = platform.architecture()[0]
+
+try:
+    from Cython.Build import cythonize
+
+    HAS_CYTHON = True
+    USE_CYTHON = True
+except ImportError as err:
+    HAS_CYTHON = False
+
+if "--static" in sys.argv:
+    USE_STATIC = True
+    sys.argv.remove("--static")
+
+if "--lexbor" in sys.argv:
+    INCLUDE_LEXBOR = True
+    sys.argv.remove("--lexbor")
+
+if "--cython" in sys.argv:
+    if HAS_CYTHON:
+        USE_CYTHON = True
+    else:
+        raise ImportError("No module named 'Cython'")
+    sys.argv.remove("--cython")
+
+# If there are no pretranspiled source files
+if HAS_CYTHON and not os.path.exists("d2d/lexbor.c"):
+    USE_CYTHON = True
+
+COMPILER_DIRECTIVES = {
+    "language_level": 3,
+    "embedsignature": True,
+    "annotation_typing": False,
+    "emit_code_comments": True,
+    "boundscheck": False,
+    "wraparound": False,
+}
+
+
+def find_lexbor_files(lexbor_path="lexbor/source"):
+    c_files = []
+    if os.path.exists(lexbor_path):
+        for root, dirs, files in os.walk(lexbor_path):
+            for file in files:
+                if file.endswith(".c"):
+                    file_path = os.path.join(root, file)
+                    if (file_path.find("ports") >= 0) and (
+                        not file_path.find(PLATFORM) >= 0
+                    ):
+                        continue
+                    c_files.append(file_path)
+    return c_files
+
+
+def make_extensions():
+    logging.info(f"USE_CYTHON: {USE_CYTHON}")
+    logging.info(f"INCLUDE_LEXBOR: {INCLUDE_LEXBOR}")
+    logging.info(f"USE_STATIC: {USE_STATIC}")
+
+    files_to_compile_lxb = []
+    extra_objects_lxb = []
+
+    if USE_CYTHON:
+        if INCLUDE_LEXBOR:
+            files_to_compile_lxb = ["d2d/lexbor.pyx"]
+    else:
+        if INCLUDE_LEXBOR:
+            files_to_compile_lxb = ["d2d/lexbor.c"]
+
+    if USE_STATIC:
+        if INCLUDE_LEXBOR:
+            extra_objects_lxb = ["lexbor/liblexbor_static.a"]
+    else:
+        if INCLUDE_LEXBOR:
+            files_to_compile_lxb.extend(find_lexbor_files("lexbor/source"))
+
+    compile_arguments_lxb = ["-DLEXBOR_STATIC"]
+
+    if PLATFORM == "posix":
+        args = [
+            "-pedantic",
+            "-fPIC",
+            "-Wno-unused-variable",
+            "-Wno-unused-function",
+            "-std=c99",
+            "-O2",
+            "-g0",
+        ]
+        compile_arguments_lxb.extend(args)
+    elif PLATFORM == "windows_nt":
+        compile_arguments_lxb.extend(
+            ["-D_WIN64" if ARCH == "64bit" else "-D_WIN32"]
+        )
+
+    extensions = []
+    if INCLUDE_LEXBOR:
+        extensions.append(
+            Extension(
+                "d2d.lexbor",
+                files_to_compile_lxb,
+                language="c",
+                include_dirs=["lexbor/source/"],
+                extra_objects=extra_objects_lxb,
+                extra_compile_args=compile_arguments_lxb,
+            )
+        )
+    if USE_CYTHON:
+        extensions = cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES)
+
+    return extensions
+
+
+setup(
+    name="d2d",
+    version="0.0.1",
+    packages=find_packages(include=["d2d"]),
+    package_data={"d2d": ["py.typed"]},
+    include_package_data=True,
+    zip_safe=False,
+    ext_modules=make_extensions(),
+)
