@@ -58,3 +58,6 @@ that would mean
 66
 16ms!
 86ms total to generatre instructions list or so + a bit for other stuff
+
+# future
+full rewrite, move away from bandaged fork

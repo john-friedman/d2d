@@ -258,7 +258,7 @@ cdef class LexborNode:
     @staticmethod
     cdef LexborNode new(lxb_dom_node_t *node, LexborHTMLParser parser)
     cdef void set_as_fragment_root(self)
-    cdef inline LexborNode _get_node(self)
+    
 
 
 cdef bint is_empty_text_node(lxb_dom_node_t *node)
