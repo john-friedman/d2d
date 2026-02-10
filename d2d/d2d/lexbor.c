@@ -1613,10 +1613,10 @@ static const char *__pyx_filename;
 
 static const char* const __pyx_f[] = {
   "d2d/lexbor.pyx",
+  "d2d/lexbor/node.pxi",
   "d2d/utils.pxi",
   "d2d/lexbor/attrs.pxi",
   "<stringsource>",
-  "d2d/lexbor/node.pxi",
   "d2d/lexbor.pxd",
   "d2d/lexbor/selection.pxi",
   "d2d/lexbor/../utils.pxi",
@@ -1820,54 +1820,41 @@ struct __pyx_obj_3d2d_6lexbor_LexborSelector;
 struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct____iter__;
 struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_1_items;
 struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_2_values;
-struct __pyx_t_3d2d_6lexbor_StyleFlags;
-struct __pyx_opt_args_3d2d_6lexbor_write_json_attribute;
-struct __pyx_t_3d2d_6lexbor_TagStyleEffects;
-
-/* "d2d/lexbor/node.pxi":38
- * 
- * # Helper struct for style parsing results
- * cdef struct StyleFlags:             # <<<<<<<<<<<<<<
- *     bint is_display_none
- *     bint has_bold
-*/
-struct __pyx_t_3d2d_6lexbor_StyleFlags {
-  int is_display_none;
-  int has_bold;
-  int has_italic;
-  int has_underline;
-  int has_font_size;
-  int has_text_center;
-};
-
-/* "d2d/lexbor/node.pxi":86
- * 
- * 
- * cdef inline size_t write_json_attribute(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                          const char* key, const char* value,
- *                                          size_t max_value_len=500) nogil:
-*/
-struct __pyx_opt_args_3d2d_6lexbor_write_json_attribute {
-  int __pyx_n;
-  size_t max_value_len;
-};
-
-/* "d2d/lexbor/node.pxi":211
- * 
- * 
- * cdef struct TagStyleEffects:             # <<<<<<<<<<<<<<
- *     bint push_bold
- *     bint push_italic
-*/
-struct __pyx_t_3d2d_6lexbor_TagStyleEffects {
-  int push_bold;
-  int push_italic;
-  int push_underline;
-  int is_link;
-};
+struct __pyx_t_3d2d_6lexbor_InstructionAttrs;
+struct __pyx_t_3d2d_6lexbor_StyleStackEntry;
 
 /* "d2d/lexbor.pxd":252
  *                                                         const lxb_char_t *html, size_t size)
+ * 
+ * cdef struct InstructionAttrs:             # <<<<<<<<<<<<<<
+ *     char font_weight[32]
+ *     char font_size[32]
+*/
+struct __pyx_t_3d2d_6lexbor_InstructionAttrs {
+  char font_weight[32];
+  char font_size[32];
+  char href[512];
+  char header_tag[8];
+  int is_italic;
+  int is_underline;
+  int is_text_center;
+  int display_none;
+};
+
+/* "d2d/lexbor/node.pxi":48
+ * 
+ * # Style stack entry
+ * cdef struct StyleStackEntry:             # <<<<<<<<<<<<<<
+ *     size_t mem_id
+ *     InstructionAttrs attrs
+*/
+struct __pyx_t_3d2d_6lexbor_StyleStackEntry {
+  size_t mem_id;
+  struct __pyx_t_3d2d_6lexbor_InstructionAttrs attrs;
+};
+
+/* "d2d/lexbor.pxd":262
+ *     bint display_none
  * 
  * cdef class LexborNode:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -1882,7 +1869,7 @@ struct __pyx_obj_3d2d_6lexbor_LexborNode {
 };
 
 
-/* "d2d/lexbor.pxd":268
+/* "d2d/lexbor.pxd":280
  * 
  * 
  * cdef class LexborCSSSelector:             # <<<<<<<<<<<<<<
@@ -1900,7 +1887,7 @@ struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector {
 };
 
 
-/* "d2d/lexbor.pxd":280
+/* "d2d/lexbor.pxd":292
  *     cpdef int any_matches(self, str query, LexborNode node) except -1
  * 
  * cdef class LexborHTMLParser:             # <<<<<<<<<<<<<<
@@ -2002,7 +1989,7 @@ struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_2_values {
 
 
 
-/* "d2d/lexbor/node.pxi":232
+/* "d2d/lexbor/node.pxi":53
  * 
  * 
  * @cython.final             # <<<<<<<<<<<<<<
@@ -2013,10 +2000,14 @@ struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_2_values {
 struct __pyx_vtabstruct_3d2d_6lexbor_LexborNode {
   struct __pyx_obj_3d2d_6lexbor_LexborNode *(*__pyx_new)(lxb_dom_node_t *, struct __pyx_obj_3d2d_6lexbor_LexborHTMLParser *);
   void (*set_as_fragment_root)(struct __pyx_obj_3d2d_6lexbor_LexborNode *);
+  int (*_check_new_instruction_block)(struct __pyx_obj_3d2d_6lexbor_LexborNode *, lxb_tag_id_t);
+  int (*_parse_style)(struct __pyx_obj_3d2d_6lexbor_LexborNode *, PyObject *, struct __pyx_t_3d2d_6lexbor_InstructionAttrs *);
 };
 static struct __pyx_vtabstruct_3d2d_6lexbor_LexborNode *__pyx_vtabptr_3d2d_6lexbor_LexborNode;
 static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNode_new(lxb_dom_node_t *, struct __pyx_obj_3d2d_6lexbor_LexborHTMLParser *);
 static void __pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root(struct __pyx_obj_3d2d_6lexbor_LexborNode *);
+static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_10LexborNode__check_new_instruction_block(struct __pyx_obj_3d2d_6lexbor_LexborNode *, lxb_tag_id_t);
+static int __pyx_f_3d2d_6lexbor_10LexborNode__parse_style(struct __pyx_obj_3d2d_6lexbor_LexborNode *, PyObject *, struct __pyx_t_3d2d_6lexbor_InstructionAttrs *);
 
 
 /* "d2d/lexbor/selection.pxi":6
@@ -2168,6 +2159,70 @@ static struct __pyx_vtabstruct_3d2d_6lexbor_LexborSelector *__pyx_vtabptr_3d2d_6
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
+/* PyErrExceptionMatches.proto (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
+#else
+#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
+#endif
+
+/* PyThreadStateGet.proto (used by PyErrFetchRestore) */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
+#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
+#if PY_VERSION_HEX >= 0x030C00A6
+#define __Pyx_PyErr_Occurred()  (__pyx_tstate->current_exception != NULL)
+#define __Pyx_PyErr_CurrentExceptionType()  (__pyx_tstate->current_exception ? (PyObject*) Py_TYPE(__pyx_tstate->current_exception) : (PyObject*) NULL)
+#else
+#define __Pyx_PyErr_Occurred()  (__pyx_tstate->curexc_type != NULL)
+#define __Pyx_PyErr_CurrentExceptionType()  (__pyx_tstate->curexc_type)
+#endif
+#else
+#define __Pyx_PyThreadState_declare
+#define __Pyx_PyThreadState_assign
+#define __Pyx_PyErr_Occurred()  (PyErr_Occurred() != NULL)
+#define __Pyx_PyErr_CurrentExceptionType()  PyErr_Occurred()
+#endif
+
+/* PyErrFetchRestore.proto (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A6
+#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
+#else
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#endif
+#else
+#define __Pyx_PyErr_Clear() PyErr_Clear()
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
+#endif
+
+/* PyObjectGetAttrStr.proto (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name);
+#else
+#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
+#endif
+
+/* PyObjectGetAttrStrNoError.proto (used by GetBuiltinName) */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, PyObject* attr_name);
+
+/* GetBuiltinName.proto */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name);
+
 /* TupleAndListFromArray.proto (used by fastcall) */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyList_FromArray(PyObject *const *src, Py_ssize_t n);
@@ -2252,13 +2307,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_FastCallDict(PyObject *func, PyObj
 
 /* PyObjectCallOneArg.proto (used by CallUnboundCMethod0) */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* PyObjectGetAttrStr.proto (used by UnpackUnboundCMethod) */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name);
-#else
-#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
-#endif
 
 /* UnpackUnboundCMethod.proto (used by CallUnboundCMethod0) */
 typedef struct {
@@ -2396,65 +2444,8 @@ static PyObject *__Pyx_Object_VectorcallMethod_CallFromBuilder(PyObject *name, P
 /* PyTypeError_Check.proto */
 #define __Pyx_PyExc_TypeError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_TypeError)
 
-/* PyThreadStateGet.proto (used by PyErrFetchRestore) */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
-#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
-#if PY_VERSION_HEX >= 0x030C00A6
-#define __Pyx_PyErr_Occurred()  (__pyx_tstate->current_exception != NULL)
-#define __Pyx_PyErr_CurrentExceptionType()  (__pyx_tstate->current_exception ? (PyObject*) Py_TYPE(__pyx_tstate->current_exception) : (PyObject*) NULL)
-#else
-#define __Pyx_PyErr_Occurred()  (__pyx_tstate->curexc_type != NULL)
-#define __Pyx_PyErr_CurrentExceptionType()  (__pyx_tstate->curexc_type)
-#endif
-#else
-#define __Pyx_PyThreadState_declare
-#define __Pyx_PyThreadState_assign
-#define __Pyx_PyErr_Occurred()  (PyErr_Occurred() != NULL)
-#define __Pyx_PyErr_CurrentExceptionType()  PyErr_Occurred()
-#endif
-
-/* PyErrFetchRestore.proto (used by RaiseException) */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A6
-#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
-#else
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#endif
-#else
-#define __Pyx_PyErr_Clear() PyErr_Clear()
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
-#endif
-
 /* RaiseException.export */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
-/* PyErrExceptionMatches.proto (used by PyObjectGetAttrStrNoError) */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
-#else
-#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
-#endif
-
-/* PyObjectGetAttrStrNoError.proto (used by GetBuiltinName) */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, PyObject* attr_name);
-
-/* GetBuiltinName.proto (used by GetModuleGlobalName) */
-static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
 /* PyDictVersioning.proto (used by GetModuleGlobalName) */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -2661,14 +2652,17 @@ static CYTHON_INLINE PyObject* __Pyx_PyUnicode_FromOrdinal_Padded(int value, Py_
 static CYTHON_INLINE PyObject* __Pyx_uchar___Pyx_PyUnicode_From_Py_ssize_t(Py_ssize_t value, Py_ssize_t width, char padding_char);
 static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_Py_ssize_t(Py_ssize_t value, Py_ssize_t width, char padding_char, char format_char);
 
-/* PyIOError_Check.proto */
-#define __Pyx_PyExc_IOError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_IOError)
+/* RaiseUnexpectedTypeError.proto */
+static int __Pyx_RaiseUnexpectedTypeError(const char *expected, PyObject *obj);
 
-/* PyUnicode_Unicode.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj);
+/* PyUnicodeContains.proto */
+static CYTHON_INLINE int __Pyx_PyUnicode_ContainsTF(PyObject* substring, PyObject* text, int eq) {
+    int result = PyUnicode_Contains(text, substring);
+    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
+}
 
-/* ErrOccurredWithGIL.proto */
-static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void);
+/* PyRuntimeError_Check.proto */
+#define __Pyx_PyExc_RuntimeError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_RuntimeError)
 
 /* SwapException.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -2677,21 +2671,6 @@ static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject *
 #else
 static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb);
 #endif
-
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
-
-/* RaiseUnexpectedTypeError.proto */
-static int __Pyx_RaiseUnexpectedTypeError(const char *expected, PyObject *obj);
-
-/* PyNotImplementedError_Check.proto */
-#define __Pyx_PyExc_NotImplementedError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_NotImplementedError)
-
-/* PySequenceContains.proto */
-static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
-    int result = PySequence_Contains(seq, item);
-    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
-}
 
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
@@ -2714,6 +2693,56 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
+/* decode_c_string_utf16.proto (used by decode_c_string) */
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 0;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = -1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+
+/* decode_c_string.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
+         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
+
+/* PyObjectCall2Args.proto (used by PyObjectCallMethod1) */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
+/* PyObjectGetMethod.proto (used by PyObjectCallMethod1) */
+#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
+#endif
+
+/* PyObjectCallMethod1.proto (used by append) */
+static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg);
+
+/* append.proto */
+static CYTHON_INLINE int __Pyx_PyObject_Append(PyObject* L, PyObject* x);
+
+/* PyObject_Unicode.proto */
+#define __Pyx_PyObject_Unicode(obj)\
+    (likely(PyUnicode_CheckExact(obj)) ? __Pyx_NewRef(obj) : PyObject_Str(obj))
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
+
+/* PyNotImplementedError_Check.proto */
+#define __Pyx_PyExc_NotImplementedError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_NotImplementedError)
+
+/* PySequenceContains.proto */
+static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
+    int result = PySequence_Contains(seq, item);
+    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
+}
+
 /* SliceObject.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(
         PyObject* obj, Py_ssize_t cstart, Py_ssize_t cstop,
@@ -2735,8 +2764,8 @@ static CYTHON_INLINE int __Pyx_IterFinish(void);
 /* UnpackItemEndCheck.proto */
 static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
 
-/* PyRuntimeError_Check.proto */
-#define __Pyx_PyExc_RuntimeError_Check(obj)  __Pyx_TypeCheck(obj, PyExc_RuntimeError)
+/* ErrOccurredWithGIL.proto */
+static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void);
 
 /* PyObjectDelAttr.proto (used by PyObjectSetAttrStr) */
 #if CYTHON_COMPILING_IN_LIMITED_API && __PYX_LIMITED_VERSION_HEX < 0x030d0000
@@ -2753,6 +2782,9 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
 #define __Pyx_PyObject_DelAttrStr(o,n)   __Pyx_PyObject_DelAttr(o,n)
 #define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
 #endif
+
+/* PyUnicode_Unicode.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj);
 
 /* AllocateExtensionType.proto */
 static PyObject *__Pyx_AllocateExtensionType(PyTypeObject *t, int is_final);
@@ -2798,11 +2830,6 @@ static CYTHON_INLINE int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec
 
 /* PyObjectCallNoArg.proto (used by PyObjectCallMethod0) */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-
-/* PyObjectGetMethod.proto (used by PyObjectCallMethod0) */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
-#endif
 
 /* PyObjectCallMethod0.proto (used by PyType_Ready) */
 static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
@@ -2855,9 +2882,6 @@ static PyObject* __Pyx_PEP560_update_bases(PyObject *bases);
 
 /* CalculateMetaclass.proto */
 static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases);
-
-/* PyObjectCall2Args.proto (used by Py3ClassCreate) */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
 
 /* PyObjectLookupSpecial.proto (used by Py3ClassCreate) */
 #if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
@@ -3066,9 +3090,6 @@ static CYTHON_INLINE size_t __Pyx_PyLong_As_size_t(PyObject *);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value);
 
-/* PyObjectCallMethod1.proto */
-static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg);
-
 /* UpdateUnpickledDict.proto */
 static int __Pyx_UpdateUnpickledDict(PyObject *obj, PyObject *state, Py_ssize_t index);
 
@@ -3274,6 +3295,8 @@ static int __Pyx_State_RemoveModule(void*);
 static struct __pyx_obj_3d2d_6lexbor_LexborAttributes *__pyx_f_3d2d_6lexbor_16LexborAttributes_create(lxb_dom_node_t *__pyx_v_node); /* proto*/
 static void __pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto*/
 static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNode_new(lxb_dom_node_t *__pyx_v_node, struct __pyx_obj_3d2d_6lexbor_LexborHTMLParser *__pyx_v_parser); /* proto*/
+static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_10LexborNode__check_new_instruction_block(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, lxb_tag_id_t __pyx_v_tag_id); /* proto*/
+static int __pyx_f_3d2d_6lexbor_10LexborNode__parse_style(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyObject *__pyx_v_style, struct __pyx_t_3d2d_6lexbor_InstructionAttrs *__pyx_v_attrs); /* proto*/
 static int __pyx_f_3d2d_6lexbor_17LexborCSSSelector__create_css_parser(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self); /* proto*/
 static PyObject *__pyx_f_3d2d_6lexbor_17LexborCSSSelector_find(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self, PyObject *__pyx_v_query, struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_node, CYTHON_UNUSED int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_3d2d_6lexbor_17LexborCSSSelector_find_first(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self, PyObject *__pyx_v_query, struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_node, CYTHON_UNUSED int __pyx_skip_dispatch); /* proto*/
@@ -3314,17 +3337,7 @@ static struct __pyx_obj_3d2d_6lexbor_LexborHTMLParser *__pyx_f_3d2d_6lexbor_16Le
 /* Module declarations from "cpython.list" */
 
 /* Module declarations from "d2d.lexbor" */
-static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_is_empty_text_node(lxb_dom_node_t *); /*proto*/
 static CYTHON_INLINE int __pyx_f_3d2d_6lexbor__is_whitespace_only(lxb_char_t const *, size_t); /*proto*/
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_parse_style_attribute(lxb_char_t const *, struct __pyx_t_3d2d_6lexbor_StyleFlags *); /*proto*/
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_push_to_stack(char (*)[200], int *, char const *); /*proto*/
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_pop_from_stack(int *, int); /*proto*/
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_write_json_attribute(unsigned char *, size_t, char const *, char const *, struct __pyx_opt_args_3d2d_6lexbor_write_json_attribute *__pyx_optional_args); /*proto*/
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_write_stack_attribute(unsigned char *, size_t, char const *, char (*)[200], int); /*proto*/
-static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_is_block_level_tag(lxb_tag_id_t); /*proto*/
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_ensure_buffer_space(FILE *, unsigned char *, size_t *, size_t, size_t); /*proto*/
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_escape_and_write_json_string(unsigned char *, size_t, unsigned char *, size_t); /*proto*/
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_get_tag_style_effects(lxb_tag_id_t, struct __pyx_t_3d2d_6lexbor_TagStyleEffects *); /*proto*/
 static lxb_status_t __pyx_f_3d2d_6lexbor_css_finder_callback(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *); /*proto*/
 static lxb_status_t __pyx_f_3d2d_6lexbor_css_finder_callback_first(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *); /*proto*/
 static lxb_status_t __pyx_f_3d2d_6lexbor_css_matcher_callback(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *); /*proto*/
@@ -3337,26 +3350,24 @@ int __pyx_module_is_main_d2d__lexbor = 0;
 
 /* Implementation of "d2d.lexbor" */
 /* #### Code section: global_var ### */
+static PyObject *__pyx_builtin_open;
 /* #### Code section: string_decls ### */
+static const char __pyx_k_b[] = "b";
 static const char __pyx_k__4[] = "";
-static const char __pyx_k_wb[] = "wb";
-static const char __pyx_k_700[] = "700";
-static const char __pyx_k_bold[] = "bold";
+static const char __pyx_k_h1[] = "h1";
+static const char __pyx_k_h2[] = "h2";
+static const char __pyx_k_h3[] = "h3";
+static const char __pyx_k_h4[] = "h4";
+static const char __pyx_k_h5[] = "h5";
+static const char __pyx_k_h6[] = "h6";
+static const char __pyx_k_alt[] = "alt";
+static const char __pyx_k_src[] = "src";
 static const char __pyx_k_href[] = "href";
-static const char __pyx_k_none[] = "none";
-static const char __pyx_k_text[] = "{\"text\":\"";
-static const char __pyx_k_italic[] = "italic";
-static const char __pyx_k_display[] = "display";
-static const char __pyx_k_font_size[] = "font-size";
-static const char __pyx_k_underline[] = "underline";
-static const char __pyx_k_font_style[] = "font-style";
+static const char __pyx_k_style[] = "style";
+static const char __pyx_k_strong[] = "strong";
+static const char __pyx_k_colspan[] = "colspan";
+static const char __pyx_k_rowspan[] = "rowspan";
 static const char __pyx_k_node_nodes[] = "node, nodes";
-static const char __pyx_k_font_weight[] = "font-weight";
-static const char __pyx_k_text_center[] = "text-center";
-static const char __pyx_k_text_decoration[] = "text-decoration";
-static const char __pyx_k_font_weight_bold[] = "font-weight:bold";
-static const char __pyx_k_font_style_italic[] = "font-style:italic";
-static const char __pyx_k_text_decoration_underline[] = "text-decoration:underline";
 /* #### Code section: decls ### */
 static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_html, PyObject *__pyx_v_decode_errors); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tag, PyObject *__pyx_v_parser_cls); /* proto */
@@ -3376,13 +3387,13 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_23__contains__(struct __pyx_
 static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_25__repr__(struct __pyx_obj_3d2d_6lexbor_LexborAttributes *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_27__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborAttributes *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_29__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborAttributes *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyLongObject *__pyx_v_include_text, PyLongObject *__pyx_v_skip_empty); /* proto */
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyObject *__pyx_v_filename); /* proto */
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6mem_id___get__(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_convert_html_to_instructions(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6parser___get__(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
 static int __pyx_pf_3d2d_6lexbor_10LexborNode_6parser_2__set__(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static int __pyx_pf_3d2d_6lexbor_10LexborNode_6parser_4__del__(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_3d2d_6lexbor_17LexborCSSSelector___init__(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_17LexborCSSSelector_2find(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self, PyObject *__pyx_v_query, struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_node); /* proto */
 static PyObject *__pyx_pf_3d2d_6lexbor_17LexborCSSSelector_4find_first(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *__pyx_v_self, PyObject *__pyx_v_query, struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_node); /* proto */
@@ -3494,10 +3505,11 @@ typedef struct {
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_items;
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_pop;
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_values;
+  __Pyx_CachedCFunction __pyx_umethod_PyUnicode_Type__strip;
   PyObject *__pyx_tuple[10];
-  PyObject *__pyx_codeobj_tab[53];
-  PyObject *__pyx_string_tab[368];
-  PyObject *__pyx_number_tab[7];
+  PyObject *__pyx_codeobj_tab[52];
+  PyObject *__pyx_string_tab[388];
+  PyObject *__pyx_number_tab[6];
 /* #### Code section: module_state_contents ### */
 
 #if CYTHON_USE_FREELISTS
@@ -3573,11 +3585,11 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_u_Can_t_parse_CSS_selector __pyx_string_tab[9]
 #define __pyx_kp_u_Can_t_parse_HTML __pyx_string_tab[10]
 #define __pyx_kp_u_Can_t_parse_empty_HTML_as_HTML_f __pyx_string_tab[11]
-#define __pyx_kp_u_Could_not_open_file __pyx_string_tab[12]
-#define __pyx_kp_u_Expected_a_string_but_s_found __pyx_string_tab[13]
-#define __pyx_kp_u_Expected_str_or_unicode_got_s __pyx_string_tab[14]
-#define __pyx_kp_u_Extract_the_inner_content_of_an __pyx_string_tab[15]
-#define __pyx_kp_u_Failed_to_initialize_object_for __pyx_string_tab[16]
+#define __pyx_kp_u_Expected_a_string_but_s_found __pyx_string_tab[12]
+#define __pyx_kp_u_Expected_str_or_unicode_got_s __pyx_string_tab[13]
+#define __pyx_kp_u_Extract_the_inner_content_of_an __pyx_string_tab[14]
+#define __pyx_kp_u_Failed_to_initialize_object_for __pyx_string_tab[15]
+#define __pyx_kp_u_Failed_to_open_output_file __pyx_string_tab[16]
 #define __pyx_kp_u_Given_an_HTML_tag_name_e_g_div_c __pyx_string_tab[17]
 #define __pyx_kp_u_Input_is_not_a_valid_HTML_commen __pyx_string_tab[18]
 #define __pyx_kp_u_Iterates_over_all_text_nodes_and __pyx_string_tab[19]
@@ -3591,351 +3603,370 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_u_Optional_Parser __pyx_string_tab[27]
 #define __pyx_kp_u_Query_must_be_a_string __pyx_string_tab[28]
 #define __pyx_kp_u_Remove_specified_tags_from_the_n __pyx_string_tab[29]
-#define __pyx_kp_u_Tag_name_cannot_be_empty __pyx_string_tab[30]
-#define __pyx_kp_u_Tag_name_is_too_long __pyx_string_tab[31]
-#define __pyx_kp_u_The_specified_HTML_input_is_too __pyx_string_tab[32]
-#define __pyx_kp_u_This_features_is_not_supported_b __pyx_string_tab[33]
-#define __pyx_kp_u_UTF_8 __pyx_string_tab[34]
-#define __pyx_kp_u_Unwraps_specified_tags_from_the __pyx_string_tab[35]
-#define __pyx_kp_u__2 __pyx_string_tab[36]
-#define __pyx_kp_u__3 __pyx_string_tab[37]
-#define __pyx_kp_u__4 __pyx_string_tab[38]
-#define __pyx_kp_u__5 __pyx_string_tab[39]
-#define __pyx_kp_u__6 __pyx_string_tab[40]
-#define __pyx_kp_u__7 __pyx_string_tab[41]
-#define __pyx_kp_u__8 __pyx_string_tab[42]
-#define __pyx_kp_u_add_note __pyx_string_tab[43]
-#define __pyx_kp_u_attributes __pyx_string_tab[44]
-#define __pyx_kp_u_body __pyx_string_tab[45]
-#define __pyx_kp_u_comment __pyx_string_tab[46]
-#define __pyx_kp_u_d2d_lexbor_attrs_pxi __pyx_string_tab[47]
-#define __pyx_kp_u_d2d_lexbor_node_pxi __pyx_string_tab[48]
-#define __pyx_kp_u_d2d_lexbor_pyx __pyx_string_tab[49]
-#define __pyx_kp_u_d2d_lexbor_selection_pxi __pyx_string_tab[50]
-#define __pyx_kp_u_d2d_lexbor_util_pxi __pyx_string_tab[51]
-#define __pyx_kp_u_d2d_lexbor_utils_pxi __pyx_string_tab[52]
-#define __pyx_kp_u_d2d_utils_pxi __pyx_string_tab[53]
-#define __pyx_kp_u_disable __pyx_string_tab[54]
-#define __pyx_kp_u_doctype __pyx_string_tab[55]
-#define __pyx_kp_u_document_is_NULL_even_after_html __pyx_string_tab[56]
-#define __pyx_kp_u_enable __pyx_string_tab[57]
-#define __pyx_kp_u_extract_html_comment_line_27 __pyx_string_tab[58]
-#define __pyx_kp_u_gc __pyx_string_tab[59]
-#define __pyx_kp_u_head __pyx_string_tab[60]
-#define __pyx_kp_u_html_2 __pyx_string_tab[61]
-#define __pyx_kp_u_html_body_head_er __pyx_string_tab[62]
-#define __pyx_kp_u_isenabled __pyx_string_tab[63]
-#define __pyx_kp_u_items_2 __pyx_string_tab[64]
-#define __pyx_kp_u_s_s_s_s __pyx_string_tab[65]
-#define __pyx_kp_u_self__fragment_document_self_doc __pyx_string_tab[66]
-#define __pyx_kp_u_self_css_selectors_self_parser_s __pyx_string_tab[67]
-#define __pyx_kp_u_self_node_cannot_be_converted_to __pyx_string_tab[68]
-#define __pyx_kp_u_stringsource __pyx_string_tab[69]
-#define __pyx_kp_u_text_3 __pyx_string_tab[70]
-#define __pyx_n_u_DOTALL __pyx_string_tab[71]
-#define __pyx_n_u_ENCODING __pyx_string_tab[72]
-#define __pyx_n_u_FRAGMENT __pyx_string_tab[73]
-#define __pyx_n_u_HTMLParser __pyx_string_tab[74]
-#define __pyx_n_u_IGNORECASE __pyx_string_tab[75]
-#define __pyx_n_u_LexborAttributes __pyx_string_tab[76]
-#define __pyx_n_u_LexborAttributes___iter __pyx_string_tab[77]
-#define __pyx_n_u_LexborAttributes___reduce_cython __pyx_string_tab[78]
-#define __pyx_n_u_LexborAttributes___setstate_cyth __pyx_string_tab[79]
-#define __pyx_n_u_LexborAttributes_get __pyx_string_tab[80]
-#define __pyx_n_u_LexborAttributes_items __pyx_string_tab[81]
-#define __pyx_n_u_LexborAttributes_keys __pyx_string_tab[82]
-#define __pyx_n_u_LexborAttributes_sget __pyx_string_tab[83]
-#define __pyx_n_u_LexborAttributes_values __pyx_string_tab[84]
-#define __pyx_n_u_LexborCSSSelector __pyx_string_tab[85]
-#define __pyx_n_u_LexborCSSSelector___reduce_cytho __pyx_string_tab[86]
-#define __pyx_n_u_LexborCSSSelector___setstate_cyt __pyx_string_tab[87]
-#define __pyx_n_u_LexborCSSSelector__find __pyx_string_tab[88]
-#define __pyx_n_u_LexborCSSSelector_any_matches __pyx_string_tab[89]
-#define __pyx_n_u_LexborCSSSelector_find __pyx_string_tab[90]
-#define __pyx_n_u_LexborCSSSelector_find_first __pyx_string_tab[91]
-#define __pyx_n_u_LexborHTMLParser __pyx_string_tab[92]
-#define __pyx_n_u_LexborHTMLParser___reduce_cython __pyx_string_tab[93]
-#define __pyx_n_u_LexborHTMLParser___setstate_cyth __pyx_string_tab[94]
-#define __pyx_n_u_LexborHTMLParser_any_css_matches __pyx_string_tab[95]
-#define __pyx_n_u_LexborHTMLParser_clone __pyx_string_tab[96]
-#define __pyx_n_u_LexborHTMLParser_create_node __pyx_string_tab[97]
-#define __pyx_n_u_LexborHTMLParser_css __pyx_string_tab[98]
-#define __pyx_n_u_LexborHTMLParser_css_first __pyx_string_tab[99]
-#define __pyx_n_u_LexborHTMLParser_css_matches __pyx_string_tab[100]
-#define __pyx_n_u_LexborHTMLParser_merge_text_node __pyx_string_tab[101]
-#define __pyx_n_u_LexborHTMLParser_script_srcs_con __pyx_string_tab[102]
-#define __pyx_n_u_LexborHTMLParser_scripts_contain __pyx_string_tab[103]
-#define __pyx_n_u_LexborHTMLParser_select __pyx_string_tab[104]
-#define __pyx_n_u_LexborHTMLParser_strip_tags __pyx_string_tab[105]
-#define __pyx_n_u_LexborHTMLParser_tags __pyx_string_tab[106]
-#define __pyx_n_u_LexborHTMLParser_text __pyx_string_tab[107]
-#define __pyx_n_u_LexborHTMLParser_unwrap_tags __pyx_string_tab[108]
-#define __pyx_n_u_LexborNode __pyx_string_tab[109]
-#define __pyx_n_u_LexborNode___reduce_cython __pyx_string_tab[110]
-#define __pyx_n_u_LexborNode___setstate_cython __pyx_string_tab[111]
-#define __pyx_n_u_LexborNode_convert_html_to_instr __pyx_string_tab[112]
-#define __pyx_n_u_LexborNode_traverse_signals_benc __pyx_string_tab[113]
-#define __pyx_n_u_LexborSelector __pyx_string_tab[114]
-#define __pyx_n_u_LexborSelector___reduce_cython __pyx_string_tab[115]
-#define __pyx_n_u_LexborSelector___setstate_cython __pyx_string_tab[116]
-#define __pyx_n_u_LexborSelector_any_attribute_lon __pyx_string_tab[117]
-#define __pyx_n_u_LexborSelector_any_text_contains __pyx_string_tab[118]
-#define __pyx_n_u_LexborSelector_attribute_longer __pyx_string_tab[119]
-#define __pyx_n_u_LexborSelector_css __pyx_string_tab[120]
-#define __pyx_n_u_LexborSelector_text_contains __pyx_string_tab[121]
-#define __pyx_n_u_Literal __pyx_string_tab[122]
-#define __pyx_n_u_MAX_HTML_INPUT_SIZE __pyx_string_tab[123]
-#define __pyx_n_u_Optional __pyx_string_tab[124]
-#define __pyx_n_u_Parser __pyx_string_tab[125]
-#define __pyx_n_u_ParserCls __pyx_string_tab[126]
-#define __pyx_n_u_Pyx_PyDict_NextRef __pyx_string_tab[127]
-#define __pyx_n_u_SelectolaxError __pyx_string_tab[128]
-#define __pyx_n_u_TAG_TO_NAME __pyx_string_tab[129]
-#define __pyx_n_u_Type __pyx_string_tab[130]
-#define __pyx_n_u_Union __pyx_string_tab[131]
-#define __pyx_n_u_any_attribute_longer_than __pyx_string_tab[132]
-#define __pyx_n_u_any_css_matches __pyx_string_tab[133]
-#define __pyx_n_u_any_matches __pyx_string_tab[134]
-#define __pyx_n_u_any_text_contains __pyx_string_tab[135]
-#define __pyx_n_u_asyncio_coroutines __pyx_string_tab[136]
-#define __pyx_n_u_attr __pyx_string_tab[137]
-#define __pyx_n_u_attribute __pyx_string_tab[138]
-#define __pyx_n_u_attribute_longer_than __pyx_string_tab[139]
-#define __pyx_n_u_attributes_2 __pyx_string_tab[140]
-#define __pyx_n_u_body_2 __pyx_string_tab[141]
-#define __pyx_n_u_bold_depth __pyx_string_tab[142]
-#define __pyx_n_u_bold_stack __pyx_string_tab[143]
-#define __pyx_n_u_bool __pyx_string_tab[144]
-#define __pyx_n_u_buffer __pyx_string_tab[145]
-#define __pyx_n_u_buffer_ptr __pyx_string_tab[146]
-#define __pyx_n_u_bytes_html __pyx_string_tab[147]
-#define __pyx_n_u_capacity __pyx_string_tab[148]
-#define __pyx_n_u_class_getitem __pyx_string_tab[149]
-#define __pyx_n_u_cline_in_traceback __pyx_string_tab[150]
-#define __pyx_n_u_clone __pyx_string_tab[151]
-#define __pyx_n_u_cloned_document __pyx_string_tab[152]
-#define __pyx_n_u_cloned_node __pyx_string_tab[153]
-#define __pyx_n_u_close __pyx_string_tab[154]
-#define __pyx_n_u_cls __pyx_string_tab[155]
-#define __pyx_n_u_collection __pyx_string_tab[156]
-#define __pyx_n_u_compile __pyx_string_tab[157]
-#define __pyx_n_u_convert_html_to_instructions __pyx_string_tab[158]
-#define __pyx_n_u_create_node __pyx_string_tab[159]
-#define __pyx_n_u_create_tag __pyx_string_tab[160]
-#define __pyx_n_u_css __pyx_string_tab[161]
-#define __pyx_n_u_css_first __pyx_string_tab[162]
-#define __pyx_n_u_css_matches __pyx_string_tab[163]
-#define __pyx_n_u_current_alt __pyx_string_tab[164]
-#define __pyx_n_u_current_href __pyx_string_tab[165]
-#define __pyx_n_u_current_src __pyx_string_tab[166]
-#define __pyx_n_u_d2d_lexbor __pyx_string_tab[167]
-#define __pyx_n_u_decode __pyx_string_tab[168]
-#define __pyx_n_u_decode_errors __pyx_string_tab[169]
-#define __pyx_n_u_decompose __pyx_string_tab[170]
-#define __pyx_n_u_deep __pyx_string_tab[171]
-#define __pyx_n_u_default __pyx_string_tab[172]
-#define __pyx_n_u_delete_empty __pyx_string_tab[173]
-#define __pyx_n_u_dict __pyx_string_tab[174]
-#define __pyx_n_u_dict_2 __pyx_string_tab[175]
-#define __pyx_n_u_do_create_tag __pyx_string_tab[176]
-#define __pyx_n_u_do_parse_fragment __pyx_string_tab[177]
-#define __pyx_n_u_doc __pyx_string_tab[178]
-#define __pyx_n_u_document __pyx_string_tab[179]
-#define __pyx_n_u_document_no_body __pyx_string_tab[180]
-#define __pyx_n_u_document_no_head __pyx_string_tab[181]
-#define __pyx_n_u_document_no_head_no_body __pyx_string_tab[182]
-#define __pyx_n_u_dom_node __pyx_string_tab[183]
-#define __pyx_n_u_element __pyx_string_tab[184]
-#define __pyx_n_u_encode __pyx_string_tab[185]
-#define __pyx_n_u_errors __pyx_string_tab[186]
-#define __pyx_n_u_extract_html_comment __pyx_string_tab[187]
-#define __pyx_n_u_f __pyx_string_tab[188]
-#define __pyx_n_u_filename __pyx_string_tab[189]
-#define __pyx_n_u_filename_bytes __pyx_string_tab[190]
-#define __pyx_n_u_filename_c __pyx_string_tab[191]
-#define __pyx_n_u_find __pyx_string_tab[192]
-#define __pyx_n_u_find_2 __pyx_string_tab[193]
-#define __pyx_n_u_find_first __pyx_string_tab[194]
-#define __pyx_n_u_finditer __pyx_string_tab[195]
-#define __pyx_n_u_flags __pyx_string_tab[196]
-#define __pyx_n_u_font_size_depth __pyx_string_tab[197]
-#define __pyx_n_u_font_size_stack __pyx_string_tab[198]
-#define __pyx_n_u_frag_type __pyx_string_tab[199]
-#define __pyx_n_u_fragment __pyx_string_tab[200]
-#define __pyx_n_u_fullmatch __pyx_string_tab[201]
-#define __pyx_n_u_func __pyx_string_tab[202]
-#define __pyx_n_u_get __pyx_string_tab[203]
-#define __pyx_n_u_getLogger __pyx_string_tab[204]
-#define __pyx_n_u_get_fragment_type __pyx_string_tab[205]
-#define __pyx_n_u_getitem __pyx_string_tab[206]
-#define __pyx_n_u_getstate __pyx_string_tab[207]
-#define __pyx_n_u_group __pyx_string_tab[208]
-#define __pyx_n_u_has_body __pyx_string_tab[209]
-#define __pyx_n_u_has_head __pyx_string_tab[210]
-#define __pyx_n_u_has_html __pyx_string_tab[211]
-#define __pyx_n_u_head_2 __pyx_string_tab[212]
-#define __pyx_n_u_head_and_body __pyx_string_tab[213]
-#define __pyx_n_u_html __pyx_string_tab[214]
-#define __pyx_n_u_html_len __pyx_string_tab[215]
-#define __pyx_n_u_html_re __pyx_string_tab[216]
-#define __pyx_n_u_i __pyx_string_tab[217]
-#define __pyx_n_u_ignore __pyx_string_tab[218]
-#define __pyx_n_u_in_block __pyx_string_tab[219]
-#define __pyx_n_u_include_text __pyx_string_tab[220]
-#define __pyx_n_u_inner_html __pyx_string_tab[221]
-#define __pyx_n_u_is_coroutine __pyx_string_tab[222]
-#define __pyx_n_u_is_empty __pyx_string_tab[223]
-#define __pyx_n_u_is_fragment __pyx_string_tab[224]
-#define __pyx_n_u_italic_depth __pyx_string_tab[225]
-#define __pyx_n_u_italic_stack __pyx_string_tab[226]
-#define __pyx_n_u_items __pyx_string_tab[227]
-#define __pyx_n_u_iter __pyx_string_tab[228]
-#define __pyx_n_u_iter_2 __pyx_string_tab[229]
-#define __pyx_n_u_key __pyx_string_tab[230]
-#define __pyx_n_u_keys __pyx_string_tab[231]
-#define __pyx_n_u_length __pyx_string_tab[232]
-#define __pyx_n_u_logger __pyx_string_tab[233]
-#define __pyx_n_u_logging __pyx_string_tab[234]
-#define __pyx_n_u_main __pyx_string_tab[235]
-#define __pyx_n_u_match __pyx_string_tab[236]
-#define __pyx_n_u_merge_text_nodes __pyx_string_tab[237]
-#define __pyx_n_u_metaclass __pyx_string_tab[238]
-#define __pyx_n_u_module __pyx_string_tab[239]
-#define __pyx_n_u_mro_entries __pyx_string_tab[240]
-#define __pyx_n_u_msg __pyx_string_tab[241]
-#define __pyx_n_u_name __pyx_string_tab[242]
-#define __pyx_n_u_name_2 __pyx_string_tab[243]
-#define __pyx_n_u_new __pyx_string_tab[244]
-#define __pyx_n_u_next __pyx_string_tab[245]
-#define __pyx_n_u_node __pyx_string_tab[246]
-#define __pyx_n_u_node_text __pyx_string_tab[247]
-#define __pyx_n_u_nodes __pyx_string_tab[248]
-#define __pyx_n_u_only_first __pyx_string_tab[249]
-#define __pyx_n_u_parent_mem_id __pyx_string_tab[250]
-#define __pyx_n_u_parent_ptr __pyx_string_tab[251]
-#define __pyx_n_u_parse_fragment __pyx_string_tab[252]
-#define __pyx_n_u_parser_cls __pyx_string_tab[253]
-#define __pyx_n_u_pop __pyx_string_tab[254]
-#define __pyx_n_u_pos __pyx_string_tab[255]
-#define __pyx_n_u_prepare __pyx_string_tab[256]
-#define __pyx_n_u_preprocess_input __pyx_string_tab[257]
-#define __pyx_n_u_pybyte_name __pyx_string_tab[258]
-#define __pyx_n_u_pyx_capi __pyx_string_tab[259]
-#define __pyx_n_u_pyx_checksum __pyx_string_tab[260]
-#define __pyx_n_u_pyx_result __pyx_string_tab[261]
-#define __pyx_n_u_pyx_state __pyx_string_tab[262]
-#define __pyx_n_u_pyx_type __pyx_string_tab[263]
-#define __pyx_n_u_pyx_unpickle_LexborSelector __pyx_string_tab[264]
-#define __pyx_n_u_pyx_vtable __pyx_string_tab[265]
-#define __pyx_n_u_qualname __pyx_string_tab[266]
-#define __pyx_n_u_queries __pyx_string_tab[267]
-#define __pyx_n_u_query __pyx_string_tab[268]
-#define __pyx_n_u_re __pyx_string_tab[269]
-#define __pyx_n_u_recursive __pyx_string_tab[270]
-#define __pyx_n_u_reduce __pyx_string_tab[271]
-#define __pyx_n_u_reduce_cython __pyx_string_tab[272]
-#define __pyx_n_u_reduce_ex __pyx_string_tab[273]
-#define __pyx_n_u_result __pyx_string_tab[274]
-#define __pyx_n_u_return __pyx_string_tab[275]
-#define __pyx_n_u_root __pyx_string_tab[276]
-#define __pyx_n_u_script_srcs_contain __pyx_string_tab[277]
-#define __pyx_n_u_scripts_contain __pyx_string_tab[278]
-#define __pyx_n_u_select __pyx_string_tab[279]
-#define __pyx_n_u_selectolax __pyx_string_tab[280]
-#define __pyx_n_u_selector __pyx_string_tab[281]
-#define __pyx_n_u_selectors __pyx_string_tab[282]
-#define __pyx_n_u_self __pyx_string_tab[283]
-#define __pyx_n_u_send __pyx_string_tab[284]
-#define __pyx_n_u_separator __pyx_string_tab[285]
-#define __pyx_n_u_set_name __pyx_string_tab[286]
-#define __pyx_n_u_setdefault __pyx_string_tab[287]
-#define __pyx_n_u_setstate __pyx_string_tab[288]
-#define __pyx_n_u_setstate_cython __pyx_string_tab[289]
-#define __pyx_n_u_sget __pyx_string_tab[290]
-#define __pyx_n_u_skip_empty __pyx_string_tab[291]
-#define __pyx_n_u_skip_node __pyx_string_tab[292]
-#define __pyx_n_u_start __pyx_string_tab[293]
-#define __pyx_n_u_state __pyx_string_tab[294]
-#define __pyx_n_u_status __pyx_string_tab[295]
-#define __pyx_n_u_str __pyx_string_tab[296]
-#define __pyx_n_u_str_len __pyx_string_tab[297]
-#define __pyx_n_u_strict __pyx_string_tab[298]
-#define __pyx_n_u_strip __pyx_string_tab[299]
-#define __pyx_n_u_strip_tags __pyx_string_tab[300]
-#define __pyx_n_u_style_attr __pyx_string_tab[301]
-#define __pyx_n_u_style_flags __pyx_string_tab[302]
-#define __pyx_n_u_style_value __pyx_string_tab[303]
-#define __pyx_n_u_tag __pyx_string_tab[304]
-#define __pyx_n_u_tag_effects __pyx_string_tab[305]
-#define __pyx_n_u_tag_id __pyx_string_tab[306]
-#define __pyx_n_u_tags __pyx_string_tab[307]
-#define __pyx_n_u_test __pyx_string_tab[308]
-#define __pyx_n_u_text_2 __pyx_string_tab[309]
-#define __pyx_n_u_text_center_depth __pyx_string_tab[310]
-#define __pyx_n_u_text_center_stack __pyx_string_tab[311]
-#define __pyx_n_u_text_contains __pyx_string_tab[312]
-#define __pyx_n_u_text_content __pyx_string_tab[313]
-#define __pyx_n_u_throw __pyx_string_tab[314]
-#define __pyx_n_u_traverse_signals_benchmark __pyx_string_tab[315]
-#define __pyx_n_u_tree __pyx_string_tab[316]
-#define __pyx_n_u_typing __pyx_string_tab[317]
-#define __pyx_n_u_underline_depth __pyx_string_tab[318]
-#define __pyx_n_u_underline_stack __pyx_string_tab[319]
-#define __pyx_n_u_unknown __pyx_string_tab[320]
-#define __pyx_n_u_unwrap_tags __pyx_string_tab[321]
-#define __pyx_n_u_update __pyx_string_tab[322]
-#define __pyx_n_u_use_setstate __pyx_string_tab[323]
-#define __pyx_n_u_val __pyx_string_tab[324]
-#define __pyx_n_u_value __pyx_string_tab[325]
-#define __pyx_n_u_values __pyx_string_tab[326]
-#define __pyx_kp_b__4 __pyx_string_tab[327]
-#define __pyx_kp_b_int_lxb_char_t_const_size_t_int __pyx_string_tab[328]
-#define __pyx_kp_b_iso88591_00DOS_HD_E_vZ_z_U_Q_WAQ_IQ_q __pyx_string_tab[329]
-#define __pyx_kp_b_iso88591_1_t1_1_q __pyx_string_tab[330]
-#define __pyx_kp_b_iso88591_1_z_a_T_1F_Q_iq_D_a_s_1_y_j___q __pyx_string_tab[331]
-#define __pyx_kp_b_iso88591_44H_Waab_HD_E_vZ_z_U_Q_q_q __pyx_string_tab[332]
-#define __pyx_kp_b_iso88591_4A2_4z_A_Q __pyx_string_tab[333]
-#define __pyx_kp_b_iso88591_5Q_1_G1_WAQ_0_i_a_Q_oQa_1_d_q_1 __pyx_string_tab[334]
-#define __pyx_kp_b_iso88591_A __pyx_string_tab[335]
-#define __pyx_kp_b_iso88591_AV1 __pyx_string_tab[336]
-#define __pyx_kp_b_iso88591_AV1_2 __pyx_string_tab[337]
-#define __pyx_kp_b_iso88591_A_1Cq_q_E __pyx_string_tab[338]
-#define __pyx_kp_b_iso88591_A_2 __pyx_string_tab[339]
-#define __pyx_kp_b_iso88591_A_4q_AQ_3avRq_AQ_0_d_Q_AQd_c_1_Q __pyx_string_tab[340]
-#define __pyx_kp_b_iso88591_A_4q_c_2_q_83a_B_1_a_Qj __pyx_string_tab[341]
-#define __pyx_kp_b_iso88591_A_4z_1A_e7_1_0_Yo_Zbbeeffg_Q_A_K __pyx_string_tab[342]
-#define __pyx_kp_b_iso88591_A_6a_3a_a_6a_8_nBa_s_Q_K1_nA_d_q __pyx_string_tab[343]
-#define __pyx_kp_b_iso88591_A_HG1A_a_D_A_1_s_1_a_1_Q_1_q_q_Q __pyx_string_tab[344]
-#define __pyx_kp_b_iso88591_A_Q_a_1_4vS_1_t5_Qe6_fG_VW __pyx_string_tab[345]
-#define __pyx_kp_b_iso88591_A_t5 __pyx_string_tab[346]
-#define __pyx_kp_b_iso88591_A_t5_2 __pyx_string_tab[347]
-#define __pyx_kp_b_iso88591_A_t5_3 __pyx_string_tab[348]
-#define __pyx_kp_b_iso88591_A_t5_AQ __pyx_string_tab[349]
-#define __pyx_kp_b_iso88591_A_t5_AQ_2 __pyx_string_tab[350]
-#define __pyx_kp_b_iso88591_A_t5_AQ_3 __pyx_string_tab[351]
-#define __pyx_kp_b_iso88591_A_t6_q __pyx_string_tab[352]
-#define __pyx_kp_b_iso88591_A_t9A __pyx_string_tab[353]
-#define __pyx_kp_b_iso88591_DA_4z_1A_e7_1_0_Yo_Zccffggh_Q_1 __pyx_string_tab[354]
-#define __pyx_kp_b_iso88591_LIUV_HD_4_aq_t1_uD_d_1_t1D_QgRs __pyx_string_tab[355]
-#define __pyx_kp_b_iso88591_PPYYZ_HD_4_aq_uD_d_1_t1D_QgRs_1 __pyx_string_tab[356]
-#define __pyx_kp_b_iso88591_Q __pyx_string_tab[357]
-#define __pyx_kp_b_iso88591_Q_4vQ_Qa_A_z_A_q_A_z_A_E_1Ja_q __pyx_string_tab[358]
-#define __pyx_kp_b_iso88591_T_A_G1F_a_vWE_Q_q_t6_S_G7_q_t1G __pyx_string_tab[359]
-#define __pyx_kp_b_iso88591_VVW_T_Q_e3a_Q_HA_Ct6_A_4_T_1A_t __pyx_string_tab[360]
-#define __pyx_kp_b_iso88591_aq_t3a_a_1_1 __pyx_string_tab[361]
-#define __pyx_kp_b_iso88591_q_0_kQR_7_0_1B_PQ_1 __pyx_string_tab[362]
-#define __pyx_kp_b_iso88591_q_4q_1 __pyx_string_tab[363]
-#define __pyx_kp_b_iso88591_t1_j_AS_AQ __pyx_string_tab[364]
-#define __pyx_kp_b_iso88591_t1_z_b_5Rq_q_q_q_5_Cq_q_3c_q_3c __pyx_string_tab[365]
-#define __pyx_kp_b_iso88591_t5_7_1 __pyx_string_tab[366]
-#define __pyx_kp_b_iso88591_xq_vS_A_b_uF_2V1_AQ __pyx_string_tab[367]
+#define __pyx_kp_u_Style_stack_overflow __pyx_string_tab[30]
+#define __pyx_kp_u_Tag_name_cannot_be_empty __pyx_string_tab[31]
+#define __pyx_kp_u_Tag_name_is_too_long __pyx_string_tab[32]
+#define __pyx_kp_u_The_specified_HTML_input_is_too __pyx_string_tab[33]
+#define __pyx_kp_u_This_features_is_not_supported_b __pyx_string_tab[34]
+#define __pyx_kp_u_UTF_8 __pyx_string_tab[35]
+#define __pyx_kp_u_Unwraps_specified_tags_from_the __pyx_string_tab[36]
+#define __pyx_kp_u__10 __pyx_string_tab[37]
+#define __pyx_kp_u__11 __pyx_string_tab[38]
+#define __pyx_kp_u__2 __pyx_string_tab[39]
+#define __pyx_kp_u__3 __pyx_string_tab[40]
+#define __pyx_kp_u__4 __pyx_string_tab[41]
+#define __pyx_kp_u__5 __pyx_string_tab[42]
+#define __pyx_kp_u__6 __pyx_string_tab[43]
+#define __pyx_kp_u__7 __pyx_string_tab[44]
+#define __pyx_kp_u__8 __pyx_string_tab[45]
+#define __pyx_kp_u__9 __pyx_string_tab[46]
+#define __pyx_kp_u_add_note __pyx_string_tab[47]
+#define __pyx_kp_u_attributes __pyx_string_tab[48]
+#define __pyx_kp_u_body __pyx_string_tab[49]
+#define __pyx_kp_u_comment __pyx_string_tab[50]
+#define __pyx_kp_u_d2d_lexbor_attrs_pxi __pyx_string_tab[51]
+#define __pyx_kp_u_d2d_lexbor_node_pxi __pyx_string_tab[52]
+#define __pyx_kp_u_d2d_lexbor_pyx __pyx_string_tab[53]
+#define __pyx_kp_u_d2d_lexbor_selection_pxi __pyx_string_tab[54]
+#define __pyx_kp_u_d2d_lexbor_util_pxi __pyx_string_tab[55]
+#define __pyx_kp_u_d2d_lexbor_utils_pxi __pyx_string_tab[56]
+#define __pyx_kp_u_d2d_utils_pxi __pyx_string_tab[57]
+#define __pyx_kp_u_disable __pyx_string_tab[58]
+#define __pyx_kp_u_doctype __pyx_string_tab[59]
+#define __pyx_kp_u_document_is_NULL_even_after_html __pyx_string_tab[60]
+#define __pyx_kp_u_enable __pyx_string_tab[61]
+#define __pyx_kp_u_extract_html_comment_line_27 __pyx_string_tab[62]
+#define __pyx_kp_u_font_size __pyx_string_tab[63]
+#define __pyx_kp_u_font_style __pyx_string_tab[64]
+#define __pyx_kp_u_font_weight __pyx_string_tab[65]
+#define __pyx_kp_u_gc __pyx_string_tab[66]
+#define __pyx_kp_u_head __pyx_string_tab[67]
+#define __pyx_kp_u_html_2 __pyx_string_tab[68]
+#define __pyx_kp_u_html_body_head_er __pyx_string_tab[69]
+#define __pyx_kp_u_isenabled __pyx_string_tab[70]
+#define __pyx_kp_u_items_2 __pyx_string_tab[71]
+#define __pyx_kp_u_s_s_s_s __pyx_string_tab[72]
+#define __pyx_kp_u_self__fragment_document_self_doc __pyx_string_tab[73]
+#define __pyx_kp_u_self_css_selectors_self_parser_s __pyx_string_tab[74]
+#define __pyx_kp_u_self_node_cannot_be_converted_to __pyx_string_tab[75]
+#define __pyx_kp_u_stringsource __pyx_string_tab[76]
+#define __pyx_kp_u_test_txt __pyx_string_tab[77]
+#define __pyx_kp_u_text_2 __pyx_string_tab[78]
+#define __pyx_kp_u_text_align __pyx_string_tab[79]
+#define __pyx_kp_u_text_decoration __pyx_string_tab[80]
+#define __pyx_kp_u_utf_8 __pyx_string_tab[81]
+#define __pyx_n_u_DOTALL __pyx_string_tab[82]
+#define __pyx_n_u_ENCODING __pyx_string_tab[83]
+#define __pyx_n_u_FRAGMENT __pyx_string_tab[84]
+#define __pyx_n_u_HTMLParser __pyx_string_tab[85]
+#define __pyx_n_u_IGNORECASE __pyx_string_tab[86]
+#define __pyx_n_u_LexborAttributes __pyx_string_tab[87]
+#define __pyx_n_u_LexborAttributes___iter __pyx_string_tab[88]
+#define __pyx_n_u_LexborAttributes___reduce_cython __pyx_string_tab[89]
+#define __pyx_n_u_LexborAttributes___setstate_cyth __pyx_string_tab[90]
+#define __pyx_n_u_LexborAttributes_get __pyx_string_tab[91]
+#define __pyx_n_u_LexborAttributes_items __pyx_string_tab[92]
+#define __pyx_n_u_LexborAttributes_keys __pyx_string_tab[93]
+#define __pyx_n_u_LexborAttributes_sget __pyx_string_tab[94]
+#define __pyx_n_u_LexborAttributes_values __pyx_string_tab[95]
+#define __pyx_n_u_LexborCSSSelector __pyx_string_tab[96]
+#define __pyx_n_u_LexborCSSSelector___reduce_cytho __pyx_string_tab[97]
+#define __pyx_n_u_LexborCSSSelector___setstate_cyt __pyx_string_tab[98]
+#define __pyx_n_u_LexborCSSSelector__find __pyx_string_tab[99]
+#define __pyx_n_u_LexborCSSSelector_any_matches __pyx_string_tab[100]
+#define __pyx_n_u_LexborCSSSelector_find __pyx_string_tab[101]
+#define __pyx_n_u_LexborCSSSelector_find_first __pyx_string_tab[102]
+#define __pyx_n_u_LexborHTMLParser __pyx_string_tab[103]
+#define __pyx_n_u_LexborHTMLParser___reduce_cython __pyx_string_tab[104]
+#define __pyx_n_u_LexborHTMLParser___setstate_cyth __pyx_string_tab[105]
+#define __pyx_n_u_LexborHTMLParser_any_css_matches __pyx_string_tab[106]
+#define __pyx_n_u_LexborHTMLParser_clone __pyx_string_tab[107]
+#define __pyx_n_u_LexborHTMLParser_create_node __pyx_string_tab[108]
+#define __pyx_n_u_LexborHTMLParser_css __pyx_string_tab[109]
+#define __pyx_n_u_LexborHTMLParser_css_first __pyx_string_tab[110]
+#define __pyx_n_u_LexborHTMLParser_css_matches __pyx_string_tab[111]
+#define __pyx_n_u_LexborHTMLParser_merge_text_node __pyx_string_tab[112]
+#define __pyx_n_u_LexborHTMLParser_script_srcs_con __pyx_string_tab[113]
+#define __pyx_n_u_LexborHTMLParser_scripts_contain __pyx_string_tab[114]
+#define __pyx_n_u_LexborHTMLParser_select __pyx_string_tab[115]
+#define __pyx_n_u_LexborHTMLParser_strip_tags __pyx_string_tab[116]
+#define __pyx_n_u_LexborHTMLParser_tags __pyx_string_tab[117]
+#define __pyx_n_u_LexborHTMLParser_text __pyx_string_tab[118]
+#define __pyx_n_u_LexborHTMLParser_unwrap_tags __pyx_string_tab[119]
+#define __pyx_n_u_LexborNode __pyx_string_tab[120]
+#define __pyx_n_u_LexborNode___reduce_cython __pyx_string_tab[121]
+#define __pyx_n_u_LexborNode___setstate_cython __pyx_string_tab[122]
+#define __pyx_n_u_LexborNode_convert_html_to_instr __pyx_string_tab[123]
+#define __pyx_n_u_LexborSelector __pyx_string_tab[124]
+#define __pyx_n_u_LexborSelector___reduce_cython __pyx_string_tab[125]
+#define __pyx_n_u_LexborSelector___setstate_cython __pyx_string_tab[126]
+#define __pyx_n_u_LexborSelector_any_attribute_lon __pyx_string_tab[127]
+#define __pyx_n_u_LexborSelector_any_text_contains __pyx_string_tab[128]
+#define __pyx_n_u_LexborSelector_attribute_longer __pyx_string_tab[129]
+#define __pyx_n_u_LexborSelector_css __pyx_string_tab[130]
+#define __pyx_n_u_LexborSelector_text_contains __pyx_string_tab[131]
+#define __pyx_n_u_Literal __pyx_string_tab[132]
+#define __pyx_n_u_MAX_HTML_INPUT_SIZE __pyx_string_tab[133]
+#define __pyx_n_u_Optional __pyx_string_tab[134]
+#define __pyx_n_u_Parser __pyx_string_tab[135]
+#define __pyx_n_u_ParserCls __pyx_string_tab[136]
+#define __pyx_n_u_Pyx_PyDict_NextRef __pyx_string_tab[137]
+#define __pyx_n_u_SelectolaxError __pyx_string_tab[138]
+#define __pyx_n_u_TAG_TO_NAME __pyx_string_tab[139]
+#define __pyx_n_u_Type __pyx_string_tab[140]
+#define __pyx_n_u_Union __pyx_string_tab[141]
+#define __pyx_n_u_alt __pyx_string_tab[142]
+#define __pyx_n_u_any_attribute_longer_than __pyx_string_tab[143]
+#define __pyx_n_u_any_css_matches __pyx_string_tab[144]
+#define __pyx_n_u_any_matches __pyx_string_tab[145]
+#define __pyx_n_u_any_text_contains __pyx_string_tab[146]
+#define __pyx_n_u_append __pyx_string_tab[147]
+#define __pyx_n_u_asyncio_coroutines __pyx_string_tab[148]
+#define __pyx_n_u_attr __pyx_string_tab[149]
+#define __pyx_n_u_attribute __pyx_string_tab[150]
+#define __pyx_n_u_attribute_longer_than __pyx_string_tab[151]
+#define __pyx_n_u_attributes_2 __pyx_string_tab[152]
+#define __pyx_n_u_base_attrs __pyx_string_tab[153]
+#define __pyx_n_u_body_2 __pyx_string_tab[154]
+#define __pyx_n_u_bool __pyx_string_tab[155]
+#define __pyx_n_u_bytes_html __pyx_string_tab[156]
+#define __pyx_n_u_center __pyx_string_tab[157]
+#define __pyx_n_u_class_getitem __pyx_string_tab[158]
+#define __pyx_n_u_cline_in_traceback __pyx_string_tab[159]
+#define __pyx_n_u_clone __pyx_string_tab[160]
+#define __pyx_n_u_cloned_document __pyx_string_tab[161]
+#define __pyx_n_u_cloned_node __pyx_string_tab[162]
+#define __pyx_n_u_close __pyx_string_tab[163]
+#define __pyx_n_u_cls __pyx_string_tab[164]
+#define __pyx_n_u_collection __pyx_string_tab[165]
+#define __pyx_n_u_compile __pyx_string_tab[166]
+#define __pyx_n_u_convert_html_to_instructions __pyx_string_tab[167]
+#define __pyx_n_u_create_node __pyx_string_tab[168]
+#define __pyx_n_u_create_tag __pyx_string_tab[169]
+#define __pyx_n_u_css __pyx_string_tab[170]
+#define __pyx_n_u_css_first __pyx_string_tab[171]
+#define __pyx_n_u_css_matches __pyx_string_tab[172]
+#define __pyx_n_u_current_attrs __pyx_string_tab[173]
+#define __pyx_n_u_current_cell_instructions __pyx_string_tab[174]
+#define __pyx_n_u_current_colspan __pyx_string_tab[175]
+#define __pyx_n_u_current_rowspan __pyx_string_tab[176]
+#define __pyx_n_u_d2d_lexbor __pyx_string_tab[177]
+#define __pyx_n_u_decode __pyx_string_tab[178]
+#define __pyx_n_u_decode_errors __pyx_string_tab[179]
+#define __pyx_n_u_decompose __pyx_string_tab[180]
+#define __pyx_n_u_deep __pyx_string_tab[181]
+#define __pyx_n_u_default __pyx_string_tab[182]
+#define __pyx_n_u_delete_empty __pyx_string_tab[183]
+#define __pyx_n_u_dict __pyx_string_tab[184]
+#define __pyx_n_u_dict_2 __pyx_string_tab[185]
+#define __pyx_n_u_display __pyx_string_tab[186]
+#define __pyx_n_u_do_create_tag __pyx_string_tab[187]
+#define __pyx_n_u_do_parse_fragment __pyx_string_tab[188]
+#define __pyx_n_u_doc __pyx_string_tab[189]
+#define __pyx_n_u_document __pyx_string_tab[190]
+#define __pyx_n_u_document_no_body __pyx_string_tab[191]
+#define __pyx_n_u_document_no_head __pyx_string_tab[192]
+#define __pyx_n_u_document_no_head_no_body __pyx_string_tab[193]
+#define __pyx_n_u_dom_node __pyx_string_tab[194]
+#define __pyx_n_u_e __pyx_string_tab[195]
+#define __pyx_n_u_element __pyx_string_tab[196]
+#define __pyx_n_u_encode __pyx_string_tab[197]
+#define __pyx_n_u_encoding __pyx_string_tab[198]
+#define __pyx_n_u_errors __pyx_string_tab[199]
+#define __pyx_n_u_extract_html_comment __pyx_string_tab[200]
+#define __pyx_n_u_f __pyx_string_tab[201]
+#define __pyx_n_u_find __pyx_string_tab[202]
+#define __pyx_n_u_find_2 __pyx_string_tab[203]
+#define __pyx_n_u_find_first __pyx_string_tab[204]
+#define __pyx_n_u_finditer __pyx_string_tab[205]
+#define __pyx_n_u_flags __pyx_string_tab[206]
+#define __pyx_n_u_font_size_2 __pyx_string_tab[207]
+#define __pyx_n_u_font_weight_2 __pyx_string_tab[208]
+#define __pyx_n_u_frag_type __pyx_string_tab[209]
+#define __pyx_n_u_fragment __pyx_string_tab[210]
+#define __pyx_n_u_fullmatch __pyx_string_tab[211]
+#define __pyx_n_u_func __pyx_string_tab[212]
+#define __pyx_n_u_get __pyx_string_tab[213]
+#define __pyx_n_u_getLogger __pyx_string_tab[214]
+#define __pyx_n_u_get_fragment_type __pyx_string_tab[215]
+#define __pyx_n_u_getitem __pyx_string_tab[216]
+#define __pyx_n_u_getstate __pyx_string_tab[217]
+#define __pyx_n_u_group __pyx_string_tab[218]
+#define __pyx_n_u_has_body __pyx_string_tab[219]
+#define __pyx_n_u_has_head __pyx_string_tab[220]
+#define __pyx_n_u_has_html __pyx_string_tab[221]
+#define __pyx_n_u_head_2 __pyx_string_tab[222]
+#define __pyx_n_u_head_and_body __pyx_string_tab[223]
+#define __pyx_n_u_header_tag __pyx_string_tab[224]
+#define __pyx_n_u_href __pyx_string_tab[225]
+#define __pyx_n_u_html __pyx_string_tab[226]
+#define __pyx_n_u_html_len __pyx_string_tab[227]
+#define __pyx_n_u_html_re __pyx_string_tab[228]
+#define __pyx_n_u_i __pyx_string_tab[229]
+#define __pyx_n_u_ignore __pyx_string_tab[230]
+#define __pyx_n_u_in_cell __pyx_string_tab[231]
+#define __pyx_n_u_in_table __pyx_string_tab[232]
+#define __pyx_n_u_include_text __pyx_string_tab[233]
+#define __pyx_n_u_inner_html __pyx_string_tab[234]
+#define __pyx_n_u_instruction __pyx_string_tab[235]
+#define __pyx_n_u_instructions_block __pyx_string_tab[236]
+#define __pyx_n_u_is_coroutine __pyx_string_tab[237]
+#define __pyx_n_u_is_fragment __pyx_string_tab[238]
+#define __pyx_n_u_is_italic __pyx_string_tab[239]
+#define __pyx_n_u_is_text_center __pyx_string_tab[240]
+#define __pyx_n_u_is_underline __pyx_string_tab[241]
+#define __pyx_n_u_italic __pyx_string_tab[242]
+#define __pyx_n_u_items __pyx_string_tab[243]
+#define __pyx_n_u_iter __pyx_string_tab[244]
+#define __pyx_n_u_iter_2 __pyx_string_tab[245]
+#define __pyx_n_u_key __pyx_string_tab[246]
+#define __pyx_n_u_key_len __pyx_string_tab[247]
+#define __pyx_n_u_keys __pyx_string_tab[248]
+#define __pyx_n_u_length __pyx_string_tab[249]
+#define __pyx_n_u_logger __pyx_string_tab[250]
+#define __pyx_n_u_logging __pyx_string_tab[251]
+#define __pyx_n_u_lower __pyx_string_tab[252]
+#define __pyx_n_u_main __pyx_string_tab[253]
+#define __pyx_n_u_match __pyx_string_tab[254]
+#define __pyx_n_u_merge_text_nodes __pyx_string_tab[255]
+#define __pyx_n_u_metaclass __pyx_string_tab[256]
+#define __pyx_n_u_modified __pyx_string_tab[257]
+#define __pyx_n_u_module __pyx_string_tab[258]
+#define __pyx_n_u_mro_entries __pyx_string_tab[259]
+#define __pyx_n_u_msg __pyx_string_tab[260]
+#define __pyx_n_u_name __pyx_string_tab[261]
+#define __pyx_n_u_name_2 __pyx_string_tab[262]
+#define __pyx_n_u_new __pyx_string_tab[263]
+#define __pyx_n_u_next __pyx_string_tab[264]
+#define __pyx_n_u_node __pyx_string_tab[265]
+#define __pyx_n_u_node_text __pyx_string_tab[266]
+#define __pyx_n_u_nodes __pyx_string_tab[267]
+#define __pyx_n_u_none __pyx_string_tab[268]
+#define __pyx_n_u_only_first __pyx_string_tab[269]
+#define __pyx_n_u_open __pyx_string_tab[270]
+#define __pyx_n_u_parse_fragment __pyx_string_tab[271]
+#define __pyx_n_u_parser_cls __pyx_string_tab[272]
+#define __pyx_n_u_pop __pyx_string_tab[273]
+#define __pyx_n_u_prepare __pyx_string_tab[274]
+#define __pyx_n_u_preprocess_input __pyx_string_tab[275]
+#define __pyx_n_u_pybyte_name __pyx_string_tab[276]
+#define __pyx_n_u_pyx_capi __pyx_string_tab[277]
+#define __pyx_n_u_pyx_checksum __pyx_string_tab[278]
+#define __pyx_n_u_pyx_result __pyx_string_tab[279]
+#define __pyx_n_u_pyx_state __pyx_string_tab[280]
+#define __pyx_n_u_pyx_type __pyx_string_tab[281]
+#define __pyx_n_u_pyx_unpickle_LexborSelector __pyx_string_tab[282]
+#define __pyx_n_u_pyx_vtable __pyx_string_tab[283]
+#define __pyx_n_u_qualname __pyx_string_tab[284]
+#define __pyx_n_u_queries __pyx_string_tab[285]
+#define __pyx_n_u_query __pyx_string_tab[286]
+#define __pyx_n_u_re __pyx_string_tab[287]
+#define __pyx_n_u_recursive __pyx_string_tab[288]
+#define __pyx_n_u_reduce __pyx_string_tab[289]
+#define __pyx_n_u_reduce_cython __pyx_string_tab[290]
+#define __pyx_n_u_reduce_ex __pyx_string_tab[291]
+#define __pyx_n_u_result __pyx_string_tab[292]
+#define __pyx_n_u_return __pyx_string_tab[293]
+#define __pyx_n_u_root __pyx_string_tab[294]
+#define __pyx_n_u_script_srcs_contain __pyx_string_tab[295]
+#define __pyx_n_u_scripts_contain __pyx_string_tab[296]
+#define __pyx_n_u_select __pyx_string_tab[297]
+#define __pyx_n_u_selectolax __pyx_string_tab[298]
+#define __pyx_n_u_selector __pyx_string_tab[299]
+#define __pyx_n_u_selectors __pyx_string_tab[300]
+#define __pyx_n_u_self __pyx_string_tab[301]
+#define __pyx_n_u_send __pyx_string_tab[302]
+#define __pyx_n_u_separator __pyx_string_tab[303]
+#define __pyx_n_u_set_name __pyx_string_tab[304]
+#define __pyx_n_u_setdefault __pyx_string_tab[305]
+#define __pyx_n_u_setstate __pyx_string_tab[306]
+#define __pyx_n_u_setstate_cython __pyx_string_tab[307]
+#define __pyx_n_u_sget __pyx_string_tab[308]
+#define __pyx_n_u_skip_empty __pyx_string_tab[309]
+#define __pyx_n_u_skip_mem_id __pyx_string_tab[310]
+#define __pyx_n_u_skip_subtree __pyx_string_tab[311]
+#define __pyx_n_u_src __pyx_string_tab[312]
+#define __pyx_n_u_stack_depth __pyx_string_tab[313]
+#define __pyx_n_u_start __pyx_string_tab[314]
+#define __pyx_n_u_state __pyx_string_tab[315]
+#define __pyx_n_u_status __pyx_string_tab[316]
+#define __pyx_n_u_str __pyx_string_tab[317]
+#define __pyx_n_u_str_len __pyx_string_tab[318]
+#define __pyx_n_u_strict __pyx_string_tab[319]
+#define __pyx_n_u_strip __pyx_string_tab[320]
+#define __pyx_n_u_strip_tags __pyx_string_tab[321]
+#define __pyx_n_u_style_stack __pyx_string_tab[322]
+#define __pyx_n_u_style_str __pyx_string_tab[323]
+#define __pyx_n_u_table_data __pyx_string_tab[324]
+#define __pyx_n_u_table_spans __pyx_string_tab[325]
+#define __pyx_n_u_tag __pyx_string_tab[326]
+#define __pyx_n_u_tag_bytes __pyx_string_tab[327]
+#define __pyx_n_u_tag_id __pyx_string_tab[328]
+#define __pyx_n_u_tags __pyx_string_tab[329]
+#define __pyx_n_u_test __pyx_string_tab[330]
+#define __pyx_n_u_text __pyx_string_tab[331]
+#define __pyx_n_u_text_contains __pyx_string_tab[332]
+#define __pyx_n_u_text_str __pyx_string_tab[333]
+#define __pyx_n_u_throw __pyx_string_tab[334]
+#define __pyx_n_u_tree __pyx_string_tab[335]
+#define __pyx_n_u_typing __pyx_string_tab[336]
+#define __pyx_n_u_underline __pyx_string_tab[337]
+#define __pyx_n_u_unknown __pyx_string_tab[338]
+#define __pyx_n_u_unwrap_tags __pyx_string_tab[339]
+#define __pyx_n_u_update __pyx_string_tab[340]
+#define __pyx_n_u_use_setstate __pyx_string_tab[341]
+#define __pyx_n_u_val __pyx_string_tab[342]
+#define __pyx_n_u_value __pyx_string_tab[343]
+#define __pyx_n_u_value_len __pyx_string_tab[344]
+#define __pyx_n_u_values __pyx_string_tab[345]
+#define __pyx_n_u_w __pyx_string_tab[346]
+#define __pyx_n_u_write __pyx_string_tab[347]
+#define __pyx_kp_b__4 __pyx_string_tab[348]
+#define __pyx_kp_b_int_lxb_char_t_const_size_t_int __pyx_string_tab[349]
+#define __pyx_kp_b_iso88591_00DOS_HD_E_vZ_z_U_Q_WAQ_IQ_q __pyx_string_tab[350]
+#define __pyx_kp_b_iso88591_1_t1_1_q __pyx_string_tab[351]
+#define __pyx_kp_b_iso88591_1_z_a_T_1F_Q_iq_D_a_s_1_y_j___q __pyx_string_tab[352]
+#define __pyx_kp_b_iso88591_44H_Waab_HD_E_vZ_z_U_Q_q_q __pyx_string_tab[353]
+#define __pyx_kp_b_iso88591_4A2_4z_A_Q __pyx_string_tab[354]
+#define __pyx_kp_b_iso88591_5Q_1_G1_WAQ_0_i_a_Q_oQa_1_d_q_1 __pyx_string_tab[355]
+#define __pyx_kp_b_iso88591_A __pyx_string_tab[356]
+#define __pyx_kp_b_iso88591_AV1 __pyx_string_tab[357]
+#define __pyx_kp_b_iso88591_AV1_2 __pyx_string_tab[358]
+#define __pyx_kp_b_iso88591_A_1Cq_q_E __pyx_string_tab[359]
+#define __pyx_kp_b_iso88591_A_2 __pyx_string_tab[360]
+#define __pyx_kp_b_iso88591_A_4q_AQ_3avRq_AQ_0_d_Q_AQd_c_1_Q __pyx_string_tab[361]
+#define __pyx_kp_b_iso88591_A_4q_c_2_q_83a_B_1_a_Qj __pyx_string_tab[362]
+#define __pyx_kp_b_iso88591_A_4z_1A_e7_1_0_Yo_Zbbeeffg_Q_A_K __pyx_string_tab[363]
+#define __pyx_kp_b_iso88591_A_6a_3a_a_6a_8_nBa_s_Q_K1_nA_d_q __pyx_string_tab[364]
+#define __pyx_kp_b_iso88591_A_D_A_q_Q_A_q_a_1_1_q_auA_AU_q_Q __pyx_string_tab[365]
+#define __pyx_kp_b_iso88591_A_Q_a_1_4vS_1_t5_Qe6_fG_VW __pyx_string_tab[366]
+#define __pyx_kp_b_iso88591_A_t5 __pyx_string_tab[367]
+#define __pyx_kp_b_iso88591_A_t5_2 __pyx_string_tab[368]
+#define __pyx_kp_b_iso88591_A_t5_3 __pyx_string_tab[369]
+#define __pyx_kp_b_iso88591_A_t5_AQ __pyx_string_tab[370]
+#define __pyx_kp_b_iso88591_A_t5_AQ_2 __pyx_string_tab[371]
+#define __pyx_kp_b_iso88591_A_t5_AQ_3 __pyx_string_tab[372]
+#define __pyx_kp_b_iso88591_A_t6_q __pyx_string_tab[373]
+#define __pyx_kp_b_iso88591_A_t9A __pyx_string_tab[374]
+#define __pyx_kp_b_iso88591_DA_4z_1A_e7_1_0_Yo_Zccffggh_Q_1 __pyx_string_tab[375]
+#define __pyx_kp_b_iso88591_LIUV_HD_4_aq_t1_uD_d_1_t1D_QgRs __pyx_string_tab[376]
+#define __pyx_kp_b_iso88591_PPYYZ_HD_4_aq_uD_d_1_t1D_QgRs_1 __pyx_string_tab[377]
+#define __pyx_kp_b_iso88591_Q __pyx_string_tab[378]
+#define __pyx_kp_b_iso88591_Q_4vQ_Qa_A_z_A_q_A_z_A_E_1Ja_q __pyx_string_tab[379]
+#define __pyx_kp_b_iso88591_T_A_G1F_a_vWE_Q_q_t6_S_G7_q_t1G __pyx_string_tab[380]
+#define __pyx_kp_b_iso88591_aq_t3a_a_1_1 __pyx_string_tab[381]
+#define __pyx_kp_b_iso88591_q_0_kQR_7_0_1B_PQ_1 __pyx_string_tab[382]
+#define __pyx_kp_b_iso88591_q_4q_1 __pyx_string_tab[383]
+#define __pyx_kp_b_iso88591_t1_j_AS_AQ __pyx_string_tab[384]
+#define __pyx_kp_b_iso88591_t1_z_b_5Rq_q_q_q_5_Cq_q_3c_q_3c __pyx_string_tab[385]
+#define __pyx_kp_b_iso88591_t5_7_1 __pyx_string_tab[386]
+#define __pyx_kp_b_iso88591_xq_vS_A_b_uF_2V1_AQ __pyx_string_tab[387]
 #define __pyx_float_250e_7 __pyx_number_tab[0]
 #define __pyx_int_1 __pyx_number_tab[1]
 #define __pyx_int_2 __pyx_number_tab[2]
 #define __pyx_int_4 __pyx_number_tab[3]
 #define __pyx_int_5 __pyx_number_tab[4]
-#define __pyx_int_2097152 __pyx_number_tab[5]
-#define __pyx_int_207486590 __pyx_number_tab[6]
+#define __pyx_int_207486590 __pyx_number_tab[5]
 /* #### Code section: module_state_clear ### */
 #if CYTHON_USE_MODULE_STATE
 static CYTHON_SMALL_CODE int __pyx_m_clear(PyObject *m) {
@@ -3969,9 +4000,9 @@ static CYTHON_SMALL_CODE int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values);
   Py_CLEAR(clear_module_state->__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values);
   for (int i=0; i<10; ++i) { Py_CLEAR(clear_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<53; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<368; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
-  for (int i=0; i<7; ++i) { Py_CLEAR(clear_module_state->__pyx_number_tab[i]); }
+  for (int i=0; i<52; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<388; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<6; ++i) { Py_CLEAR(clear_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_clear_contents ### */
 /* CommonTypesMetaclass.module_state_clear */
 Py_CLEAR(clear_module_state->__pyx_CommonTypesMetaclassType);
@@ -4016,9 +4047,9 @@ static CYTHON_SMALL_CODE int __pyx_m_traverse(PyObject *m, visitproc visit, void
   Py_VISIT(traverse_module_state->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values);
   Py_VISIT(traverse_module_state->__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values);
   for (int i=0; i<10; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<53; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<368; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
-  for (int i=0; i<7; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_number_tab[i]); }
+  for (int i=0; i<52; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<388; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<6; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_traverse_contents ### */
 /* CommonTypesMetaclass.module_state_traverse */
 Py_VISIT(traverse_module_state->__pyx_CommonTypesMetaclassType);
@@ -4084,35 +4115,35 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_html,&__pyx_mstate_global->__pyx_n_u_decode_errors,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(1, 19, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 19, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 19, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 19, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 19, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 19, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "preprocess_input", 0) < (0)) __PYX_ERR(1, 19, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "preprocess_input", 0) < (0)) __PYX_ERR(2, 19, __pyx_L3_error)
       if (!values[1]) values[1] = __Pyx_NewRef(((PyObject *)((PyObject*)__pyx_mstate_global->__pyx_n_u_ignore)));
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("preprocess_input", 0, 1, 2, i); __PYX_ERR(1, 19, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("preprocess_input", 0, 1, 2, i); __PYX_ERR(2, 19, __pyx_L3_error) }
       }
     } else {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 19, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 19, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 19, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 19, __pyx_L3_error)
         break;
         default: goto __pyx_L5_argtuple_error;
       }
@@ -4123,7 +4154,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("preprocess_input", 0, 1, 2, __pyx_nargs); __PYX_ERR(1, 19, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("preprocess_input", 0, 1, 2, __pyx_nargs); __PYX_ERR(2, 19, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4183,13 +4214,13 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
     __pyx_t_4 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_UTF_8};
-      __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 21, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 21, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_errors, __pyx_v_decode_errors, __pyx_t_5, __pyx_callargs+2, 0) < (0)) __PYX_ERR(1, 21, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_errors, __pyx_v_decode_errors, __pyx_t_5, __pyx_callargs+2, 0) < (0)) __PYX_ERR(2, 21, __pyx_L1_error)
       __pyx_t_2 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_encode, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_5);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 21, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 21, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __pyx_v_bytes_html = __pyx_t_2;
@@ -4244,9 +4275,9 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
 */
   /*else*/ {
     __pyx_t_5 = NULL;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(__pyx_v_html)), __pyx_mstate_global->__pyx_n_u_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 25, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(__pyx_v_html)), __pyx_mstate_global->__pyx_n_u_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 25, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_Expected_a_string_but_s_found, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 25, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_Expected_a_string_but_s_found, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 25, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_4 = 1;
@@ -4255,12 +4286,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_TypeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 25, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 25, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 25, __pyx_L1_error)
+    __PYX_ERR(2, 25, __pyx_L1_error)
   }
   __pyx_L3:;
 
@@ -4271,8 +4302,8 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
  *     if html_len > MAX_HTML_INPUT_SIZE:
  *         raise ValueError("The specified HTML input is too large to be processed (%d bytes)" % html_len)
 */
-  __pyx_t_7 = PyObject_Length(__pyx_v_bytes_html); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 26, __pyx_L1_error)
-  __pyx_t_2 = PyLong_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 26, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_bytes_html); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(2, 26, __pyx_L1_error)
+  __pyx_t_2 = PyLong_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_html_len = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4284,11 +4315,11 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
  *         raise ValueError("The specified HTML input is too large to be processed (%d bytes)" % html_len)
  *     return bytes_html, html_len
 */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_MAX_HTML_INPUT_SIZE); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 27, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_MAX_HTML_INPUT_SIZE); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_v_html_len, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 27, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_v_html_len, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(1, 27, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(2, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (unlikely(__pyx_t_1)) {
 
@@ -4300,7 +4331,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
  * 
 */
     __pyx_t_2 = NULL;
-    __pyx_t_5 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_The_specified_HTML_input_is_too, __pyx_v_html_len); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 28, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_The_specified_HTML_input_is_too, __pyx_v_html_len); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_4 = 1;
     {
@@ -4308,12 +4339,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
       __pyx_t_6 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 28, __pyx_L1_error)
+      if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 28, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
     }
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(1, 28, __pyx_L1_error)
+    __PYX_ERR(2, 28, __pyx_L1_error)
 
     /* "d2d/utils.pxi":27
  *         raise TypeError("Expected a string, but %s found" % type(html).__name__)
@@ -4332,14 +4363,14 @@ static PyObject *__pyx_pf_3d2d_6lexbor_preprocess_input(CYTHON_UNUSED PyObject *
  * 
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 29, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_v_bytes_html);
   __Pyx_GIVEREF(__pyx_v_bytes_html);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_bytes_html) != (0)) __PYX_ERR(1, 29, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_bytes_html) != (0)) __PYX_ERR(2, 29, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_html_len);
   __Pyx_GIVEREF(__pyx_v_html_len);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_v_html_len) != (0)) __PYX_ERR(1, 29, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_v_html_len) != (0)) __PYX_ERR(2, 29, __pyx_L1_error);
   __pyx_r = __pyx_t_6;
   __pyx_t_6 = 0;
   goto __pyx_L0;
@@ -4417,39 +4448,39 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_tag,&__pyx_mstate_global->__pyx_n_u_parser_cls,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(1, 32, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 32, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 32, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 32, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 32, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 32, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "do_create_tag", 0) < (0)) __PYX_ERR(1, 32, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "do_create_tag", 0) < (0)) __PYX_ERR(2, 32, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 2; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("do_create_tag", 1, 2, 2, i); __PYX_ERR(1, 32, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("do_create_tag", 1, 2, 2, i); __PYX_ERR(2, 32, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 32, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 32, __pyx_L3_error)
       values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 32, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 32, __pyx_L3_error)
     }
     __pyx_v_tag = values[0];
     __pyx_v_parser_cls = values[1];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("do_create_tag", 1, 2, 2, __pyx_nargs); __PYX_ERR(1, 32, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("do_create_tag", 1, 2, 2, __pyx_nargs); __PYX_ERR(2, 32, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4495,7 +4526,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__
  *         raise ValueError("Tag name cannot be empty")
  *     return do_parse_fragment(f"<{tag}></{tag}>", parser_cls)[0]
 */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_tag); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(1, 33, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_tag); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(2, 33, __pyx_L1_error)
   __pyx_t_2 = (!__pyx_t_1);
   if (unlikely(__pyx_t_2)) {
 
@@ -4512,12 +4543,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__
       PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_mstate_global->__pyx_kp_u_Tag_name_cannot_be_empty};
       __pyx_t_3 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 34, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 34, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     }
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(1, 34, __pyx_L1_error)
+    __PYX_ERR(2, 34, __pyx_L1_error)
 
     /* "d2d/utils.pxi":33
  * 
@@ -4537,11 +4568,11 @@ static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__
 */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_4 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_do_parse_fragment); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 35, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_do_parse_fragment); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_tag, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 35, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_tag, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(2, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_tag, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 35, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_tag, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9[0] = __pyx_mstate_global->__pyx_kp_u_;
   __pyx_t_9[1] = __pyx_t_7;
@@ -4549,7 +4580,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__
   __pyx_t_9[3] = __pyx_t_8;
   __pyx_t_9[4] = __pyx_mstate_global->__pyx_kp_u__3;
   __pyx_t_10 = __Pyx_PyUnicode_Join(__pyx_t_9, 5, 1 * 2 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7) + 3 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8), 127 | __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) | __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8));
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 35, __pyx_L1_error)
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(2, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4571,10 +4602,10 @@ static PyObject *__pyx_pf_3d2d_6lexbor_2do_create_tag(CYTHON_UNUSED PyObject *__
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 35, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
   }
-  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 35, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_6;
@@ -4655,26 +4686,26 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_html,&__pyx_mstate_global->__pyx_n_u_parser_cls,&__pyx_mstate_global->__pyx_n_u_tree,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(1, 38, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 38, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(2, 38, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 38, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 38, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "get_fragment_type", 0) < (0)) __PYX_ERR(1, 38, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "get_fragment_type", 0) < (0)) __PYX_ERR(2, 38, __pyx_L3_error)
 
       /* "d2d/utils.pxi":41
  *     html: str,
@@ -4685,19 +4716,19 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 */
       if (!values[2]) values[2] = __Pyx_NewRef(((PyObject *)Py_None));
       for (Py_ssize_t i = __pyx_nargs; i < 2; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("get_fragment_type", 0, 2, 3, i); __PYX_ERR(1, 38, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("get_fragment_type", 0, 2, 3, i); __PYX_ERR(2, 38, __pyx_L3_error) }
       }
     } else {
       switch (__pyx_nargs) {
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(2, 38, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 38, __pyx_L3_error)
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 38, __pyx_L3_error)
         break;
         default: goto __pyx_L5_argtuple_error;
       }
@@ -4709,7 +4740,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_fragment_type", 0, 2, 3, __pyx_nargs); __PYX_ERR(1, 38, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_fragment_type", 0, 2, 3, __pyx_nargs); __PYX_ERR(2, 38, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4769,7 +4800,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
  *         tree = parser_cls(html)
  * 
 */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_tree); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_tree); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(2, 43, __pyx_L1_error)
   __pyx_t_2 = (!__pyx_t_1);
   if (__pyx_t_2) {
 
@@ -4800,7 +4831,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
       __pyx_t_3 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_5, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 44, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 44, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     }
     __Pyx_DECREF_SET(__pyx_v_tree, __pyx_t_3);
@@ -4822,7 +4853,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
  *     html_re = re.compile(r"<html|<body|<head(?!er)", re.IGNORECASE)
  * 
 */
-  __pyx_t_7 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_re, 0, 0, NULL, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 46, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_re, 0, 0, NULL, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(2, 46, __pyx_L1_error)
   __pyx_t_3 = __pyx_t_7;
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_re = __pyx_t_3;
@@ -4837,7 +4868,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
 */
   __pyx_t_5 = __pyx_v_re;
   __Pyx_INCREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_re, __pyx_mstate_global->__pyx_n_u_IGNORECASE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_re, __pyx_mstate_global->__pyx_n_u_IGNORECASE); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = 0;
   {
@@ -4845,7 +4876,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
     __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_compile, __pyx_callargs+__pyx_t_6, (3-__pyx_t_6) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 47, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
   }
   __pyx_v_html_re = __pyx_t_3;
@@ -4892,7 +4923,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
     PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_html};
     __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_finditer, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 52, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
   }
   if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
@@ -4900,9 +4931,9 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
     __pyx_t_8 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 52, __pyx_L1_error)
+    __pyx_t_8 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 52, __pyx_L1_error)
+    __pyx_t_9 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_9)) __PYX_ERR(2, 52, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -4911,7 +4942,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_4);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 52, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 52, __pyx_L1_error)
           #endif
           if (__pyx_t_8 >= __pyx_temp) break;
         }
@@ -4921,7 +4952,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_4);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 52, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 52, __pyx_L1_error)
           #endif
           if (__pyx_t_8 >= __pyx_temp) break;
         }
@@ -4932,13 +4963,13 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
         #endif
         ++__pyx_t_8;
       }
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 52, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 52, __pyx_L1_error)
     } else {
       __pyx_t_3 = __pyx_t_9(__pyx_t_4);
       if (unlikely(!__pyx_t_3)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
-          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(1, 52, __pyx_L1_error)
+          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(2, 52, __pyx_L1_error)
           PyErr_Clear();
         }
         break;
@@ -4955,9 +4986,9 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
  *             has_html = True
  *         elif match[0] == "<head":
 */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 53, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 53, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_html_2, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 53, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_html_2, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(2, 53, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
@@ -4987,9 +5018,9 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
  *             has_head = True
  *         elif match[0] == "<body":
 */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 55, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_head, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 55, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_head, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(2, 55, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
@@ -5019,9 +5050,9 @@ static PyObject *__pyx_pf_3d2d_6lexbor_4get_fragment_type(CYTHON_UNUSED PyObject
  *             has_body = True
  * 
 */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 57, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_match, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_body, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 57, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_body, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(2, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
@@ -5471,39 +5502,39 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_html,&__pyx_mstate_global->__pyx_n_u_parser_cls,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(1, 81, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 81, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 81, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 81, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 81, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 81, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "do_parse_fragment", 0) < (0)) __PYX_ERR(1, 81, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "do_parse_fragment", 0) < (0)) __PYX_ERR(2, 81, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 2; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("do_parse_fragment", 1, 2, 2, i); __PYX_ERR(1, 81, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("do_parse_fragment", 1, 2, 2, i); __PYX_ERR(2, 81, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(1, 81, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 81, __pyx_L3_error)
       values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(1, 81, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 81, __pyx_L3_error)
     }
     __pyx_v_html = values[0];
     __pyx_v_parser_cls = values[1];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("do_parse_fragment", 1, 2, 2, __pyx_nargs); __PYX_ERR(1, 81, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("do_parse_fragment", 1, 2, 2, __pyx_nargs); __PYX_ERR(2, 81, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5556,7 +5587,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_strip, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 89, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 89, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __Pyx_DECREF_SET(__pyx_v_html, __pyx_t_1);
@@ -5589,7 +5620,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
     __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_4, __pyx_callargs+__pyx_t_3, (2-__pyx_t_3) | (__pyx_t_3*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 90, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_v_tree = __pyx_t_1;
@@ -5603,7 +5634,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *     if frag_type == "document":
 */
   __pyx_t_4 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_get_fragment_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_get_fragment_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = 1;
   #if CYTHON_UNPACK_METHODS
@@ -5622,7 +5653,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
     __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_2, __pyx_callargs+__pyx_t_3, (4-__pyx_t_3) | (__pyx_t_3*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 91, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_v_frag_type = __pyx_t_1;
@@ -5635,7 +5666,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.root]
  *     if frag_type == "document_no_head":
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 93, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 93, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":94
@@ -5646,12 +5677,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 94, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 94, __pyx_L1_error)
+    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_1);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1) != (0)) __PYX_ERR(1, 94, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1) != (0)) __PYX_ERR(2, 94, __pyx_L1_error);
     __pyx_t_1 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -5673,7 +5704,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
  *         return [tree.root]
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_head, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 95, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_head, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 95, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":96
@@ -5683,21 +5714,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.root]
  *     if frag_type == "document_no_body":
 */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 96, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = __pyx_t_4;
     __Pyx_INCREF(__pyx_t_1);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_1, NULL};
-      __pyx_t_6 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 96, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 96, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 96, __pyx_L1_error)
       __pyx_t_2 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 96, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5710,12 +5741,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.body.decompose(recursive=True)
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 97, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 97, __pyx_L1_error)
+    __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2) != (0)) __PYX_ERR(1, 97, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2) != (0)) __PYX_ERR(2, 97, __pyx_L1_error);
     __pyx_t_2 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
@@ -5737,7 +5768,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.body.decompose(recursive=True)
  *         return [tree.root]
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 98, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":99
@@ -5747,21 +5778,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.root]
  *     if frag_type == "document_no_head_no_body":
 */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 99, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_2 = __pyx_t_6;
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, NULL};
-      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 99, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 99, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 99, __pyx_L1_error)
       __pyx_t_4 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_1);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 99, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 99, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5774,12 +5805,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 100, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = PyList_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 100, __pyx_L1_error)
+    __pyx_t_6 = PyList_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_4);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_4) != (0)) __PYX_ERR(1, 100, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_4) != (0)) __PYX_ERR(2, 100, __pyx_L1_error);
     __pyx_t_4 = 0;
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -5801,7 +5832,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
  *         tree.body.decompose(recursive=True)
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_head_no_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 101, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_document_no_head_no_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 101, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":102
@@ -5811,21 +5842,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.body.decompose(recursive=True)
  *         return [tree.root]
 */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = __pyx_t_1;
     __Pyx_INCREF(__pyx_t_4);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_4, NULL};
-      __pyx_t_2 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 102, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_2, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 102, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_2, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 102, __pyx_L1_error)
       __pyx_t_6 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_2);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 102, __pyx_L1_error)
+      if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -5837,21 +5868,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.root]
  *     elif frag_type == "head":
 */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 103, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __Pyx_INCREF(__pyx_t_1);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_1, NULL};
-      __pyx_t_4 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 103, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_4, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 103, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_4, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 103, __pyx_L1_error)
       __pyx_t_6 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_4);
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 103, __pyx_L1_error)
+      if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -5864,12 +5895,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.body.decompose(recursive=True)
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_root); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_6);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_6) != (0)) __PYX_ERR(1, 104, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_6) != (0)) __PYX_ERR(2, 104, __pyx_L1_error);
     __pyx_t_6 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -5891,7 +5922,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.body.decompose(recursive=True)
  *         return [tree.head]
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_head_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_head_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 105, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":106
@@ -5901,21 +5932,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.head]
  *     elif frag_type == "body":
 */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 106, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = __pyx_t_4;
     __Pyx_INCREF(__pyx_t_6);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_6, NULL};
-      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 106, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 106, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 106, __pyx_L1_error)
       __pyx_t_2 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_1);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5928,12 +5959,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 107, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 107, __pyx_L1_error)
+    __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2) != (0)) __PYX_ERR(1, 107, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2) != (0)) __PYX_ERR(2, 107, __pyx_L1_error);
     __pyx_t_2 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
@@ -5955,7 +5986,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         tree.head.decompose(recursive=True)
  *         return [tree.body]
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_body_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 108, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_body_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 108, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":109
@@ -5965,21 +5996,21 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.body]
  *     elif frag_type == "head_and_body":
 */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 109, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 109, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_t_1;
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, NULL};
-      __pyx_t_6 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 109, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 109, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 109, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_recursive, Py_True, __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 109, __pyx_L1_error)
       __pyx_t_4 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_decompose, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 109, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 109, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5992,12 +6023,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.head, tree.body]
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 110, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 110, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_4);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_1, 0, __pyx_t_4) != (0)) __PYX_ERR(1, 110, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_1, 0, __pyx_t_4) != (0)) __PYX_ERR(2, 110, __pyx_L1_error);
     __pyx_t_4 = 0;
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -6019,7 +6050,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [tree.head, tree.body]
  *     else:
 */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_head_and_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_frag_type, __pyx_mstate_global->__pyx_n_u_head_and_body, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 111, __pyx_L1_error)
   if (__pyx_t_5) {
 
     /* "d2d/utils.pxi":112
@@ -6030,16 +6061,16 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *         return [
 */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 112, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 112, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = PyList_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 112, __pyx_L1_error)
+    __pyx_t_6 = PyList_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_1);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_1) != (0)) __PYX_ERR(1, 112, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_1) != (0)) __PYX_ERR(2, 112, __pyx_L1_error);
     __Pyx_GIVEREF(__pyx_t_4);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 1, __pyx_t_4) != (0)) __PYX_ERR(1, 112, __pyx_L1_error);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_6, 1, __pyx_t_4) != (0)) __PYX_ERR(2, 112, __pyx_L1_error);
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_r = __pyx_t_6;
@@ -6072,24 +6103,24 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *             *tree.body.iter(include_text=True),
  *         ]
 */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 115, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_head_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __Pyx_INCREF(__pyx_t_1);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_1, NULL};
-      __pyx_t_7 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 115, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(2, 115, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_include_text, Py_True, __pyx_t_7, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 115, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_include_text, Py_True, __pyx_t_7, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 115, __pyx_L1_error)
       __pyx_t_4 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_iter, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_7);
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 115, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 115, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
-    __pyx_t_6 = __Pyx_PySequence_ListKeepNew(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 114, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PySequence_ListKeepNew(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 114, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
@@ -6099,24 +6130,24 @@ static PyObject *__pyx_pf_3d2d_6lexbor_6do_parse_fragment(CYTHON_UNUSED PyObject
  *             *tree.body.iter(include_text=True),             # <<<<<<<<<<<<<<
  *         ]
 */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 116, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_mstate_global->__pyx_n_u_body_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(2, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_2 = __pyx_t_7;
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = 0;
     {
       PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, NULL};
-      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 116, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 116, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_include_text, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(1, 116, __pyx_L1_error)
+      if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_include_text, Py_True, __pyx_t_1, __pyx_callargs+1, 0) < (0)) __PYX_ERR(2, 116, __pyx_L1_error)
       __pyx_t_4 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_iter, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_1);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 116, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 116, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
-    if (__Pyx_PyList_Extend(__pyx_t_6, __pyx_t_4) < (0)) __PYX_ERR(1, 116, __pyx_L1_error)
+    if (__Pyx_PyList_Extend(__pyx_t_6, __pyx_t_4) < (0)) __PYX_ERR(2, 116, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -6175,7 +6206,7 @@ static struct __pyx_obj_3d2d_6lexbor_LexborAttributes *__pyx_f_3d2d_6lexbor_16Le
  *         obj.node = node
  *         return obj
 */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_3d2d_6lexbor_LexborAttributes(((PyTypeObject *)__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes), __pyx_mstate_global->__pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 12, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_3d2d_6lexbor_LexborAttributes(((PyTypeObject *)__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes), __pyx_mstate_global->__pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 12, __pyx_L1_error)
   __Pyx_GOTREF((PyObject *)__pyx_t_1);
   __pyx_t_2 = ((PyObject *)__pyx_t_1);
   __Pyx_INCREF(__pyx_t_2);
@@ -6261,7 +6292,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes___iter__(struct __pyx_
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct____iter__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(2, 16, __pyx_L1_error)
+    __PYX_ERR(3, 16, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -6269,7 +6300,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes___iter__(struct __pyx_
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_iter_2, __pyx_mstate_global->__pyx_n_u_LexborAttributes___iter, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(2, 16, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_iter_2, __pyx_mstate_global->__pyx_n_u_LexborAttributes___iter, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(3, 16, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -6311,7 +6342,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator(__pyx_Corou
   __pyx_L3_first_run:;
   if (unlikely(__pyx_sent_value != Py_None)) {
     if (unlikely(__pyx_sent_value)) PyErr_SetString(PyExc_TypeError, "can't send non-None value to a just-started generator");
-    __PYX_ERR(2, 16, __pyx_L1_error)
+    __PYX_ERR(3, 16, __pyx_L1_error)
   }
 
   /* "d2d/lexbor/attrs.pxi":17
@@ -6339,7 +6370,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator(__pyx_Corou
  * 
  *         while attr != NULL:
 */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 19, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_cur_scope->__pyx_v_attributes = ((PyObject*)__pyx_t_1);
@@ -6382,11 +6413,11 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator(__pyx_Corou
  *             attr = attr.next
  * 
 */
-      __pyx_t_4 = __Pyx_PyBytes_FromCString(__pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 24, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyBytes_FromCString(__pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_3 = __pyx_t_4;
       __Pyx_INCREF(__pyx_t_3);
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 24, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = 0;
       {
@@ -6395,7 +6426,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator(__pyx_Corou
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 24, __pyx_L1_error)
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
       }
       __pyx_r = __pyx_t_1;
@@ -6407,7 +6438,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_2generator(__pyx_Corou
       __pyx_generator->resume_label = 1;
       return __pyx_r;
       __pyx_L7_resume_from_yield:;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(2, 24, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(3, 24, __pyx_L1_error)
 
       /* "d2d/lexbor/attrs.pxi":23
  *         while attr != NULL:
@@ -6480,7 +6511,7 @@ static int __pyx_pw_3d2d_6lexbor_16LexborAttributes_4__setitem__(PyObject *__pyx
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setitem__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(2, 27, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(3, 27, __pyx_L1_error)
   __pyx_r = __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(((struct __pyx_obj_3d2d_6lexbor_LexborAttributes *)__pyx_v_self), ((PyObject*)__pyx_v_key), ((PyObject *)__pyx_v_value));
 
   /* function exit code */
@@ -6538,7 +6569,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
 */
   __pyx_t_2 = __pyx_v_key;
   __Pyx_INCREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 29, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = 0;
   {
@@ -6546,7 +6577,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_encode, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 29, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_v_bytes_key = ((PyObject*)__pyx_t_1);
@@ -6559,11 +6590,11 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
  *         cdef lxb_dom_attr_t *attr
  *         cdef lxb_dom_document_t *doc
 */
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(2, 30, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(3, 30, __pyx_L1_error)
   if (__pyx_t_5) {
     __pyx_t_2 = __pyx_v_value;
     __Pyx_INCREF(__pyx_t_2);
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 30, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_6)) __PYX_ERR(3, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_4 = 0;
     {
@@ -6571,7 +6602,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
       __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_encode, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 30, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 30, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     }
     __pyx_t_1 = __pyx_t_3;
@@ -6600,8 +6631,8 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
  *                 NULL, 0
  *             )
 */
-    __pyx_t_7 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(2, 38, __pyx_L1_error)
-    __pyx_t_8 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(2, 38, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(3, 38, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(3, 38, __pyx_L1_error)
 
     /* "d2d/lexbor/attrs.pxi":36
  *         if value is None:
@@ -6675,8 +6706,8 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
  *                 <lxb_char_t *> bytes_value, len(bytes_value),
  *             )
 */
-    __pyx_t_7 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(2, 48, __pyx_L1_error)
-    __pyx_t_8 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(2, 48, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(3, 48, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(3, 48, __pyx_L1_error)
 
     /* "d2d/lexbor/attrs.pxi":49
  *                 <lxb_dom_element_t *> self.node,
@@ -6685,8 +6716,8 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
  *             )
  *         else:
 */
-    __pyx_t_11 = __Pyx_PyObject_AsWritableUString(__pyx_v_bytes_value); if (unlikely((!__pyx_t_11) && PyErr_Occurred())) __PYX_ERR(2, 49, __pyx_L1_error)
-    __pyx_t_12 = PyObject_Length(__pyx_v_bytes_value); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(2, 49, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_AsWritableUString(__pyx_v_bytes_value); if (unlikely((!__pyx_t_11) && PyErr_Occurred())) __PYX_ERR(3, 49, __pyx_L1_error)
+    __pyx_t_12 = PyObject_Length(__pyx_v_bytes_value); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(3, 49, __pyx_L1_error)
 
     /* "d2d/lexbor/attrs.pxi":46
  * 
@@ -6716,7 +6747,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
 */
   /*else*/ {
     __pyx_t_3 = NULL;
-    __pyx_t_6 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_Expected_str_or_unicode_got_s, ((PyObject *)Py_TYPE(__pyx_v_value))); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 52, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_FormatSafe(__pyx_mstate_global->__pyx_kp_u_Expected_str_or_unicode_got_s, ((PyObject *)Py_TYPE(__pyx_v_value))); if (unlikely(!__pyx_t_6)) __PYX_ERR(3, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_4 = 1;
     {
@@ -6724,12 +6755,12 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_3__setitem__(struct __pyx_ob
       __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_TypeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 52, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 52, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     }
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(2, 52, __pyx_L1_error)
+    __PYX_ERR(3, 52, __pyx_L1_error)
   }
   __pyx_L3:;
 
@@ -6833,7 +6864,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
         PyObject *__pyx_callargs[2] = {__pyx_t_5, __pyx_v_key};
         __pyx_t_4 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_getitem, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 56, __pyx_L3_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 56, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_4);
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -6864,7 +6895,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
     __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(((PyTypeObject*)PyExc_KeyError))));
     if (__pyx_t_7) {
       __Pyx_AddTraceback("d2d.lexbor.LexborAttributes.__delitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(2, 57, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(3, 57, __pyx_L5_except_error)
       __Pyx_XGOTREF(__pyx_t_4);
       __Pyx_XGOTREF(__pyx_t_5);
       __Pyx_XGOTREF(__pyx_t_8);
@@ -6882,12 +6913,12 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
         PyObject *__pyx_callargs[2] = {__pyx_t_10, __pyx_v_key};
         __pyx_t_9 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_KeyError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        if (unlikely(!__pyx_t_9)) __PYX_ERR(2, 58, __pyx_L5_except_error)
+        if (unlikely(!__pyx_t_9)) __PYX_ERR(3, 58, __pyx_L5_except_error)
         __Pyx_GOTREF(__pyx_t_9);
       }
       __Pyx_Raise(__pyx_t_9, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __PYX_ERR(2, 58, __pyx_L5_except_error)
+      __PYX_ERR(3, 58, __pyx_L5_except_error)
     }
     goto __pyx_L5_except_error;
 
@@ -6916,7 +6947,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
 */
   __pyx_t_5 = __pyx_v_key;
   __Pyx_INCREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 59, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = 0;
   {
@@ -6924,7 +6955,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
     __pyx_t_8 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_encode, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 59, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(3, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
   }
   __pyx_v_bytes_key = __pyx_t_8;
@@ -6937,8 +6968,8 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_5__delitem__(struct __pyx_ob
  *         )
  * 
 */
-  __pyx_t_11 = __Pyx_PyObject_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_11) && PyErr_Occurred())) __PYX_ERR(2, 62, __pyx_L1_error)
-  __pyx_t_12 = PyObject_Length(__pyx_v_bytes_key); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(2, 62, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_11) && PyErr_Occurred())) __PYX_ERR(3, 62, __pyx_L1_error)
+  __pyx_t_12 = PyObject_Length(__pyx_v_bytes_key); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(3, 62, __pyx_L1_error)
 
   /* "d2d/lexbor/attrs.pxi":60
  *             raise KeyError(key)
@@ -6993,7 +7024,7 @@ static PyObject *__pyx_pw_3d2d_6lexbor_16LexborAttributes_8__getitem__(PyObject 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__getitem__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(2, 65, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(3, 65, __pyx_L1_error)
   __pyx_r = __pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(((struct __pyx_obj_3d2d_6lexbor_LexborAttributes *)__pyx_v_self), ((PyObject*)__pyx_v_key));
 
   /* function exit code */
@@ -7037,7 +7068,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
 */
   __pyx_t_2 = __pyx_v_key;
   __Pyx_INCREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 66, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = 0;
   {
@@ -7045,7 +7076,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_encode, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 66, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_v_bytes_key = ((PyObject*)__pyx_t_1);
@@ -7058,8 +7089,8 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
  *         )
  *         cdef size_t str_len = 0
 */
-  __pyx_t_5 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) __PYX_ERR(2, 69, __pyx_L1_error)
-  __pyx_t_6 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(2, 69, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyBytes_AsWritableUString(__pyx_v_bytes_key); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) __PYX_ERR(3, 69, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyBytes_GET_SIZE(__pyx_v_bytes_key); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(3, 69, __pyx_L1_error)
 
   /* "d2d/lexbor/attrs.pxi":67
  *     def __getitem__(self, str key):
@@ -7108,11 +7139,11 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_7 = (__pyx_v_value != 0);
     if (__pyx_t_7) {
-      __pyx_t_8 = __Pyx_PyBytes_FromCString(__pyx_v_value); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 74, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyBytes_FromCString(__pyx_v_value); if (unlikely(!__pyx_t_8)) __PYX_ERR(3, 74, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_2 = __pyx_t_8;
       __Pyx_INCREF(__pyx_t_2);
-      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_9)) __PYX_ERR(2, 74, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_9)) __PYX_ERR(3, 74, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_4 = 0;
       {
@@ -7121,7 +7152,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 74, __pyx_L1_error)
+        if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 74, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
       }
       __pyx_t_1 = __pyx_t_3;
@@ -7156,12 +7187,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_7__getitem__(struct __
     PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_v_key};
     __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_KeyError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 75, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(2, 75, __pyx_L1_error)
+  __PYX_ERR(3, 75, __pyx_L1_error)
 
   /* "d2d/lexbor/attrs.pxi":65
  *         )
@@ -7236,13 +7267,13 @@ static Py_ssize_t __pyx_pf_3d2d_6lexbor_16LexborAttributes_9__len__(struct __pyx
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_iter_2, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 78, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  __pyx_t_2 = __Pyx_PySequence_ListKeepNew(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 78, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PySequence_ListKeepNew(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(3, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(2, 78, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(3, 78, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
@@ -7343,7 +7374,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_11keys(struct __pyx_ob
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_iter_2, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 81, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_r = __pyx_t_1;
@@ -7434,7 +7465,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_13items(struct __pyx_o
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_1_items *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(2, 83, __pyx_L1_error)
+    __PYX_ERR(3, 83, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -7442,7 +7473,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_13items(struct __pyx_o
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_items, __pyx_mstate_global->__pyx_n_u_LexborAttributes_items, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(2, 83, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_items, __pyx_mstate_global->__pyx_n_u_LexborAttributes_items, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(3, 83, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -7483,7 +7514,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
   __pyx_L3_first_run:;
   if (unlikely(__pyx_sent_value != Py_None)) {
     if (unlikely(__pyx_sent_value)) PyErr_SetString(PyExc_TypeError, "can't send non-None value to a just-started generator");
-    __PYX_ERR(2, 83, __pyx_L1_error)
+    __PYX_ERR(3, 83, __pyx_L1_error)
   }
 
   /* "d2d/lexbor/attrs.pxi":84
@@ -7500,7 +7531,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_iter_2, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 84, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
@@ -7508,9 +7539,9 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
     __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 84, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(3, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 84, __pyx_L1_error)
+    __pyx_t_5 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 84, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -7519,7 +7550,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 84, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(3, 84, __pyx_L1_error)
           #endif
           if (__pyx_t_4 >= __pyx_temp) break;
         }
@@ -7529,7 +7560,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 84, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(3, 84, __pyx_L1_error)
           #endif
           if (__pyx_t_4 >= __pyx_temp) break;
         }
@@ -7540,13 +7571,13 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
         #endif
         ++__pyx_t_4;
       }
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 84, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 84, __pyx_L1_error)
     } else {
       __pyx_t_1 = __pyx_t_5(__pyx_t_2);
       if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
-          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(2, 84, __pyx_L1_error)
+          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(3, 84, __pyx_L1_error)
           PyErr_Clear();
         }
         break;
@@ -7565,15 +7596,15 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
  * 
  *     def values(self):
 */
-    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 85, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 85, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(3, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_INCREF(__pyx_cur_scope->__pyx_v_key);
     __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_key);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_cur_scope->__pyx_v_key) != (0)) __PYX_ERR(2, 85, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_cur_scope->__pyx_v_key) != (0)) __PYX_ERR(3, 85, __pyx_L1_error);
     __Pyx_GIVEREF(__pyx_t_1);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1) != (0)) __PYX_ERR(2, 85, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1) != (0)) __PYX_ERR(3, 85, __pyx_L1_error);
     __pyx_t_1 = 0;
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -7593,7 +7624,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_15generator1(__pyx_Cor
     __Pyx_XGOTREF(__pyx_t_2);
     __pyx_t_4 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_5 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(2, 85, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(3, 85, __pyx_L1_error)
 
     /* "d2d/lexbor/attrs.pxi":84
  * 
@@ -7700,7 +7731,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_16values(struct __pyx_
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_3d2d_6lexbor___pyx_scope_struct_2_values *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(2, 87, __pyx_L1_error)
+    __PYX_ERR(3, 87, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -7708,7 +7739,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_16values(struct __pyx_
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_values, __pyx_mstate_global->__pyx_n_u_LexborAttributes_values, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(2, 87, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2]), (PyObject *) __pyx_cur_scope, __pyx_mstate_global->__pyx_n_u_values, __pyx_mstate_global->__pyx_n_u_LexborAttributes_values, __pyx_mstate_global->__pyx_n_u_d2d_lexbor); if (unlikely(!gen)) __PYX_ERR(3, 87, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -7748,7 +7779,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
   __pyx_L3_first_run:;
   if (unlikely(__pyx_sent_value != Py_None)) {
     if (unlikely(__pyx_sent_value)) PyErr_SetString(PyExc_TypeError, "can't send non-None value to a just-started generator");
-    __PYX_ERR(2, 87, __pyx_L1_error)
+    __PYX_ERR(3, 87, __pyx_L1_error)
   }
 
   /* "d2d/lexbor/attrs.pxi":88
@@ -7765,7 +7796,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_iter_2, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 88, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
@@ -7773,9 +7804,9 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
     __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 88, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(3, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 88, __pyx_L1_error)
+    __pyx_t_5 = (CYTHON_COMPILING_IN_LIMITED_API) ? PyIter_Next : __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 88, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -7784,7 +7815,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 88, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(3, 88, __pyx_L1_error)
           #endif
           if (__pyx_t_4 >= __pyx_temp) break;
         }
@@ -7794,7 +7825,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_SIZE
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(2, 88, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(3, 88, __pyx_L1_error)
           #endif
           if (__pyx_t_4 >= __pyx_temp) break;
         }
@@ -7805,13 +7836,13 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
         #endif
         ++__pyx_t_4;
       }
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 88, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 88, __pyx_L1_error)
     } else {
       __pyx_t_1 = __pyx_t_5(__pyx_t_2);
       if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
-          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(2, 88, __pyx_L1_error)
+          if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) __PYX_ERR(3, 88, __pyx_L1_error)
           PyErr_Clear();
         }
         break;
@@ -7830,7 +7861,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
  * 
  *     def get(self, key, default=None):
 */
-    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 89, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_cur_scope->__pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 89, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -7850,7 +7881,7 @@ static PyObject *__pyx_gb_3d2d_6lexbor_16LexborAttributes_18generator2(__pyx_Cor
     __Pyx_XGOTREF(__pyx_t_2);
     __pyx_t_4 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_5 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(2, 89, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(3, 89, __pyx_L1_error)
 
     /* "d2d/lexbor/attrs.pxi":88
  * 
@@ -7941,35 +7972,35 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_key,&__pyx_mstate_global->__pyx_n_u_default,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 91, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 91, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 91, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 91, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 91, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 91, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "get", 0) < (0)) __PYX_ERR(2, 91, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "get", 0) < (0)) __PYX_ERR(3, 91, __pyx_L3_error)
       if (!values[1]) values[1] = __Pyx_NewRef(((PyObject *)Py_None));
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("get", 0, 1, 2, i); __PYX_ERR(2, 91, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("get", 0, 1, 2, i); __PYX_ERR(3, 91, __pyx_L3_error) }
       }
     } else {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 91, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 91, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 91, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 91, __pyx_L3_error)
         break;
         default: goto __pyx_L5_argtuple_error;
       }
@@ -7980,7 +8011,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get", 0, 1, 2, __pyx_nargs); __PYX_ERR(2, 91, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get", 0, 1, 2, __pyx_nargs); __PYX_ERR(3, 91, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8038,7 +8069,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_19get(struct __pyx_obj
  *             return default
 */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 93, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 93, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_r = __pyx_t_4;
       __pyx_t_4 = 0;
@@ -8175,35 +8206,35 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_key,&__pyx_mstate_global->__pyx_n_u_default,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(2, 97, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 97, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 97, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 97, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 97, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 97, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "sget", 0) < (0)) __PYX_ERR(2, 97, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "sget", 0) < (0)) __PYX_ERR(3, 97, __pyx_L3_error)
       if (!values[1]) values[1] = __Pyx_NewRef(((PyObject *)__pyx_mstate_global->__pyx_kp_u__4));
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("sget", 0, 1, 2, i); __PYX_ERR(2, 97, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("sget", 0, 1, 2, i); __PYX_ERR(3, 97, __pyx_L3_error) }
       }
     } else {
       switch (__pyx_nargs) {
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(2, 97, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 97, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(2, 97, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 97, __pyx_L3_error)
         break;
         default: goto __pyx_L5_argtuple_error;
       }
@@ -8214,7 +8245,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sget", 0, 1, 2, __pyx_nargs); __PYX_ERR(2, 97, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sget", 0, 1, 2, __pyx_nargs); __PYX_ERR(3, 97, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8273,7 +8304,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_21sget(struct __pyx_ob
  *             if val is None:
  *                 val = ""
 */
-      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 100, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 100, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_v_val = __pyx_t_4;
       __pyx_t_4 = 0;
@@ -8461,7 +8492,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborAttributes_23__contains__(struct __pyx_
  *         except KeyError:
  *             return False
 */
-      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 109, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_self), __pyx_v_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 109, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
@@ -8619,11 +8650,11 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_25__repr__(struct __py
 */
   __pyx_t_2 = (__pyx_v_c_text != NULL);
   if (__pyx_t_2) {
-    __pyx_t_5 = __Pyx_PyBytes_FromCString(__pyx_v_c_text); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 119, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyBytes_FromCString(__pyx_v_c_text); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 119, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_4 = __pyx_t_5;
     __Pyx_INCREF(__pyx_t_4);
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_6)) __PYX_ERR(2, 119, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_ENCODING); if (unlikely(!__pyx_t_6)) __PYX_ERR(3, 119, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = 0;
     {
@@ -8632,7 +8663,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_25__repr__(struct __py
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 119, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 119, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     }
     __pyx_t_1 = __pyx_t_3;
@@ -8650,10 +8681,10 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_25__repr__(struct __py
  *         return "<%s attributes, %s items>" % (tag_name, len(self))             # <<<<<<<<<<<<<<
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Str(__pyx_v_tag_name), __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Str(__pyx_v_tag_name), __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = PyObject_Length(((PyObject *)__pyx_v_self)); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(2, 120, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_8, 0, ' ', 'd'); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 120, __pyx_L1_error)
+  __pyx_t_8 = PyObject_Length(((PyObject *)__pyx_v_self)); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(3, 120, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_8, 0, ' ', 'd'); if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_9[0] = __pyx_mstate_global->__pyx_kp_u_;
   __pyx_t_9[1] = __pyx_t_1;
@@ -8661,7 +8692,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_25__repr__(struct __py
   __pyx_t_9[3] = __pyx_t_3;
   __pyx_t_9[4] = __pyx_mstate_global->__pyx_kp_u_items_2;
   __pyx_t_5 = __Pyx_PyUnicode_Join(__pyx_t_9, 5, 1 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1) + 13 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3) + 7, 127 | __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1));
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 120, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -8757,7 +8788,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_27__reduce_cython__(CY
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_node_cannot_be_converted_to, 0, 0);
-  __PYX_ERR(3, 2, __pyx_L1_error)
+  __PYX_ERR(4, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -8821,32 +8852,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 3, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 3, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(4, 3, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(3, 3, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(4, 3, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
     }
     __pyx_v___pyx_state = values[0];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(3, 3, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 3, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8881,7 +8912,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_29__setstate_cython__(
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"             # <<<<<<<<<<<<<<
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_node_cannot_be_converted_to, 0, 0);
-  __PYX_ERR(3, 4, __pyx_L1_error)
+  __PYX_ERR(4, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -8899,1456 +8930,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborAttributes_29__setstate_cython__(
   return __pyx_r;
 }
 
-/* "d2d/lexbor/node.pxi":47
- * 
- * 
- * cdef inline void parse_style_attribute(const lxb_char_t* style_value, StyleFlags* flags) nogil:             # <<<<<<<<<<<<<<
- *     """Parse style attribute and set flags for various CSS properties."""
- *     memset(flags, 0, sizeof(StyleFlags))
-*/
-
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_parse_style_attribute(lxb_char_t const *__pyx_v_style_value, struct __pyx_t_3d2d_6lexbor_StyleFlags *__pyx_v_flags) {
-  int __pyx_t_1;
-  int __pyx_t_2;
-
-  /* "d2d/lexbor/node.pxi":49
- * cdef inline void parse_style_attribute(const lxb_char_t* style_value, StyleFlags* flags) nogil:
- *     """Parse style attribute and set flags for various CSS properties."""
- *     memset(flags, 0, sizeof(StyleFlags))             # <<<<<<<<<<<<<<
- * 
- *     if style_value == NULL:
-*/
-  (void)(memset(__pyx_v_flags, 0, (sizeof(struct __pyx_t_3d2d_6lexbor_StyleFlags))));
-
-  /* "d2d/lexbor/node.pxi":51
- *     memset(flags, 0, sizeof(StyleFlags))
- * 
- *     if style_value == NULL:             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-  __pyx_t_1 = (__pyx_v_style_value == NULL);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":52
- * 
- *     if style_value == NULL:
- *         return             # <<<<<<<<<<<<<<
- * 
- *     if strstr(<const char*>style_value, "display"):
-*/
-    goto __pyx_L0;
-
-    /* "d2d/lexbor/node.pxi":51
- *     memset(flags, 0, sizeof(StyleFlags))
- * 
- *     if style_value == NULL:             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":54
- *         return
- * 
- *     if strstr(<const char*>style_value, "display"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "none"):
- *             flags.is_display_none = True
-*/
-  __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_display) != 0);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":55
- * 
- *     if strstr(<const char*>style_value, "display"):
- *         if strstr(<const char*>style_value, "none"):             # <<<<<<<<<<<<<<
- *             flags.is_display_none = True
- * 
-*/
-    __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_none) != 0);
-    if (__pyx_t_1) {
-
-      /* "d2d/lexbor/node.pxi":56
- *     if strstr(<const char*>style_value, "display"):
- *         if strstr(<const char*>style_value, "none"):
- *             flags.is_display_none = True             # <<<<<<<<<<<<<<
- * 
- *     if strstr(<const char*>style_value, "font-weight"):
-*/
-      __pyx_v_flags->is_display_none = 1;
-
-      /* "d2d/lexbor/node.pxi":55
- * 
- *     if strstr(<const char*>style_value, "display"):
- *         if strstr(<const char*>style_value, "none"):             # <<<<<<<<<<<<<<
- *             flags.is_display_none = True
- * 
-*/
-    }
-
-    /* "d2d/lexbor/node.pxi":54
- *         return
- * 
- *     if strstr(<const char*>style_value, "display"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "none"):
- *             flags.is_display_none = True
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":58
- *             flags.is_display_none = True
- * 
- *     if strstr(<const char*>style_value, "font-weight"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "bold") or strstr(<const char*>style_value, "700"):
- *             flags.has_bold = True
-*/
-  __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_font_weight) != 0);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":59
- * 
- *     if strstr(<const char*>style_value, "font-weight"):
- *         if strstr(<const char*>style_value, "bold") or strstr(<const char*>style_value, "700"):             # <<<<<<<<<<<<<<
- *             flags.has_bold = True
- * 
-*/
-    __pyx_t_2 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_bold) != 0);
-    if (!__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L8_bool_binop_done;
-    }
-    __pyx_t_2 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_700) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L8_bool_binop_done:;
-    if (__pyx_t_1) {
-
-      /* "d2d/lexbor/node.pxi":60
- *     if strstr(<const char*>style_value, "font-weight"):
- *         if strstr(<const char*>style_value, "bold") or strstr(<const char*>style_value, "700"):
- *             flags.has_bold = True             # <<<<<<<<<<<<<<
- * 
- *     if strstr(<const char*>style_value, "font-style"):
-*/
-      __pyx_v_flags->has_bold = 1;
-
-      /* "d2d/lexbor/node.pxi":59
- * 
- *     if strstr(<const char*>style_value, "font-weight"):
- *         if strstr(<const char*>style_value, "bold") or strstr(<const char*>style_value, "700"):             # <<<<<<<<<<<<<<
- *             flags.has_bold = True
- * 
-*/
-    }
-
-    /* "d2d/lexbor/node.pxi":58
- *             flags.is_display_none = True
- * 
- *     if strstr(<const char*>style_value, "font-weight"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "bold") or strstr(<const char*>style_value, "700"):
- *             flags.has_bold = True
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":62
- *             flags.has_bold = True
- * 
- *     if strstr(<const char*>style_value, "font-style"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "italic"):
- *             flags.has_italic = True
-*/
-  __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_font_style) != 0);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":63
- * 
- *     if strstr(<const char*>style_value, "font-style"):
- *         if strstr(<const char*>style_value, "italic"):             # <<<<<<<<<<<<<<
- *             flags.has_italic = True
- * 
-*/
-    __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_italic) != 0);
-    if (__pyx_t_1) {
-
-      /* "d2d/lexbor/node.pxi":64
- *     if strstr(<const char*>style_value, "font-style"):
- *         if strstr(<const char*>style_value, "italic"):
- *             flags.has_italic = True             # <<<<<<<<<<<<<<
- * 
- *     if strstr(<const char*>style_value, "text-decoration"):
-*/
-      __pyx_v_flags->has_italic = 1;
-
-      /* "d2d/lexbor/node.pxi":63
- * 
- *     if strstr(<const char*>style_value, "font-style"):
- *         if strstr(<const char*>style_value, "italic"):             # <<<<<<<<<<<<<<
- *             flags.has_italic = True
- * 
-*/
-    }
-
-    /* "d2d/lexbor/node.pxi":62
- *             flags.has_bold = True
- * 
- *     if strstr(<const char*>style_value, "font-style"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "italic"):
- *             flags.has_italic = True
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":66
- *             flags.has_italic = True
- * 
- *     if strstr(<const char*>style_value, "text-decoration"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "underline"):
- *             flags.has_underline = True
-*/
-  __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_text_decoration) != 0);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":67
- * 
- *     if strstr(<const char*>style_value, "text-decoration"):
- *         if strstr(<const char*>style_value, "underline"):             # <<<<<<<<<<<<<<
- *             flags.has_underline = True
- * 
-*/
-    __pyx_t_1 = (strstr(((char const *)__pyx_v_style_value), __pyx_k_underline) != 0);
-    if (__pyx_t_1) {
-
-      /* "d2d/lexbor/node.pxi":68
- *     if strstr(<const char*>style_value, "text-decoration"):
- *         if strstr(<const char*>style_value, "underline"):
- *             flags.has_underline = True             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-      __pyx_v_flags->has_underline = 1;
-
-      /* "d2d/lexbor/node.pxi":67
- * 
- *     if strstr(<const char*>style_value, "text-decoration"):
- *         if strstr(<const char*>style_value, "underline"):             # <<<<<<<<<<<<<<
- *             flags.has_underline = True
- * 
-*/
-    }
-
-    /* "d2d/lexbor/node.pxi":66
- *             flags.has_italic = True
- * 
- *     if strstr(<const char*>style_value, "text-decoration"):             # <<<<<<<<<<<<<<
- *         if strstr(<const char*>style_value, "underline"):
- *             flags.has_underline = True
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":47
- * 
- * 
- * cdef inline void parse_style_attribute(const lxb_char_t* style_value, StyleFlags* flags) nogil:             # <<<<<<<<<<<<<<
- *     """Parse style attribute and set flags for various CSS properties."""
- *     memset(flags, 0, sizeof(StyleFlags))
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-}
-
-/* "d2d/lexbor/node.pxi":71
- * 
- * 
- * cdef inline void push_to_stack(char stack[MAX_STACK_DEPTH][MAX_STRING_LEN], int* depth, const char* value) nogil:             # <<<<<<<<<<<<<<
- *     """Push a value onto a style stack."""
- *     if depth[0] < MAX_STACK_DEPTH:
-*/
-
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_push_to_stack(char (*__pyx_v_stack)[200], int *__pyx_v_depth, char const *__pyx_v_value) {
-  int __pyx_t_1;
-  long __pyx_t_2;
-
-  /* "d2d/lexbor/node.pxi":73
- * cdef inline void push_to_stack(char stack[MAX_STACK_DEPTH][MAX_STRING_LEN], int* depth, const char* value) nogil:
- *     """Push a value onto a style stack."""
- *     if depth[0] < MAX_STACK_DEPTH:             # <<<<<<<<<<<<<<
- *         strncpy(stack[depth[0]], value, MAX_STRING_LEN - 1)
- *         stack[depth[0]][MAX_STRING_LEN - 1] = 0
-*/
-  __pyx_t_1 = ((__pyx_v_depth[0]) < 0x3E8);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":74
- *     """Push a value onto a style stack."""
- *     if depth[0] < MAX_STACK_DEPTH:
- *         strncpy(stack[depth[0]], value, MAX_STRING_LEN - 1)             # <<<<<<<<<<<<<<
- *         stack[depth[0]][MAX_STRING_LEN - 1] = 0
- *         depth[0] += 1
-*/
-    (void)(strncpy((__pyx_v_stack[(__pyx_v_depth[0])]), __pyx_v_value, 0xc7));
-
-    /* "d2d/lexbor/node.pxi":75
- *     if depth[0] < MAX_STACK_DEPTH:
- *         strncpy(stack[depth[0]], value, MAX_STRING_LEN - 1)
- *         stack[depth[0]][MAX_STRING_LEN - 1] = 0             # <<<<<<<<<<<<<<
- *         depth[0] += 1
- * 
-*/
-    ((__pyx_v_stack[(__pyx_v_depth[0])])[0xc7]) = 0;
-
-    /* "d2d/lexbor/node.pxi":76
- *         strncpy(stack[depth[0]], value, MAX_STRING_LEN - 1)
- *         stack[depth[0]][MAX_STRING_LEN - 1] = 0
- *         depth[0] += 1             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-    __pyx_t_2 = 0;
-    (__pyx_v_depth[__pyx_t_2]) = ((__pyx_v_depth[__pyx_t_2]) + 1);
-
-    /* "d2d/lexbor/node.pxi":73
- * cdef inline void push_to_stack(char stack[MAX_STACK_DEPTH][MAX_STRING_LEN], int* depth, const char* value) nogil:
- *     """Push a value onto a style stack."""
- *     if depth[0] < MAX_STACK_DEPTH:             # <<<<<<<<<<<<<<
- *         strncpy(stack[depth[0]], value, MAX_STRING_LEN - 1)
- *         stack[depth[0]][MAX_STRING_LEN - 1] = 0
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":71
- * 
- * 
- * cdef inline void push_to_stack(char stack[MAX_STACK_DEPTH][MAX_STRING_LEN], int* depth, const char* value) nogil:             # <<<<<<<<<<<<<<
- *     """Push a value onto a style stack."""
- *     if depth[0] < MAX_STACK_DEPTH:
-*/
-
-  /* function exit code */
-}
-
-/* "d2d/lexbor/node.pxi":79
- * 
- * 
- * cdef inline void pop_from_stack(int* depth, int count) nogil:             # <<<<<<<<<<<<<<
- *     """Pop count items from a stack."""
- *     depth[0] -= count
-*/
-
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_pop_from_stack(int *__pyx_v_depth, int __pyx_v_count) {
-  long __pyx_t_1;
-  int __pyx_t_2;
-
-  /* "d2d/lexbor/node.pxi":81
- * cdef inline void pop_from_stack(int* depth, int count) nogil:
- *     """Pop count items from a stack."""
- *     depth[0] -= count             # <<<<<<<<<<<<<<
- *     if depth[0] < 0:
- *         depth[0] = 0
-*/
-  __pyx_t_1 = 0;
-  (__pyx_v_depth[__pyx_t_1]) = ((__pyx_v_depth[__pyx_t_1]) - __pyx_v_count);
-
-  /* "d2d/lexbor/node.pxi":82
- *     """Pop count items from a stack."""
- *     depth[0] -= count
- *     if depth[0] < 0:             # <<<<<<<<<<<<<<
- *         depth[0] = 0
- * 
-*/
-  __pyx_t_2 = ((__pyx_v_depth[0]) < 0);
-  if (__pyx_t_2) {
-
-    /* "d2d/lexbor/node.pxi":83
- *     depth[0] -= count
- *     if depth[0] < 0:
- *         depth[0] = 0             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-    (__pyx_v_depth[0]) = 0;
-
-    /* "d2d/lexbor/node.pxi":82
- *     """Pop count items from a stack."""
- *     depth[0] -= count
- *     if depth[0] < 0:             # <<<<<<<<<<<<<<
- *         depth[0] = 0
- * 
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":79
- * 
- * 
- * cdef inline void pop_from_stack(int* depth, int count) nogil:             # <<<<<<<<<<<<<<
- *     """Pop count items from a stack."""
- *     depth[0] -= count
-*/
-
-  /* function exit code */
-}
-
-/* "d2d/lexbor/node.pxi":86
- * 
- * 
- * cdef inline size_t write_json_attribute(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                          const char* key, const char* value,
- *                                          size_t max_value_len=500) nogil:
-*/
-
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_write_json_attribute(unsigned char *__pyx_v_buffer, size_t __pyx_v_pos, char const *__pyx_v_key, char const *__pyx_v_value, struct __pyx_opt_args_3d2d_6lexbor_write_json_attribute *__pyx_optional_args) {
-  size_t __pyx_v_max_value_len = ((size_t)0x1F4);
-  size_t __pyx_v_i;
-  size_t __pyx_r;
-  int __pyx_t_1;
-  int __pyx_t_2;
-  if (__pyx_optional_args) {
-    if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_max_value_len = __pyx_optional_args->max_value_len;
-    }
-  }
-
-  /* "d2d/lexbor/node.pxi":92
- *     cdef size_t i
- * 
- *     buffer[pos] = ord(b',')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b'"')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 44;
-
-  /* "d2d/lexbor/node.pxi":93
- * 
- *     buffer[pos] = ord(b',')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b'"')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":94
- *     buffer[pos] = ord(b',')
- *     pos += 1
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":95
- *     pos += 1
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     # Write key
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":98
- * 
- *     # Write key
- *     i = 0             # <<<<<<<<<<<<<<
- *     while key[i] != 0:
- *         buffer[pos] = key[i]
-*/
-  __pyx_v_i = 0;
-
-  /* "d2d/lexbor/node.pxi":99
- *     # Write key
- *     i = 0
- *     while key[i] != 0:             # <<<<<<<<<<<<<<
- *         buffer[pos] = key[i]
- *         pos += 1
-*/
-  while (1) {
-    __pyx_t_1 = ((__pyx_v_key[__pyx_v_i]) != 0);
-    if (!__pyx_t_1) break;
-
-    /* "d2d/lexbor/node.pxi":100
- *     i = 0
- *     while key[i] != 0:
- *         buffer[pos] = key[i]             # <<<<<<<<<<<<<<
- *         pos += 1
- *         i += 1
-*/
-    (__pyx_v_buffer[__pyx_v_pos]) = (__pyx_v_key[__pyx_v_i]);
-
-    /* "d2d/lexbor/node.pxi":101
- *     while key[i] != 0:
- *         buffer[pos] = key[i]
- *         pos += 1             # <<<<<<<<<<<<<<
- *         i += 1
- * 
-*/
-    __pyx_v_pos = (__pyx_v_pos + 1);
-
-    /* "d2d/lexbor/node.pxi":102
- *         buffer[pos] = key[i]
- *         pos += 1
- *         i += 1             # <<<<<<<<<<<<<<
- * 
- *     buffer[pos] = ord(b'"')
-*/
-    __pyx_v_i = (__pyx_v_i + 1);
-  }
-
-  /* "d2d/lexbor/node.pxi":104
- *         i += 1
- * 
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b':')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":105
- * 
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b':')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":106
- *     buffer[pos] = ord(b'"')
- *     pos += 1
- *     buffer[pos] = ord(b':')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b'"')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 58;
-
-  /* "d2d/lexbor/node.pxi":107
- *     pos += 1
- *     buffer[pos] = ord(b':')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b'"')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":108
- *     buffer[pos] = ord(b':')
- *     pos += 1
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":109
- *     pos += 1
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     # Write value
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":112
- * 
- *     # Write value
- *     i = 0             # <<<<<<<<<<<<<<
- *     while value[i] != 0 and i < max_value_len:
- *         buffer[pos] = value[i]
-*/
-  __pyx_v_i = 0;
-
-  /* "d2d/lexbor/node.pxi":113
- *     # Write value
- *     i = 0
- *     while value[i] != 0 and i < max_value_len:             # <<<<<<<<<<<<<<
- *         buffer[pos] = value[i]
- *         pos += 1
-*/
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_value[__pyx_v_i]) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L7_bool_binop_done;
-    }
-    __pyx_t_2 = (__pyx_v_i < __pyx_v_max_value_len);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L7_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "d2d/lexbor/node.pxi":114
- *     i = 0
- *     while value[i] != 0 and i < max_value_len:
- *         buffer[pos] = value[i]             # <<<<<<<<<<<<<<
- *         pos += 1
- *         i += 1
-*/
-    (__pyx_v_buffer[__pyx_v_pos]) = (__pyx_v_value[__pyx_v_i]);
-
-    /* "d2d/lexbor/node.pxi":115
- *     while value[i] != 0 and i < max_value_len:
- *         buffer[pos] = value[i]
- *         pos += 1             # <<<<<<<<<<<<<<
- *         i += 1
- * 
-*/
-    __pyx_v_pos = (__pyx_v_pos + 1);
-
-    /* "d2d/lexbor/node.pxi":116
- *         buffer[pos] = value[i]
- *         pos += 1
- *         i += 1             # <<<<<<<<<<<<<<
- * 
- *     buffer[pos] = ord(b'"')
-*/
-    __pyx_v_i = (__pyx_v_i + 1);
-  }
-
-  /* "d2d/lexbor/node.pxi":118
- *         i += 1
- * 
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":119
- * 
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     return pos
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":121
- *     pos += 1
- * 
- *     return pos             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = __pyx_v_pos;
-  goto __pyx_L0;
-
-  /* "d2d/lexbor/node.pxi":86
- * 
- * 
- * cdef inline size_t write_json_attribute(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                          const char* key, const char* value,
- *                                          size_t max_value_len=500) nogil:
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "d2d/lexbor/node.pxi":124
- * 
- * 
- * cdef inline size_t write_stack_attribute(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                           const char* key,
- *                                           char stack[MAX_STACK_DEPTH][MAX_STRING_LEN],
-*/
-
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_write_stack_attribute(unsigned char *__pyx_v_buffer, size_t __pyx_v_pos, char const *__pyx_v_key, char (*__pyx_v_stack)[200], int __pyx_v_depth) {
-  size_t __pyx_v_i;
-  size_t __pyx_r;
-  int __pyx_t_1;
-  int __pyx_t_2;
-
-  /* "d2d/lexbor/node.pxi":131
- *     cdef size_t i
- * 
- *     if depth <= 0:             # <<<<<<<<<<<<<<
- *         return pos
- * 
-*/
-  __pyx_t_1 = (__pyx_v_depth <= 0);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":132
- * 
- *     if depth <= 0:
- *         return pos             # <<<<<<<<<<<<<<
- * 
- *     buffer[pos] = ord(b',')
-*/
-    __pyx_r = __pyx_v_pos;
-    goto __pyx_L0;
-
-    /* "d2d/lexbor/node.pxi":131
- *     cdef size_t i
- * 
- *     if depth <= 0:             # <<<<<<<<<<<<<<
- *         return pos
- * 
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":134
- *         return pos
- * 
- *     buffer[pos] = ord(b',')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b'"')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 44;
-
-  /* "d2d/lexbor/node.pxi":135
- * 
- *     buffer[pos] = ord(b',')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b'"')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":136
- *     buffer[pos] = ord(b',')
- *     pos += 1
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":137
- *     pos += 1
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     # Write key
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":140
- * 
- *     # Write key
- *     i = 0             # <<<<<<<<<<<<<<
- *     while key[i] != 0:
- *         buffer[pos] = key[i]
-*/
-  __pyx_v_i = 0;
-
-  /* "d2d/lexbor/node.pxi":141
- *     # Write key
- *     i = 0
- *     while key[i] != 0:             # <<<<<<<<<<<<<<
- *         buffer[pos] = key[i]
- *         pos += 1
-*/
-  while (1) {
-    __pyx_t_1 = ((__pyx_v_key[__pyx_v_i]) != 0);
-    if (!__pyx_t_1) break;
-
-    /* "d2d/lexbor/node.pxi":142
- *     i = 0
- *     while key[i] != 0:
- *         buffer[pos] = key[i]             # <<<<<<<<<<<<<<
- *         pos += 1
- *         i += 1
-*/
-    (__pyx_v_buffer[__pyx_v_pos]) = (__pyx_v_key[__pyx_v_i]);
-
-    /* "d2d/lexbor/node.pxi":143
- *     while key[i] != 0:
- *         buffer[pos] = key[i]
- *         pos += 1             # <<<<<<<<<<<<<<
- *         i += 1
- * 
-*/
-    __pyx_v_pos = (__pyx_v_pos + 1);
-
-    /* "d2d/lexbor/node.pxi":144
- *         buffer[pos] = key[i]
- *         pos += 1
- *         i += 1             # <<<<<<<<<<<<<<
- * 
- *     buffer[pos] = ord(b'"')
-*/
-    __pyx_v_i = (__pyx_v_i + 1);
-  }
-
-  /* "d2d/lexbor/node.pxi":146
- *         i += 1
- * 
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b':')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":147
- * 
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b':')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":148
- *     buffer[pos] = ord(b'"')
- *     pos += 1
- *     buffer[pos] = ord(b':')             # <<<<<<<<<<<<<<
- *     pos += 1
- *     buffer[pos] = ord(b'"')
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 58;
-
-  /* "d2d/lexbor/node.pxi":149
- *     pos += 1
- *     buffer[pos] = ord(b':')
- *     pos += 1             # <<<<<<<<<<<<<<
- *     buffer[pos] = ord(b'"')
- *     pos += 1
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":150
- *     buffer[pos] = ord(b':')
- *     pos += 1
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":151
- *     pos += 1
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     # Write value from stack
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":154
- * 
- *     # Write value from stack
- *     i = 0             # <<<<<<<<<<<<<<
- *     while stack[depth - 1][i] != 0 and i < MAX_STRING_LEN:
- *         buffer[pos] = stack[depth - 1][i]
-*/
-  __pyx_v_i = 0;
-
-  /* "d2d/lexbor/node.pxi":155
- *     # Write value from stack
- *     i = 0
- *     while stack[depth - 1][i] != 0 and i < MAX_STRING_LEN:             # <<<<<<<<<<<<<<
- *         buffer[pos] = stack[depth - 1][i]
- *         pos += 1
-*/
-  while (1) {
-    __pyx_t_2 = (((__pyx_v_stack[(__pyx_v_depth - 1)])[__pyx_v_i]) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L8_bool_binop_done;
-    }
-    __pyx_t_2 = (__pyx_v_i < 0xC8);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L8_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "d2d/lexbor/node.pxi":156
- *     i = 0
- *     while stack[depth - 1][i] != 0 and i < MAX_STRING_LEN:
- *         buffer[pos] = stack[depth - 1][i]             # <<<<<<<<<<<<<<
- *         pos += 1
- *         i += 1
-*/
-    (__pyx_v_buffer[__pyx_v_pos]) = ((__pyx_v_stack[(__pyx_v_depth - 1)])[__pyx_v_i]);
-
-    /* "d2d/lexbor/node.pxi":157
- *     while stack[depth - 1][i] != 0 and i < MAX_STRING_LEN:
- *         buffer[pos] = stack[depth - 1][i]
- *         pos += 1             # <<<<<<<<<<<<<<
- *         i += 1
- * 
-*/
-    __pyx_v_pos = (__pyx_v_pos + 1);
-
-    /* "d2d/lexbor/node.pxi":158
- *         buffer[pos] = stack[depth - 1][i]
- *         pos += 1
- *         i += 1             # <<<<<<<<<<<<<<
- * 
- *     buffer[pos] = ord(b'"')
-*/
-    __pyx_v_i = (__pyx_v_i + 1);
-  }
-
-  /* "d2d/lexbor/node.pxi":160
- *         i += 1
- * 
- *     buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *     pos += 1
- * 
-*/
-  (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-  /* "d2d/lexbor/node.pxi":161
- * 
- *     buffer[pos] = ord(b'"')
- *     pos += 1             # <<<<<<<<<<<<<<
- * 
- *     return pos
-*/
-  __pyx_v_pos = (__pyx_v_pos + 1);
-
-  /* "d2d/lexbor/node.pxi":163
- *     pos += 1
- * 
- *     return pos             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = __pyx_v_pos;
-  goto __pyx_L0;
-
-  /* "d2d/lexbor/node.pxi":124
- * 
- * 
- * cdef inline size_t write_stack_attribute(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                           const char* key,
- *                                           char stack[MAX_STACK_DEPTH][MAX_STRING_LEN],
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "d2d/lexbor/node.pxi":166
- * 
- * 
- * cdef inline bint is_block_level_tag(lxb_tag_id_t tag_id) nogil:             # <<<<<<<<<<<<<<
- *     """Check if a tag is block-level and should trigger block end."""
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or
-*/
-
-static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_is_block_level_tag(lxb_tag_id_t __pyx_v_tag_id) {
-  int __pyx_r;
-  int __pyx_t_1;
-
-  /* "d2d/lexbor/node.pxi":168
- * cdef inline bint is_block_level_tag(lxb_tag_id_t tag_id) nogil:
- *     """Check if a tag is block-level and should trigger block end."""
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or             # <<<<<<<<<<<<<<
- *             tag_id == LXB_TAG_H1 or tag_id == LXB_TAG_H2 or
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or
-*/
-  switch (__pyx_v_tag_id) {
-    case LXB_TAG_P:
-    case LXB_TAG_DIV:
-    case LXB_TAG_H1:
-
-    /* "d2d/lexbor/node.pxi":169
- *     """Check if a tag is block-level and should trigger block end."""
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or
- *             tag_id == LXB_TAG_H1 or tag_id == LXB_TAG_H2 or             # <<<<<<<<<<<<<<
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or
- *             tag_id == LXB_TAG_H5 or tag_id == LXB_TAG_H6 or
-*/
-    case LXB_TAG_H2:
-    case LXB_TAG_H3:
-
-    /* "d2d/lexbor/node.pxi":170
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or
- *             tag_id == LXB_TAG_H1 or tag_id == LXB_TAG_H2 or
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or             # <<<<<<<<<<<<<<
- *             tag_id == LXB_TAG_H5 or tag_id == LXB_TAG_H6 or
- *             tag_id == LXB_TAG_LI or tag_id == LXB_TAG_BR)
-*/
-    case LXB_TAG_H4:
-    case LXB_TAG_H5:
-
-    /* "d2d/lexbor/node.pxi":171
- *             tag_id == LXB_TAG_H1 or tag_id == LXB_TAG_H2 or
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or
- *             tag_id == LXB_TAG_H5 or tag_id == LXB_TAG_H6 or             # <<<<<<<<<<<<<<
- *             tag_id == LXB_TAG_LI or tag_id == LXB_TAG_BR)
- * 
-*/
-    case LXB_TAG_H6:
-    case LXB_TAG_LI:
-
-    /* "d2d/lexbor/node.pxi":172
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or
- *             tag_id == LXB_TAG_H5 or tag_id == LXB_TAG_H6 or
- *             tag_id == LXB_TAG_LI or tag_id == LXB_TAG_BR)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-    case LXB_TAG_BR:
-
-    /* "d2d/lexbor/node.pxi":168
- * cdef inline bint is_block_level_tag(lxb_tag_id_t tag_id) nogil:
- *     """Check if a tag is block-level and should trigger block end."""
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or             # <<<<<<<<<<<<<<
- *             tag_id == LXB_TAG_H1 or tag_id == LXB_TAG_H2 or
- *             tag_id == LXB_TAG_H3 or tag_id == LXB_TAG_H4 or
-*/
-    __pyx_t_1 = 1;
-    break;
-    default:
-    __pyx_t_1 = 0;
-    break;
-  }
-  __pyx_r = __pyx_t_1;
-  goto __pyx_L0;
-
-  /* "d2d/lexbor/node.pxi":166
- * 
- * 
- * cdef inline bint is_block_level_tag(lxb_tag_id_t tag_id) nogil:             # <<<<<<<<<<<<<<
- *     """Check if a tag is block-level and should trigger block end."""
- *     return (tag_id == LXB_TAG_P or tag_id == LXB_TAG_DIV or
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "d2d/lexbor/node.pxi":175
- * 
- * 
- * cdef inline void ensure_buffer_space(FILE* f, unsigned char* buffer, size_t* pos,             # <<<<<<<<<<<<<<
- *                                       size_t needed_space, size_t capacity) nogil:
- *     """Flush buffer if there isn't enough space for the next write."""
-*/
-
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_ensure_buffer_space(FILE *__pyx_v_f, unsigned char *__pyx_v_buffer, size_t *__pyx_v_pos, size_t __pyx_v_needed_space, size_t __pyx_v_capacity) {
-  int __pyx_t_1;
-
-  /* "d2d/lexbor/node.pxi":178
- *                                       size_t needed_space, size_t capacity) nogil:
- *     """Flush buffer if there isn't enough space for the next write."""
- *     if pos[0] + needed_space > capacity:             # <<<<<<<<<<<<<<
- *         fwrite(buffer, 1, pos[0], f)
- *         pos[0] = 0
-*/
-  __pyx_t_1 = (((__pyx_v_pos[0]) + __pyx_v_needed_space) > __pyx_v_capacity);
-  if (__pyx_t_1) {
-
-    /* "d2d/lexbor/node.pxi":179
- *     """Flush buffer if there isn't enough space for the next write."""
- *     if pos[0] + needed_space > capacity:
- *         fwrite(buffer, 1, pos[0], f)             # <<<<<<<<<<<<<<
- *         pos[0] = 0
- * 
-*/
-    (void)(fwrite(__pyx_v_buffer, 1, (__pyx_v_pos[0]), __pyx_v_f));
-
-    /* "d2d/lexbor/node.pxi":180
- *     if pos[0] + needed_space > capacity:
- *         fwrite(buffer, 1, pos[0], f)
- *         pos[0] = 0             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-    (__pyx_v_pos[0]) = 0;
-
-    /* "d2d/lexbor/node.pxi":178
- *                                       size_t needed_space, size_t capacity) nogil:
- *     """Flush buffer if there isn't enough space for the next write."""
- *     if pos[0] + needed_space > capacity:             # <<<<<<<<<<<<<<
- *         fwrite(buffer, 1, pos[0], f)
- *         pos[0] = 0
-*/
-  }
-
-  /* "d2d/lexbor/node.pxi":175
- * 
- * 
- * cdef inline void ensure_buffer_space(FILE* f, unsigned char* buffer, size_t* pos,             # <<<<<<<<<<<<<<
- *                                       size_t needed_space, size_t capacity) nogil:
- *     """Flush buffer if there isn't enough space for the next write."""
-*/
-
-  /* function exit code */
-}
-
-/* "d2d/lexbor/node.pxi":183
- * 
- * 
- * cdef inline size_t escape_and_write_json_string(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                                   unsigned char* text, size_t text_len) nogil:
- *     """Escape and write a JSON string value."""
-*/
-
-static CYTHON_INLINE size_t __pyx_f_3d2d_6lexbor_escape_and_write_json_string(unsigned char *__pyx_v_buffer, size_t __pyx_v_pos, unsigned char *__pyx_v_text, size_t __pyx_v_text_len) {
-  size_t __pyx_v_i;
-  size_t __pyx_r;
-  size_t __pyx_t_1;
-  size_t __pyx_t_2;
-  size_t __pyx_t_3;
-  int __pyx_t_4;
-
-  /* "d2d/lexbor/node.pxi":188
- *     cdef size_t i
- * 
- *     for i in range(text_len):             # <<<<<<<<<<<<<<
- *         if text[i] == ord(b'"'):
- *             buffer[pos] = ord(b'\\')
-*/
-  __pyx_t_1 = __pyx_v_text_len;
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "d2d/lexbor/node.pxi":189
- * 
- *     for i in range(text_len):
- *         if text[i] == ord(b'"'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-    __pyx_t_4 = ((__pyx_v_text[__pyx_v_i]) == 34);
-    if (__pyx_t_4) {
-
-      /* "d2d/lexbor/node.pxi":190
- *     for i in range(text_len):
- *         if text[i] == ord(b'"'):
- *             buffer[pos] = ord(b'\\')             # <<<<<<<<<<<<<<
- *             pos += 1
- *             buffer[pos] = ord(b'"')
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 92;
-
-      /* "d2d/lexbor/node.pxi":191
- *         if text[i] == ord(b'"'):
- *             buffer[pos] = ord(b'\\')
- *             pos += 1             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'"')
- *             pos += 1
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":192
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
- *             buffer[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *             pos += 1
- *         elif text[i] == ord(b'\\'):
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 34;
-
-      /* "d2d/lexbor/node.pxi":193
- *             pos += 1
- *             buffer[pos] = ord(b'"')
- *             pos += 1             # <<<<<<<<<<<<<<
- *         elif text[i] == ord(b'\\'):
- *             buffer[pos] = ord(b'\\')
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":189
- * 
- *     for i in range(text_len):
- *         if text[i] == ord(b'"'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-      goto __pyx_L5;
-    }
-
-    /* "d2d/lexbor/node.pxi":194
- *             buffer[pos] = ord(b'"')
- *             pos += 1
- *         elif text[i] == ord(b'\\'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-    __pyx_t_4 = ((__pyx_v_text[__pyx_v_i]) == 92);
-    if (__pyx_t_4) {
-
-      /* "d2d/lexbor/node.pxi":195
- *             pos += 1
- *         elif text[i] == ord(b'\\'):
- *             buffer[pos] = ord(b'\\')             # <<<<<<<<<<<<<<
- *             pos += 1
- *             buffer[pos] = ord(b'\\')
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 92;
-
-      /* "d2d/lexbor/node.pxi":196
- *         elif text[i] == ord(b'\\'):
- *             buffer[pos] = ord(b'\\')
- *             pos += 1             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":197
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
- *             buffer[pos] = ord(b'\\')             # <<<<<<<<<<<<<<
- *             pos += 1
- *         elif text[i] == ord(b'\n'):
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 92;
-
-      /* "d2d/lexbor/node.pxi":198
- *             pos += 1
- *             buffer[pos] = ord(b'\\')
- *             pos += 1             # <<<<<<<<<<<<<<
- *         elif text[i] == ord(b'\n'):
- *             buffer[pos] = ord(b'\\')
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":194
- *             buffer[pos] = ord(b'"')
- *             pos += 1
- *         elif text[i] == ord(b'\\'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-      goto __pyx_L5;
-    }
-
-    /* "d2d/lexbor/node.pxi":199
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
- *         elif text[i] == ord(b'\n'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-    __pyx_t_4 = ((__pyx_v_text[__pyx_v_i]) == 10);
-    if (__pyx_t_4) {
-
-      /* "d2d/lexbor/node.pxi":200
- *             pos += 1
- *         elif text[i] == ord(b'\n'):
- *             buffer[pos] = ord(b'\\')             # <<<<<<<<<<<<<<
- *             pos += 1
- *             buffer[pos] = ord(b'n')
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 92;
-
-      /* "d2d/lexbor/node.pxi":201
- *         elif text[i] == ord(b'\n'):
- *             buffer[pos] = ord(b'\\')
- *             pos += 1             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'n')
- *             pos += 1
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":202
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
- *             buffer[pos] = ord(b'n')             # <<<<<<<<<<<<<<
- *             pos += 1
- *         else:
-*/
-      (__pyx_v_buffer[__pyx_v_pos]) = 0x6E;
-
-      /* "d2d/lexbor/node.pxi":203
- *             pos += 1
- *             buffer[pos] = ord(b'n')
- *             pos += 1             # <<<<<<<<<<<<<<
- *         else:
- *             buffer[pos] = text[i]
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-
-      /* "d2d/lexbor/node.pxi":199
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
- *         elif text[i] == ord(b'\n'):             # <<<<<<<<<<<<<<
- *             buffer[pos] = ord(b'\\')
- *             pos += 1
-*/
-      goto __pyx_L5;
-    }
-
-    /* "d2d/lexbor/node.pxi":205
- *             pos += 1
- *         else:
- *             buffer[pos] = text[i]             # <<<<<<<<<<<<<<
- *             pos += 1
- * 
-*/
-    /*else*/ {
-      (__pyx_v_buffer[__pyx_v_pos]) = (__pyx_v_text[__pyx_v_i]);
-
-      /* "d2d/lexbor/node.pxi":206
- *         else:
- *             buffer[pos] = text[i]
- *             pos += 1             # <<<<<<<<<<<<<<
- * 
- *     return pos
-*/
-      __pyx_v_pos = (__pyx_v_pos + 1);
-    }
-    __pyx_L5:;
-  }
-
-  /* "d2d/lexbor/node.pxi":208
- *             pos += 1
- * 
- *     return pos             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = __pyx_v_pos;
-  goto __pyx_L0;
-
-  /* "d2d/lexbor/node.pxi":183
- * 
- * 
- * cdef inline size_t escape_and_write_json_string(unsigned char* buffer, size_t pos,             # <<<<<<<<<<<<<<
- *                                                   unsigned char* text, size_t text_len) nogil:
- *     """Escape and write a JSON string value."""
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "d2d/lexbor/node.pxi":218
- * 
- * 
- * cdef inline void get_tag_style_effects(lxb_tag_id_t tag_id, TagStyleEffects* effects) nogil:             # <<<<<<<<<<<<<<
- *     """Determine what style effects a tag has."""
- *     memset(effects, 0, sizeof(TagStyleEffects))
-*/
-
-static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_get_tag_style_effects(lxb_tag_id_t __pyx_v_tag_id, struct __pyx_t_3d2d_6lexbor_TagStyleEffects *__pyx_v_effects) {
-
-  /* "d2d/lexbor/node.pxi":220
- * cdef inline void get_tag_style_effects(lxb_tag_id_t tag_id, TagStyleEffects* effects) nogil:
- *     """Determine what style effects a tag has."""
- *     memset(effects, 0, sizeof(TagStyleEffects))             # <<<<<<<<<<<<<<
- * 
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
-*/
-  (void)(memset(__pyx_v_effects, 0, (sizeof(struct __pyx_t_3d2d_6lexbor_TagStyleEffects))));
-
-  /* "d2d/lexbor/node.pxi":222
- *     memset(effects, 0, sizeof(TagStyleEffects))
- * 
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:             # <<<<<<<<<<<<<<
- *         effects.push_bold = True
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
-*/
-  switch (__pyx_v_tag_id) {
-    case LXB_TAG_B:
-    case LXB_TAG_STRONG:
-
-    /* "d2d/lexbor/node.pxi":223
- * 
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
- *         effects.push_bold = True             # <<<<<<<<<<<<<<
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
- *         effects.push_italic = True
-*/
-    __pyx_v_effects->push_bold = 1;
-
-    /* "d2d/lexbor/node.pxi":222
- *     memset(effects, 0, sizeof(TagStyleEffects))
- * 
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:             # <<<<<<<<<<<<<<
- *         effects.push_bold = True
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
-*/
-    break;
-    case LXB_TAG_I:
-
-    /* "d2d/lexbor/node.pxi":224
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
- *         effects.push_bold = True
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:             # <<<<<<<<<<<<<<
- *         effects.push_italic = True
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
-*/
-    case LXB_TAG_EM:
-
-    /* "d2d/lexbor/node.pxi":225
- *         effects.push_bold = True
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
- *         effects.push_italic = True             # <<<<<<<<<<<<<<
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
- *         effects.push_underline = True
-*/
-    __pyx_v_effects->push_italic = 1;
-
-    /* "d2d/lexbor/node.pxi":224
- *     if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
- *         effects.push_bold = True
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:             # <<<<<<<<<<<<<<
- *         effects.push_italic = True
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
-*/
-    break;
-    case LXB_TAG_U:
-
-    /* "d2d/lexbor/node.pxi":226
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
- *         effects.push_italic = True
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:             # <<<<<<<<<<<<<<
- *         effects.push_underline = True
- *     elif tag_id == LXB_TAG_A:
-*/
-    case LXB_TAG_INS:
-
-    /* "d2d/lexbor/node.pxi":227
- *         effects.push_italic = True
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
- *         effects.push_underline = True             # <<<<<<<<<<<<<<
- *     elif tag_id == LXB_TAG_A:
- *         effects.is_link = True
-*/
-    __pyx_v_effects->push_underline = 1;
-
-    /* "d2d/lexbor/node.pxi":226
- *     elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
- *         effects.push_italic = True
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:             # <<<<<<<<<<<<<<
- *         effects.push_underline = True
- *     elif tag_id == LXB_TAG_A:
-*/
-    break;
-    case LXB_TAG_A:
-
-    /* "d2d/lexbor/node.pxi":229
- *         effects.push_underline = True
- *     elif tag_id == LXB_TAG_A:
- *         effects.is_link = True             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-    __pyx_v_effects->is_link = 1;
-
-    /* "d2d/lexbor/node.pxi":228
- *     elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
- *         effects.push_underline = True
- *     elif tag_id == LXB_TAG_A:             # <<<<<<<<<<<<<<
- *         effects.is_link = True
- * 
-*/
-    break;
-    default: break;
-  }
-
-  /* "d2d/lexbor/node.pxi":218
- * 
- * 
- * cdef inline void get_tag_style_effects(lxb_tag_id_t tag_id, TagStyleEffects* effects) nogil:             # <<<<<<<<<<<<<<
- *     """Determine what style effects a tag has."""
- *     memset(effects, 0, sizeof(TagStyleEffects))
-*/
-
-  /* function exit code */
-}
-
-/* "d2d/lexbor/node.pxi":236
+/* "d2d/lexbor/node.pxi":57
  *     """A class that represents HTML node (element)."""
  * 
  *     cdef void set_as_fragment_root(self):             # <<<<<<<<<<<<<<
@@ -10358,7 +8940,7 @@ static CYTHON_INLINE void __pyx_f_3d2d_6lexbor_get_tag_style_effects(lxb_tag_id_
 
 static void __pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self) {
 
-  /* "d2d/lexbor/node.pxi":237
+  /* "d2d/lexbor/node.pxi":58
  * 
  *     cdef void set_as_fragment_root(self):
  *         self._is_fragment_root = 1             # <<<<<<<<<<<<<<
@@ -10367,7 +8949,7 @@ static void __pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root(struct __pyx_
 */
   __pyx_v_self->_is_fragment_root = 1;
 
-  /* "d2d/lexbor/node.pxi":236
+  /* "d2d/lexbor/node.pxi":57
  *     """A class that represents HTML node (element)."""
  * 
  *     cdef void set_as_fragment_root(self):             # <<<<<<<<<<<<<<
@@ -10378,7 +8960,7 @@ static void __pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root(struct __pyx_
   /* function exit code */
 }
 
-/* "d2d/lexbor/node.pxi":239
+/* "d2d/lexbor/node.pxi":60
  *         self._is_fragment_root = 1
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -10396,19 +8978,19 @@ static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNo
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("new", 0);
 
-  /* "d2d/lexbor/node.pxi":241
+  /* "d2d/lexbor/node.pxi":62
  *     @staticmethod
  *     cdef LexborNode new(lxb_dom_node_t *node, LexborHTMLParser parser):
  *         cdef LexborNode lxbnode = LexborNode.__new__(LexborNode)             # <<<<<<<<<<<<<<
  *         lxbnode.node = node
  *         lxbnode.parser = parser
 */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_3d2d_6lexbor_LexborNode(((PyTypeObject *)__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode), __pyx_mstate_global->__pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 241, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_3d2d_6lexbor_LexborNode(((PyTypeObject *)__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode), __pyx_mstate_global->__pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 62, __pyx_L1_error)
   __Pyx_GOTREF((PyObject *)__pyx_t_1);
   __pyx_v_lxbnode = ((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "d2d/lexbor/node.pxi":242
+  /* "d2d/lexbor/node.pxi":63
  *     cdef LexborNode new(lxb_dom_node_t *node, LexborHTMLParser parser):
  *         cdef LexborNode lxbnode = LexborNode.__new__(LexborNode)
  *         lxbnode.node = node             # <<<<<<<<<<<<<<
@@ -10417,7 +8999,7 @@ static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNo
 */
   __pyx_v_lxbnode->node = __pyx_v_node;
 
-  /* "d2d/lexbor/node.pxi":243
+  /* "d2d/lexbor/node.pxi":64
  *         cdef LexborNode lxbnode = LexborNode.__new__(LexborNode)
  *         lxbnode.node = node
  *         lxbnode.parser = parser             # <<<<<<<<<<<<<<
@@ -10430,7 +9012,7 @@ static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNo
   __Pyx_DECREF((PyObject *)__pyx_v_lxbnode->parser);
   __pyx_v_lxbnode->parser = __pyx_v_parser;
 
-  /* "d2d/lexbor/node.pxi":244
+  /* "d2d/lexbor/node.pxi":65
  *         lxbnode.node = node
  *         lxbnode.parser = parser
  *         lxbnode._is_fragment_root = 0             # <<<<<<<<<<<<<<
@@ -10439,19 +9021,19 @@ static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNo
 */
   __pyx_v_lxbnode->_is_fragment_root = 0;
 
-  /* "d2d/lexbor/node.pxi":245
+  /* "d2d/lexbor/node.pxi":66
  *         lxbnode.parser = parser
  *         lxbnode._is_fragment_root = 0
  *         return lxbnode             # <<<<<<<<<<<<<<
  * 
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):
+ *     @property
 */
   __Pyx_XDECREF((PyObject *)__pyx_r);
   __Pyx_INCREF((PyObject *)__pyx_v_lxbnode);
   __pyx_r = __pyx_v_lxbnode;
   goto __pyx_L0;
 
-  /* "d2d/lexbor/node.pxi":239
+  /* "d2d/lexbor/node.pxi":60
  *         self._is_fragment_root = 1
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -10471,457 +9053,64 @@ static struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_f_3d2d_6lexbor_10LexborNo
   return __pyx_r;
 }
 
-/* "d2d/lexbor/node.pxi":247
+/* "d2d/lexbor/node.pxi":68
  *         return lxbnode
  * 
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):             # <<<<<<<<<<<<<<
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node
+ *     @property             # <<<<<<<<<<<<<<
+ *     def mem_id(self):
+ *         return <size_t> self.node
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark, "LexborNode.traverse_signals_benchmark(self, bool include_text=False, bool skip_empty=False)\n\nPure C traversal benchmark for signals without Python overhead.");
-static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark = {"traverse_signals_benchmark", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark};
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  PyLongObject *__pyx_v_include_text = 0;
-  PyLongObject *__pyx_v_skip_empty = 0;
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_6mem_id_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_6mem_id_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[2] = {0,0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("traverse_signals_benchmark (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_include_text,&__pyx_mstate_global->__pyx_n_u_skip_empty,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 247, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  2:
-        values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(4, 247, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 247, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "traverse_signals_benchmark", 0) < (0)) __PYX_ERR(4, 247, __pyx_L3_error)
-      if (!values[0]) values[0] = __Pyx_NewRef((PyObject *)((PyLongObject *)Py_False));
-      if (!values[1]) values[1] = __Pyx_NewRef((PyObject *)((PyLongObject *)Py_False));
-    } else {
-      switch (__pyx_nargs) {
-        case  2:
-        values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(4, 247, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 247, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      if (!values[0]) values[0] = __Pyx_NewRef((PyObject *)((PyLongObject *)Py_False));
-      if (!values[1]) values[1] = __Pyx_NewRef((PyObject *)((PyLongObject *)Py_False));
-    }
-    __pyx_v_include_text = ((PyLongObject *)values[0]);
-    __pyx_v_skip_empty = ((PyLongObject *)values[1]);
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("traverse_signals_benchmark", 0, 0, 2, __pyx_nargs); __PYX_ERR(4, 247, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("d2d.lexbor.LexborNode.traverse_signals_benchmark", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_include_text), __pyx_mstate_global->__pyx_ptype_7cpython_4bool_bool, 1, "include_text", 0))) __PYX_ERR(4, 247, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_skip_empty), __pyx_mstate_global->__pyx_ptype_7cpython_4bool_bool, 1, "skip_empty", 0))) __PYX_ERR(4, 247, __pyx_L1_error)
-  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self), __pyx_v_include_text, __pyx_v_skip_empty);
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_6mem_id___get__(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  goto __pyx_L7_cleaned_up;
-  __pyx_L0:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __pyx_L7_cleaned_up:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyLongObject *__pyx_v_include_text, PyLongObject *__pyx_v_skip_empty) {
-  lxb_dom_node_t *__pyx_v_root;
-  lxb_dom_node_t *__pyx_v_node;
-  lxb_dom_node_t *__pyx_v_parent_ptr;
-  CYTHON_UNUSED size_t __pyx_v_parent_mem_id;
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6mem_id___get__(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  lxb_dom_node_t *__pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
+  PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("traverse_signals_benchmark", 0);
+  __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "d2d/lexbor/node.pxi":249
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node             # <<<<<<<<<<<<<<
- *         cdef lxb_dom_node_t * node = root
- *         cdef lxb_dom_node_t * parent_ptr
-*/
-  __pyx_t_1 = __pyx_v_self->node;
-  __pyx_v_root = __pyx_t_1;
-
-  /* "d2d/lexbor/node.pxi":250
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node
- *         cdef lxb_dom_node_t * node = root             # <<<<<<<<<<<<<<
- *         cdef lxb_dom_node_t * parent_ptr
- *         cdef size_t parent_mem_id
-*/
-  __pyx_v_node = __pyx_v_root;
-
-  /* "d2d/lexbor/node.pxi":254
- *         cdef size_t parent_mem_id
+  /* "d2d/lexbor/node.pxi":70
+ *     @property
+ *     def mem_id(self):
+ *         return <size_t> self.node             # <<<<<<<<<<<<<<
  * 
- *         while node != NULL:             # <<<<<<<<<<<<<<
- *             parent_ptr = node.parent
- *             parent_mem_id = <size_t>parent_ptr
+ *     cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id):
 */
-  while (1) {
-    __pyx_t_2 = (__pyx_v_node != NULL);
-    if (!__pyx_t_2) break;
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyLong_FromSize_t(((size_t)__pyx_v_self->node)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
 
-    /* "d2d/lexbor/node.pxi":255
- * 
- *         while node != NULL:
- *             parent_ptr = node.parent             # <<<<<<<<<<<<<<
- *             parent_mem_id = <size_t>parent_ptr
- * 
-*/
-    __pyx_t_1 = __pyx_v_node->parent;
-    __pyx_v_parent_ptr = __pyx_t_1;
-
-    /* "d2d/lexbor/node.pxi":256
- *         while node != NULL:
- *             parent_ptr = node.parent
- *             parent_mem_id = <size_t>parent_ptr             # <<<<<<<<<<<<<<
- * 
- *             if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
-*/
-    __pyx_v_parent_mem_id = ((size_t)__pyx_v_parent_ptr);
-
-    /* "d2d/lexbor/node.pxi":258
- *             parent_mem_id = <size_t>parent_ptr
- * 
- *             if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                 if not skip_empty or not is_empty_text_node(node):
- *                     # Enter signal - just traverse, don't count
-*/
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_include_text)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(4, 258, __pyx_L1_error)
-    if (!__pyx_t_3) {
-    } else {
-      __pyx_t_2 = __pyx_t_3;
-      goto __pyx_L6_bool_binop_done;
-    }
-    __pyx_t_3 = (__pyx_v_node->type != LXB_DOM_NODE_TYPE_TEXT);
-    __pyx_t_2 = __pyx_t_3;
-    __pyx_L6_bool_binop_done:;
-    if (__pyx_t_2) {
-
-      /* "d2d/lexbor/node.pxi":259
- * 
- *             if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
- *                 if not skip_empty or not is_empty_text_node(node):             # <<<<<<<<<<<<<<
- *                     # Enter signal - just traverse, don't count
- *                     pass
-*/
-      __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_skip_empty)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(4, 259, __pyx_L1_error)
-      __pyx_t_4 = (!__pyx_t_3);
-      if (!__pyx_t_4) {
-      } else {
-        __pyx_t_2 = __pyx_t_4;
-        goto __pyx_L9_bool_binop_done;
-      }
-      __pyx_t_4 = __pyx_f_3d2d_6lexbor_is_empty_text_node(__pyx_v_node); if (unlikely(__pyx_t_4 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(4, 259, __pyx_L1_error)
-      __pyx_t_3 = (!__pyx_t_4);
-      __pyx_t_2 = __pyx_t_3;
-      __pyx_L9_bool_binop_done:;
-      if (__pyx_t_2) {
-      }
-
-      /* "d2d/lexbor/node.pxi":258
- *             parent_mem_id = <size_t>parent_ptr
- * 
- *             if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                 if not skip_empty or not is_empty_text_node(node):
- *                     # Enter signal - just traverse, don't count
-*/
-    }
-
-    /* "d2d/lexbor/node.pxi":263
- *                     pass
- * 
- *             if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                 node = node.first_child
- *             else:
-*/
-    __pyx_t_2 = (__pyx_v_node->first_child != NULL);
-    if (__pyx_t_2) {
-
-      /* "d2d/lexbor/node.pxi":264
- * 
- *             if node.first_child != NULL:
- *                 node = node.first_child             # <<<<<<<<<<<<<<
- *             else:
- *                 # Exit current node before moving up
-*/
-      __pyx_t_1 = __pyx_v_node->first_child;
-      __pyx_v_node = __pyx_t_1;
-
-      /* "d2d/lexbor/node.pxi":263
- *                     pass
- * 
- *             if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                 node = node.first_child
- *             else:
-*/
-      goto __pyx_L11;
-    }
-
-    /* "d2d/lexbor/node.pxi":267
- *             else:
- *                 # Exit current node before moving up
- *                 while True:             # <<<<<<<<<<<<<<
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
- *                         if not skip_empty or not is_empty_text_node(node):
-*/
-    /*else*/ {
-      while (1) {
-
-        /* "d2d/lexbor/node.pxi":268
- *                 # Exit current node before moving up
- *                 while True:
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                         if not skip_empty or not is_empty_text_node(node):
- *                             parent_ptr = node.parent
-*/
-        __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_include_text)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(4, 268, __pyx_L1_error)
-        if (!__pyx_t_3) {
-        } else {
-          __pyx_t_2 = __pyx_t_3;
-          goto __pyx_L15_bool_binop_done;
-        }
-        __pyx_t_3 = (__pyx_v_node->type != LXB_DOM_NODE_TYPE_TEXT);
-        __pyx_t_2 = __pyx_t_3;
-        __pyx_L15_bool_binop_done:;
-        if (__pyx_t_2) {
-
-          /* "d2d/lexbor/node.pxi":269
- *                 while True:
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
- *                         if not skip_empty or not is_empty_text_node(node):             # <<<<<<<<<<<<<<
- *                             parent_ptr = node.parent
- *                             parent_mem_id = <size_t>parent_ptr
-*/
-          __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_skip_empty)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(4, 269, __pyx_L1_error)
-          __pyx_t_4 = (!__pyx_t_3);
-          if (!__pyx_t_4) {
-          } else {
-            __pyx_t_2 = __pyx_t_4;
-            goto __pyx_L18_bool_binop_done;
-          }
-          __pyx_t_4 = __pyx_f_3d2d_6lexbor_is_empty_text_node(__pyx_v_node); if (unlikely(__pyx_t_4 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(4, 269, __pyx_L1_error)
-          __pyx_t_3 = (!__pyx_t_4);
-          __pyx_t_2 = __pyx_t_3;
-          __pyx_L18_bool_binop_done:;
-          if (__pyx_t_2) {
-
-            /* "d2d/lexbor/node.pxi":270
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
- *                         if not skip_empty or not is_empty_text_node(node):
- *                             parent_ptr = node.parent             # <<<<<<<<<<<<<<
- *                             parent_mem_id = <size_t>parent_ptr
- *                             # Exit signal - just traverse, don't count
-*/
-            __pyx_t_1 = __pyx_v_node->parent;
-            __pyx_v_parent_ptr = __pyx_t_1;
-
-            /* "d2d/lexbor/node.pxi":271
- *                         if not skip_empty or not is_empty_text_node(node):
- *                             parent_ptr = node.parent
- *                             parent_mem_id = <size_t>parent_ptr             # <<<<<<<<<<<<<<
- *                             # Exit signal - just traverse, don't count
- *                             pass
-*/
-            __pyx_v_parent_mem_id = ((size_t)__pyx_v_parent_ptr);
-
-            /* "d2d/lexbor/node.pxi":269
- *                 while True:
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:
- *                         if not skip_empty or not is_empty_text_node(node):             # <<<<<<<<<<<<<<
- *                             parent_ptr = node.parent
- *                             parent_mem_id = <size_t>parent_ptr
-*/
-          }
-
-          /* "d2d/lexbor/node.pxi":268
- *                 # Exit current node before moving up
- *                 while True:
- *                     if include_text or node.type != LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                         if not skip_empty or not is_empty_text_node(node):
- *                             parent_ptr = node.parent
-*/
-        }
-
-        /* "d2d/lexbor/node.pxi":275
- *                             pass
- * 
- *                     if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                         break
- *                     node = node.parent
-*/
-        __pyx_t_3 = (__pyx_v_node == __pyx_v_root);
-        if (!__pyx_t_3) {
-        } else {
-          __pyx_t_2 = __pyx_t_3;
-          goto __pyx_L21_bool_binop_done;
-        }
-        __pyx_t_3 = (__pyx_v_node->next != NULL);
-        __pyx_t_2 = __pyx_t_3;
-        __pyx_L21_bool_binop_done:;
-        if (__pyx_t_2) {
-
-          /* "d2d/lexbor/node.pxi":276
- * 
- *                     if node == root or node.next != NULL:
- *                         break             # <<<<<<<<<<<<<<
- *                     node = node.parent
- * 
-*/
-          goto __pyx_L13_break;
-
-          /* "d2d/lexbor/node.pxi":275
- *                             pass
- * 
- *                     if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                         break
- *                     node = node.parent
-*/
-        }
-
-        /* "d2d/lexbor/node.pxi":277
- *                     if node == root or node.next != NULL:
- *                         break
- *                     node = node.parent             # <<<<<<<<<<<<<<
- * 
- *                 if node == root:
-*/
-        __pyx_t_1 = __pyx_v_node->parent;
-        __pyx_v_node = __pyx_t_1;
-      }
-      __pyx_L13_break:;
-
-      /* "d2d/lexbor/node.pxi":279
- *                     node = node.parent
- * 
- *                 if node == root:             # <<<<<<<<<<<<<<
- *                     break
- *                 node = node.next
-*/
-      __pyx_t_2 = (__pyx_v_node == __pyx_v_root);
-      if (__pyx_t_2) {
-
-        /* "d2d/lexbor/node.pxi":280
- * 
- *                 if node == root:
- *                     break             # <<<<<<<<<<<<<<
- *                 node = node.next
- * 
-*/
-        goto __pyx_L4_break;
-
-        /* "d2d/lexbor/node.pxi":279
- *                     node = node.parent
- * 
- *                 if node == root:             # <<<<<<<<<<<<<<
- *                     break
- *                 node = node.next
-*/
-      }
-
-      /* "d2d/lexbor/node.pxi":281
- *                 if node == root:
- *                     break
- *                 node = node.next             # <<<<<<<<<<<<<<
- * 
- *     def convert_html_to_instructions(self, str filename):
-*/
-      __pyx_t_1 = __pyx_v_node->next;
-      __pyx_v_node = __pyx_t_1;
-    }
-    __pyx_L11:;
-  }
-  __pyx_L4_break:;
-
-  /* "d2d/lexbor/node.pxi":247
+  /* "d2d/lexbor/node.pxi":68
  *         return lxbnode
  * 
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):             # <<<<<<<<<<<<<<
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node
+ *     @property             # <<<<<<<<<<<<<<
+ *     def mem_id(self):
+ *         return <size_t> self.node
 */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("d2d.lexbor.LexborNode.traverse_signals_benchmark", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("d2d.lexbor.LexborNode.mem_id.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10929,40 +9118,812 @@ static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark(s
   return __pyx_r;
 }
 
-/* "d2d/lexbor/node.pxi":283
- *                 node = node.next
+/* "d2d/lexbor/node.pxi":72
+ *         return <size_t> self.node
  * 
- *     def convert_html_to_instructions(self, str filename):             # <<<<<<<<<<<<<<
- *         """Convert HTML to instructions, extracting raw tag + style data."""
- *         # Convert filename to bytes for C FILE operations
+ *     cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id):             # <<<<<<<<<<<<<<
+ *         """Check if this tag should create a new instruction block."""
+ *         return (tag_id == LXB_TAG_P or
+*/
+
+static CYTHON_INLINE int __pyx_f_3d2d_6lexbor_10LexborNode__check_new_instruction_block(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, lxb_tag_id_t __pyx_v_tag_id) {
+  int __pyx_r;
+  int __pyx_t_1;
+
+  /* "d2d/lexbor/node.pxi":74
+ *     cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id):
+ *         """Check if this tag should create a new instruction block."""
+ *         return (tag_id == LXB_TAG_P or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_DIV or
+ *                 tag_id == LXB_TAG_H1 or
+*/
+  switch (__pyx_v_tag_id) {
+    case LXB_TAG_P:
+    case LXB_TAG_DIV:
+
+    /* "d2d/lexbor/node.pxi":75
+ *         """Check if this tag should create a new instruction block."""
+ *         return (tag_id == LXB_TAG_P or
+ *                 tag_id == LXB_TAG_DIV or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H1 or
+ *                 tag_id == LXB_TAG_H2 or
+*/
+    case LXB_TAG_H1:
+
+    /* "d2d/lexbor/node.pxi":76
+ *         return (tag_id == LXB_TAG_P or
+ *                 tag_id == LXB_TAG_DIV or
+ *                 tag_id == LXB_TAG_H1 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H2 or
+ *                 tag_id == LXB_TAG_H3 or
+*/
+    case LXB_TAG_H2:
+
+    /* "d2d/lexbor/node.pxi":77
+ *                 tag_id == LXB_TAG_DIV or
+ *                 tag_id == LXB_TAG_H1 or
+ *                 tag_id == LXB_TAG_H2 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H3 or
+ *                 tag_id == LXB_TAG_H4 or
+*/
+    case LXB_TAG_H3:
+
+    /* "d2d/lexbor/node.pxi":78
+ *                 tag_id == LXB_TAG_H1 or
+ *                 tag_id == LXB_TAG_H2 or
+ *                 tag_id == LXB_TAG_H3 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H4 or
+ *                 tag_id == LXB_TAG_H5 or
+*/
+    case LXB_TAG_H4:
+
+    /* "d2d/lexbor/node.pxi":79
+ *                 tag_id == LXB_TAG_H2 or
+ *                 tag_id == LXB_TAG_H3 or
+ *                 tag_id == LXB_TAG_H4 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H5 or
+ *                 tag_id == LXB_TAG_H6 or
+*/
+    case LXB_TAG_H5:
+
+    /* "d2d/lexbor/node.pxi":80
+ *                 tag_id == LXB_TAG_H3 or
+ *                 tag_id == LXB_TAG_H4 or
+ *                 tag_id == LXB_TAG_H5 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_H6 or
+ *                 tag_id == LXB_TAG_LI or
+*/
+    case LXB_TAG_H6:
+
+    /* "d2d/lexbor/node.pxi":81
+ *                 tag_id == LXB_TAG_H4 or
+ *                 tag_id == LXB_TAG_H5 or
+ *                 tag_id == LXB_TAG_H6 or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_LI or
+ *                 tag_id == LXB_TAG_BR)
+*/
+    case LXB_TAG_LI:
+
+    /* "d2d/lexbor/node.pxi":82
+ *                 tag_id == LXB_TAG_H5 or
+ *                 tag_id == LXB_TAG_H6 or
+ *                 tag_id == LXB_TAG_LI or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_BR)
+ * 
+*/
+    case LXB_TAG_BR:
+
+    /* "d2d/lexbor/node.pxi":74
+ *     cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id):
+ *         """Check if this tag should create a new instruction block."""
+ *         return (tag_id == LXB_TAG_P or             # <<<<<<<<<<<<<<
+ *                 tag_id == LXB_TAG_DIV or
+ *                 tag_id == LXB_TAG_H1 or
+*/
+    __pyx_t_1 = 1;
+    break;
+    default:
+    __pyx_t_1 = 0;
+    break;
+  }
+  __pyx_r = __pyx_t_1;
+  goto __pyx_L0;
+
+  /* "d2d/lexbor/node.pxi":72
+ *         return <size_t> self.node
+ * 
+ *     cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id):             # <<<<<<<<<<<<<<
+ *         """Check if this tag should create a new instruction block."""
+ *         return (tag_id == LXB_TAG_P or
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "d2d/lexbor/node.pxi":85
+ *                 tag_id == LXB_TAG_BR)
+ * 
+ *     cdef bint _parse_style(self, str style, InstructionAttrs* attrs):             # <<<<<<<<<<<<<<
+ *         """Parse inline style attribute."""
+ *         if not style:
+*/
+
+static int __pyx_f_3d2d_6lexbor_10LexborNode__parse_style(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyObject *__pyx_v_style, struct __pyx_t_3d2d_6lexbor_InstructionAttrs *__pyx_v_attrs) {
+  int __pyx_v_modified;
+  PyObject *__pyx_v_properties = 0;
+  PyObject *__pyx_v_prop = 0;
+  PyObject *__pyx_v_key = 0;
+  PyObject *__pyx_v_value = 0;
+  PyObject *__pyx_v_value_bytes = 0;
+  PyObject *__pyx_v_parts = NULL;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  size_t __pyx_t_9;
+  char *__pyx_t_10;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("_parse_style", 0);
+
+  /* "d2d/lexbor/node.pxi":87
+ *     cdef bint _parse_style(self, str style, InstructionAttrs* attrs):
+ *         """Parse inline style attribute."""
+ *         if not style:             # <<<<<<<<<<<<<<
+ *             return False
+ * 
+*/
+  if (__pyx_v_style == Py_None) __pyx_t_1 = 0;
+  else
+  {
+    Py_ssize_t __pyx_temp = __Pyx_PyUnicode_IS_TRUE(__pyx_v_style);
+    if (unlikely(((!CYTHON_ASSUME_SAFE_SIZE) && __pyx_temp < 0))) __PYX_ERR(1, 87, __pyx_L1_error)
+    __pyx_t_1 = (__pyx_temp != 0);
+  }
+
+  __pyx_t_2 = (!__pyx_t_1);
+  if (__pyx_t_2) {
+
+    /* "d2d/lexbor/node.pxi":88
+ *         """Parse inline style attribute."""
+ *         if not style:
+ *             return False             # <<<<<<<<<<<<<<
+ * 
+ *         cdef bint modified = False
+*/
+    __pyx_r = 0;
+    goto __pyx_L0;
+
+    /* "d2d/lexbor/node.pxi":87
+ *     cdef bint _parse_style(self, str style, InstructionAttrs* attrs):
+ *         """Parse inline style attribute."""
+ *         if not style:             # <<<<<<<<<<<<<<
+ *             return False
+ * 
+*/
+  }
+
+  /* "d2d/lexbor/node.pxi":90
+ *             return False
+ * 
+ *         cdef bint modified = False             # <<<<<<<<<<<<<<
+ *         cdef list properties = style.split(';')
+ *         cdef str prop, key, value
+*/
+  __pyx_v_modified = 0;
+
+  /* "d2d/lexbor/node.pxi":91
+ * 
+ *         cdef bint modified = False
+ *         cdef list properties = style.split(';')             # <<<<<<<<<<<<<<
+ *         cdef str prop, key, value
+ *         cdef bytes key_bytes, value_bytes
+*/
+  if (unlikely(__pyx_v_style == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "split");
+    __PYX_ERR(1, 91, __pyx_L1_error)
+  }
+  __pyx_t_3 = PyUnicode_Split(__pyx_v_style, __pyx_mstate_global->__pyx_kp_u__5, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_properties = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "d2d/lexbor/node.pxi":95
+ *         cdef bytes key_bytes, value_bytes
+ * 
+ *         for prop in properties:             # <<<<<<<<<<<<<<
+ *             if ':' not in prop:
+ *                 continue
+*/
+  __pyx_t_3 = __pyx_v_properties; __Pyx_INCREF(__pyx_t_3);
+  __pyx_t_4 = 0;
+  for (;;) {
+    {
+      Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_3);
+      #if !CYTHON_ASSUME_SAFE_SIZE
+      if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 95, __pyx_L1_error)
+      #endif
+      if (__pyx_t_4 >= __pyx_temp) break;
+    }
+    __pyx_t_5 = __Pyx_PyList_GetItemRefFast(__pyx_t_3, __pyx_t_4, __Pyx_ReferenceSharing_OwnStrongReference);
+    ++__pyx_t_4;
+    if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 95, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None) || __Pyx_RaiseUnexpectedTypeError("str", __pyx_t_5))) __PYX_ERR(1, 95, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_prop, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "d2d/lexbor/node.pxi":96
+ * 
+ *         for prop in properties:
+ *             if ':' not in prop:             # <<<<<<<<<<<<<<
+ *                 continue
+ * 
+*/
+    if (unlikely(__pyx_v_prop == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+      __PYX_ERR(1, 96, __pyx_L1_error)
+    }
+    __pyx_t_2 = (__Pyx_PyUnicode_ContainsTF(__pyx_mstate_global->__pyx_kp_u__6, __pyx_v_prop, Py_NE)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 96, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":97
+ *         for prop in properties:
+ *             if ':' not in prop:
+ *                 continue             # <<<<<<<<<<<<<<
+ * 
+ *             parts = prop.split(':', 1)
+*/
+      goto __pyx_L4_continue;
+
+      /* "d2d/lexbor/node.pxi":96
+ * 
+ *         for prop in properties:
+ *             if ':' not in prop:             # <<<<<<<<<<<<<<
+ *                 continue
+ * 
+*/
+    }
+
+    /* "d2d/lexbor/node.pxi":99
+ *                 continue
+ * 
+ *             parts = prop.split(':', 1)             # <<<<<<<<<<<<<<
+ *             key = parts[0].strip().lower()
+ *             value = parts[1].strip().lower()
+*/
+    if (unlikely(__pyx_v_prop == Py_None)) {
+      PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "split");
+      __PYX_ERR(1, 99, __pyx_L1_error)
+    }
+    __pyx_t_5 = PyUnicode_Split(__pyx_v_prop, __pyx_mstate_global->__pyx_kp_u__6, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 99, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_parts, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "d2d/lexbor/node.pxi":100
+ * 
+ *             parts = prop.split(':', 1)
+ *             key = parts[0].strip().lower()             # <<<<<<<<<<<<<<
+ *             value = parts[1].strip().lower()
+ * 
+*/
+    __pyx_t_8 = __Pyx_PyList_GET_ITEM(__pyx_v_parts, 0);
+    __Pyx_INCREF(__pyx_t_8);
+    __pyx_t_9 = 0;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
+      __pyx_t_7 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_strip, __pyx_callargs+__pyx_t_9, (1-__pyx_t_9) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 100, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+    }
+    __pyx_t_6 = __pyx_t_7;
+    __Pyx_INCREF(__pyx_t_6);
+    __pyx_t_9 = 0;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_6, NULL};
+      __pyx_t_5 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_lower, __pyx_callargs+__pyx_t_9, (1-__pyx_t_9) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 100, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+    }
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None) || __Pyx_RaiseUnexpectedTypeError("str", __pyx_t_5))) __PYX_ERR(1, 100, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_key, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "d2d/lexbor/node.pxi":101
+ *             parts = prop.split(':', 1)
+ *             key = parts[0].strip().lower()
+ *             value = parts[1].strip().lower()             # <<<<<<<<<<<<<<
+ * 
+ *             if key == 'font-weight':
+*/
+    __pyx_t_8 = __Pyx_PyList_GET_ITEM(__pyx_v_parts, 1);
+    __Pyx_INCREF(__pyx_t_8);
+    __pyx_t_9 = 0;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
+      __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_strip, __pyx_callargs+__pyx_t_9, (1-__pyx_t_9) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 101, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+    }
+    __pyx_t_7 = __pyx_t_6;
+    __Pyx_INCREF(__pyx_t_7);
+    __pyx_t_9 = 0;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, NULL};
+      __pyx_t_5 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_lower, __pyx_callargs+__pyx_t_9, (1-__pyx_t_9) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 101, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+    }
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None) || __Pyx_RaiseUnexpectedTypeError("str", __pyx_t_5))) __PYX_ERR(1, 101, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_value, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "d2d/lexbor/node.pxi":103
+ *             value = parts[1].strip().lower()
+ * 
+ *             if key == 'font-weight':             # <<<<<<<<<<<<<<
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_kp_u_font_weight, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 103, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":104
+ * 
+ *             if key == 'font-weight':
+ *                 value_bytes = value.encode('utf-8')             # <<<<<<<<<<<<<<
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)
+ *                 attrs.font_weight[31] = '\0'
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
+        __PYX_ERR(1, 104, __pyx_L1_error)
+      }
+      __pyx_t_5 = PyUnicode_AsUTF8String(__pyx_v_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 104, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_XDECREF_SET(__pyx_v_value_bytes, ((PyObject*)__pyx_t_5));
+      __pyx_t_5 = 0;
+
+      /* "d2d/lexbor/node.pxi":105
+ *             if key == 'font-weight':
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)             # <<<<<<<<<<<<<<
+ *                 attrs.font_weight[31] = '\0'
+ *                 modified = True
+*/
+      __pyx_t_10 = __Pyx_PyBytes_AsWritableString(__pyx_v_value_bytes); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(1, 105, __pyx_L1_error)
+      (void)(strncpy(__pyx_v_attrs->font_weight, ((char *)__pyx_t_10), 31));
+
+      /* "d2d/lexbor/node.pxi":106
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)
+ *                 attrs.font_weight[31] = '\0'             # <<<<<<<<<<<<<<
+ *                 modified = True
+ *             elif key == 'font-style':
+*/
+      (__pyx_v_attrs->font_weight[31]) = '\x00';
+
+      /* "d2d/lexbor/node.pxi":107
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)
+ *                 attrs.font_weight[31] = '\0'
+ *                 modified = True             # <<<<<<<<<<<<<<
+ *             elif key == 'font-style':
+ *                 if 'italic' in value:
+*/
+      __pyx_v_modified = 1;
+
+      /* "d2d/lexbor/node.pxi":103
+ *             value = parts[1].strip().lower()
+ * 
+ *             if key == 'font-weight':             # <<<<<<<<<<<<<<
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_weight, <char*>value_bytes, 31)
+*/
+      goto __pyx_L7;
+    }
+
+    /* "d2d/lexbor/node.pxi":108
+ *                 attrs.font_weight[31] = '\0'
+ *                 modified = True
+ *             elif key == 'font-style':             # <<<<<<<<<<<<<<
+ *                 if 'italic' in value:
+ *                     attrs.is_italic = True
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_kp_u_font_style, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 108, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":109
+ *                 modified = True
+ *             elif key == 'font-style':
+ *                 if 'italic' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_italic = True
+ *                     modified = True
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+        __PYX_ERR(1, 109, __pyx_L1_error)
+      }
+      __pyx_t_2 = (__Pyx_PyUnicode_ContainsTF(__pyx_mstate_global->__pyx_n_u_italic, __pyx_v_value, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 109, __pyx_L1_error)
+      if (__pyx_t_2) {
+
+        /* "d2d/lexbor/node.pxi":110
+ *             elif key == 'font-style':
+ *                 if 'italic' in value:
+ *                     attrs.is_italic = True             # <<<<<<<<<<<<<<
+ *                     modified = True
+ *             elif key == 'text-decoration':
+*/
+        __pyx_v_attrs->is_italic = 1;
+
+        /* "d2d/lexbor/node.pxi":111
+ *                 if 'italic' in value:
+ *                     attrs.is_italic = True
+ *                     modified = True             # <<<<<<<<<<<<<<
+ *             elif key == 'text-decoration':
+ *                 if 'underline' in value:
+*/
+        __pyx_v_modified = 1;
+
+        /* "d2d/lexbor/node.pxi":109
+ *                 modified = True
+ *             elif key == 'font-style':
+ *                 if 'italic' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_italic = True
+ *                     modified = True
+*/
+      }
+
+      /* "d2d/lexbor/node.pxi":108
+ *                 attrs.font_weight[31] = '\0'
+ *                 modified = True
+ *             elif key == 'font-style':             # <<<<<<<<<<<<<<
+ *                 if 'italic' in value:
+ *                     attrs.is_italic = True
+*/
+      goto __pyx_L7;
+    }
+
+    /* "d2d/lexbor/node.pxi":112
+ *                     attrs.is_italic = True
+ *                     modified = True
+ *             elif key == 'text-decoration':             # <<<<<<<<<<<<<<
+ *                 if 'underline' in value:
+ *                     attrs.is_underline = True
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_kp_u_text_decoration, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 112, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":113
+ *                     modified = True
+ *             elif key == 'text-decoration':
+ *                 if 'underline' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_underline = True
+ *                     modified = True
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+        __PYX_ERR(1, 113, __pyx_L1_error)
+      }
+      __pyx_t_2 = (__Pyx_PyUnicode_ContainsTF(__pyx_mstate_global->__pyx_n_u_underline, __pyx_v_value, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 113, __pyx_L1_error)
+      if (__pyx_t_2) {
+
+        /* "d2d/lexbor/node.pxi":114
+ *             elif key == 'text-decoration':
+ *                 if 'underline' in value:
+ *                     attrs.is_underline = True             # <<<<<<<<<<<<<<
+ *                     modified = True
+ *             elif key == 'text-align':
+*/
+        __pyx_v_attrs->is_underline = 1;
+
+        /* "d2d/lexbor/node.pxi":115
+ *                 if 'underline' in value:
+ *                     attrs.is_underline = True
+ *                     modified = True             # <<<<<<<<<<<<<<
+ *             elif key == 'text-align':
+ *                 if 'center' in value:
+*/
+        __pyx_v_modified = 1;
+
+        /* "d2d/lexbor/node.pxi":113
+ *                     modified = True
+ *             elif key == 'text-decoration':
+ *                 if 'underline' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_underline = True
+ *                     modified = True
+*/
+      }
+
+      /* "d2d/lexbor/node.pxi":112
+ *                     attrs.is_italic = True
+ *                     modified = True
+ *             elif key == 'text-decoration':             # <<<<<<<<<<<<<<
+ *                 if 'underline' in value:
+ *                     attrs.is_underline = True
+*/
+      goto __pyx_L7;
+    }
+
+    /* "d2d/lexbor/node.pxi":116
+ *                     attrs.is_underline = True
+ *                     modified = True
+ *             elif key == 'text-align':             # <<<<<<<<<<<<<<
+ *                 if 'center' in value:
+ *                     attrs.is_text_center = True
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_kp_u_text_align, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 116, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":117
+ *                     modified = True
+ *             elif key == 'text-align':
+ *                 if 'center' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_text_center = True
+ *                     modified = True
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+        __PYX_ERR(1, 117, __pyx_L1_error)
+      }
+      __pyx_t_2 = (__Pyx_PyUnicode_ContainsTF(__pyx_mstate_global->__pyx_n_u_center, __pyx_v_value, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 117, __pyx_L1_error)
+      if (__pyx_t_2) {
+
+        /* "d2d/lexbor/node.pxi":118
+ *             elif key == 'text-align':
+ *                 if 'center' in value:
+ *                     attrs.is_text_center = True             # <<<<<<<<<<<<<<
+ *                     modified = True
+ *             elif key == 'font-size':
+*/
+        __pyx_v_attrs->is_text_center = 1;
+
+        /* "d2d/lexbor/node.pxi":119
+ *                 if 'center' in value:
+ *                     attrs.is_text_center = True
+ *                     modified = True             # <<<<<<<<<<<<<<
+ *             elif key == 'font-size':
+ *                 value_bytes = value.encode('utf-8')
+*/
+        __pyx_v_modified = 1;
+
+        /* "d2d/lexbor/node.pxi":117
+ *                     modified = True
+ *             elif key == 'text-align':
+ *                 if 'center' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.is_text_center = True
+ *                     modified = True
+*/
+      }
+
+      /* "d2d/lexbor/node.pxi":116
+ *                     attrs.is_underline = True
+ *                     modified = True
+ *             elif key == 'text-align':             # <<<<<<<<<<<<<<
+ *                 if 'center' in value:
+ *                     attrs.is_text_center = True
+*/
+      goto __pyx_L7;
+    }
+
+    /* "d2d/lexbor/node.pxi":120
+ *                     attrs.is_text_center = True
+ *                     modified = True
+ *             elif key == 'font-size':             # <<<<<<<<<<<<<<
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_kp_u_font_size, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 120, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":121
+ *                     modified = True
+ *             elif key == 'font-size':
+ *                 value_bytes = value.encode('utf-8')             # <<<<<<<<<<<<<<
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)
+ *                 attrs.font_size[31] = '\0'
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
+        __PYX_ERR(1, 121, __pyx_L1_error)
+      }
+      __pyx_t_5 = PyUnicode_AsUTF8String(__pyx_v_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 121, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_XDECREF_SET(__pyx_v_value_bytes, ((PyObject*)__pyx_t_5));
+      __pyx_t_5 = 0;
+
+      /* "d2d/lexbor/node.pxi":122
+ *             elif key == 'font-size':
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)             # <<<<<<<<<<<<<<
+ *                 attrs.font_size[31] = '\0'
+ *                 modified = True
+*/
+      __pyx_t_10 = __Pyx_PyBytes_AsWritableString(__pyx_v_value_bytes); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(1, 122, __pyx_L1_error)
+      (void)(strncpy(__pyx_v_attrs->font_size, ((char *)__pyx_t_10), 31));
+
+      /* "d2d/lexbor/node.pxi":123
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)
+ *                 attrs.font_size[31] = '\0'             # <<<<<<<<<<<<<<
+ *                 modified = True
+ *             elif key == 'display':
+*/
+      (__pyx_v_attrs->font_size[31]) = '\x00';
+
+      /* "d2d/lexbor/node.pxi":124
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)
+ *                 attrs.font_size[31] = '\0'
+ *                 modified = True             # <<<<<<<<<<<<<<
+ *             elif key == 'display':
+ *                 if 'none' in value:
+*/
+      __pyx_v_modified = 1;
+
+      /* "d2d/lexbor/node.pxi":120
+ *                     attrs.is_text_center = True
+ *                     modified = True
+ *             elif key == 'font-size':             # <<<<<<<<<<<<<<
+ *                 value_bytes = value.encode('utf-8')
+ *                 strncpy(attrs.font_size, <char*>value_bytes, 31)
+*/
+      goto __pyx_L7;
+    }
+
+    /* "d2d/lexbor/node.pxi":125
+ *                 attrs.font_size[31] = '\0'
+ *                 modified = True
+ *             elif key == 'display':             # <<<<<<<<<<<<<<
+ *                 if 'none' in value:
+ *                     attrs.display_none = True
+*/
+    __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_key, __pyx_mstate_global->__pyx_n_u_display, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 125, __pyx_L1_error)
+    if (__pyx_t_2) {
+
+      /* "d2d/lexbor/node.pxi":126
+ *                 modified = True
+ *             elif key == 'display':
+ *                 if 'none' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.display_none = True
+ *                     modified = True
+*/
+      if (unlikely(__pyx_v_value == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+        __PYX_ERR(1, 126, __pyx_L1_error)
+      }
+      __pyx_t_2 = (__Pyx_PyUnicode_ContainsTF(__pyx_mstate_global->__pyx_n_u_none, __pyx_v_value, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 126, __pyx_L1_error)
+      if (__pyx_t_2) {
+
+        /* "d2d/lexbor/node.pxi":127
+ *             elif key == 'display':
+ *                 if 'none' in value:
+ *                     attrs.display_none = True             # <<<<<<<<<<<<<<
+ *                     modified = True
+ * 
+*/
+        __pyx_v_attrs->display_none = 1;
+
+        /* "d2d/lexbor/node.pxi":128
+ *                 if 'none' in value:
+ *                     attrs.display_none = True
+ *                     modified = True             # <<<<<<<<<<<<<<
+ * 
+ *         return modified
+*/
+        __pyx_v_modified = 1;
+
+        /* "d2d/lexbor/node.pxi":126
+ *                 modified = True
+ *             elif key == 'display':
+ *                 if 'none' in value:             # <<<<<<<<<<<<<<
+ *                     attrs.display_none = True
+ *                     modified = True
+*/
+      }
+
+      /* "d2d/lexbor/node.pxi":125
+ *                 attrs.font_size[31] = '\0'
+ *                 modified = True
+ *             elif key == 'display':             # <<<<<<<<<<<<<<
+ *                 if 'none' in value:
+ *                     attrs.display_none = True
+*/
+    }
+    __pyx_L7:;
+
+    /* "d2d/lexbor/node.pxi":95
+ *         cdef bytes key_bytes, value_bytes
+ * 
+ *         for prop in properties:             # <<<<<<<<<<<<<<
+ *             if ':' not in prop:
+ *                 continue
+*/
+    __pyx_L4_continue:;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "d2d/lexbor/node.pxi":130
+ *                     modified = True
+ * 
+ *         return modified             # <<<<<<<<<<<<<<
+ * 
+ *     def convert_html_to_instructions(self):
+*/
+  __pyx_r = __pyx_v_modified;
+  goto __pyx_L0;
+
+  /* "d2d/lexbor/node.pxi":85
+ *                 tag_id == LXB_TAG_BR)
+ * 
+ *     cdef bint _parse_style(self, str style, InstructionAttrs* attrs):             # <<<<<<<<<<<<<<
+ *         """Parse inline style attribute."""
+ *         if not style:
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("d2d.lexbor.LexborNode._parse_style", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_properties);
+  __Pyx_XDECREF(__pyx_v_prop);
+  __Pyx_XDECREF(__pyx_v_key);
+  __Pyx_XDECREF(__pyx_v_value);
+  __Pyx_XDECREF(__pyx_v_value_bytes);
+  __Pyx_XDECREF(__pyx_v_parts);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "d2d/lexbor/node.pxi":132
+ *         return modified
+ * 
+ *     def convert_html_to_instructions(self):             # <<<<<<<<<<<<<<
+ *         """Convert HTML to instructions and write to file."""
+ *         cdef lxb_dom_node_t *root = self.node
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions, "LexborNode.convert_html_to_instructions(self, str filename)\n\nConvert HTML to instructions, extracting raw tag + style data.");
-static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions = {"convert_html_to_instructions", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions};
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_convert_html_to_instructions, "LexborNode.convert_html_to_instructions(self)\n\nConvert HTML to instructions and write to file.");
+static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions = {"convert_html_to_instructions", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_convert_html_to_instructions};
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  PyObject *__pyx_v_filename = 0;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[1] = {0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("convert_html_to_instructions (wrapper)", 0);
@@ -10974,2132 +9935,3246 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_filename,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 283, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 283, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "convert_html_to_instructions", 0) < (0)) __PYX_ERR(4, 283, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("convert_html_to_instructions", 1, 1, 1, i); __PYX_ERR(4, 283, __pyx_L3_error) }
-      }
-    } else if (unlikely(__pyx_nargs != 1)) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 283, __pyx_L3_error)
-    }
-    __pyx_v_filename = ((PyObject*)values[0]);
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("convert_html_to_instructions", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 283, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("d2d.lexbor.LexborNode.convert_html_to_instructions", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_filename), (&PyUnicode_Type), 1, "filename", 1))) __PYX_ERR(4, 283, __pyx_L1_error)
-  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self), __pyx_v_filename);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("convert_html_to_instructions", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("convert_html_to_instructions", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_convert_html_to_instructions(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  goto __pyx_L7_cleaned_up;
-  __pyx_L0:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __pyx_L7_cleaned_up:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, PyObject *__pyx_v_filename) {
-  PyObject *__pyx_v_filename_bytes = 0;
-  char const *__pyx_v_filename_c;
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_convert_html_to_instructions(struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self) {
   lxb_dom_node_t *__pyx_v_root;
   lxb_dom_node_t *__pyx_v_node;
-  lxb_dom_attr_t *__pyx_v_style_attr;
-  lxb_char_t const *__pyx_v_style_value;
-  unsigned char *__pyx_v_text_content;
-  size_t __pyx_v_str_len;
+  lxb_dom_attr_t *__pyx_v_attr;
+  lxb_char_t const *__pyx_v_key;
+  lxb_char_t const *__pyx_v_value;
+  size_t __pyx_v_key_len;
+  size_t __pyx_v_value_len;
   lxb_tag_id_t __pyx_v_tag_id;
-  size_t __pyx_v_i;
-  int __pyx_v_is_empty;
-  PyObject *__pyx_v_buffer = 0;
-  unsigned char *__pyx_v_buffer_ptr;
-  size_t __pyx_v_pos;
-  size_t __pyx_v_capacity;
-  char __pyx_v_bold_stack[1000][200];
-  int __pyx_v_bold_depth;
-  char __pyx_v_italic_stack[1000][200];
-  int __pyx_v_italic_depth;
-  char __pyx_v_underline_stack[1000][200];
-  int __pyx_v_underline_depth;
-  char __pyx_v_text_center_stack[1000][200];
-  int __pyx_v_text_center_depth;
-  char __pyx_v_font_size_stack[1000][200];
-  int __pyx_v_font_size_depth;
-  char const *__pyx_v_current_href;
-  CYTHON_UNUSED char const *__pyx_v_current_src;
-  CYTHON_UNUSED char const *__pyx_v_current_alt;
-  int __pyx_v_in_block;
-  int __pyx_v_skip_node;
-  struct __pyx_t_3d2d_6lexbor_StyleFlags __pyx_v_style_flags;
-  struct __pyx_t_3d2d_6lexbor_TagStyleEffects __pyx_v_tag_effects;
-  FILE *__pyx_v_f;
+  lxb_char_t const *__pyx_v_text;
+  struct __pyx_t_3d2d_6lexbor_StyleStackEntry __pyx_v_style_stack[1000];
+  int __pyx_v_stack_depth;
+  struct __pyx_t_3d2d_6lexbor_InstructionAttrs __pyx_v_current_attrs;
+  int __pyx_v_modified;
+  int __pyx_v_in_table;
+  int __pyx_v_in_cell;
+  PyObject *__pyx_v_table_data = 0;
+  PyObject *__pyx_v_table_spans = 0;
+  PyObject *__pyx_v_current_cell_instructions = 0;
+  int __pyx_v_current_rowspan;
+  int __pyx_v_current_colspan;
+  int __pyx_v_skip_subtree;
+  size_t __pyx_v_skip_mem_id;
+  PyObject *__pyx_v_instructions_block = 0;
+  struct __pyx_t_3d2d_6lexbor_InstructionAttrs __pyx_v_base_attrs;
+  PyObject *__pyx_v_instruction = 0;
+  PyObject *__pyx_v_text_str = 0;
+  PyObject *__pyx_v_style_str = 0;
+  PyObject *__pyx_v_f = NULL;
+  PyObject *__pyx_v_e = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  char const *__pyx_t_2;
-  lxb_dom_node_t *__pyx_t_3;
+  lxb_dom_node_t *__pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  size_t __pyx_t_5;
-  char *__pyx_t_6;
-  Py_ssize_t __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
-  size_t __pyx_t_12;
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
   size_t __pyx_t_13;
   int __pyx_t_14;
-  int __pyx_t_15;
-  char const *__pyx_t_16;
+  char const *__pyx_t_15;
+  PyObject *__pyx_t_16 = NULL;
   PyObject *__pyx_t_17 = NULL;
   PyObject *__pyx_t_18 = NULL;
   PyObject *__pyx_t_19 = NULL;
   PyObject *__pyx_t_20 = NULL;
   PyObject *__pyx_t_21 = NULL;
-  PyObject *__pyx_t_22 = NULL;
+  int __pyx_t_22;
+  int __pyx_t_23;
+  int __pyx_t_24;
+  lxb_dom_attr_t *__pyx_t_25;
+  Py_ssize_t __pyx_t_26;
+  struct __pyx_t_3d2d_6lexbor_InstructionAttrs __pyx_t_27;
+  char *__pyx_t_28;
+  char const *__pyx_t_29;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("convert_html_to_instructions", 0);
 
-  /* "d2d/lexbor/node.pxi":286
- *         """Convert HTML to instructions, extracting raw tag + style data."""
- *         # Convert filename to bytes for C FILE operations
- *         cdef bytes filename_bytes = filename.encode('utf-8')             # <<<<<<<<<<<<<<
- *         cdef const char* filename_c = filename_bytes
- * 
-*/
-  if (unlikely(__pyx_v_filename == Py_None)) {
-    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(4, 286, __pyx_L1_error)
-  }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_filename); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 286, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_filename_bytes = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "d2d/lexbor/node.pxi":287
- *         # Convert filename to bytes for C FILE operations
- *         cdef bytes filename_bytes = filename.encode('utf-8')
- *         cdef const char* filename_c = filename_bytes             # <<<<<<<<<<<<<<
- * 
- *         cdef lxb_dom_node_t *root = self.node
-*/
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_filename_bytes); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(4, 287, __pyx_L1_error)
-  __pyx_v_filename_c = __pyx_t_2;
-
-  /* "d2d/lexbor/node.pxi":289
- *         cdef const char* filename_c = filename_bytes
- * 
+  /* "d2d/lexbor/node.pxi":134
+ *     def convert_html_to_instructions(self):
+ *         """Convert HTML to instructions and write to file."""
  *         cdef lxb_dom_node_t *root = self.node             # <<<<<<<<<<<<<<
  *         cdef lxb_dom_node_t *node = root
- *         cdef lxb_dom_attr_t *style_attr
-*/
-  __pyx_t_3 = __pyx_v_self->node;
-  __pyx_v_root = __pyx_t_3;
-
-  /* "d2d/lexbor/node.pxi":290
  * 
+*/
+  __pyx_t_1 = __pyx_v_self->node;
+  __pyx_v_root = __pyx_t_1;
+
+  /* "d2d/lexbor/node.pxi":135
+ *         """Convert HTML to instructions and write to file."""
  *         cdef lxb_dom_node_t *root = self.node
  *         cdef lxb_dom_node_t *node = root             # <<<<<<<<<<<<<<
- *         cdef lxb_dom_attr_t *style_attr
- *         cdef const lxb_char_t *style_value
+ * 
+ *         # Attribute access variables
 */
   __pyx_v_node = __pyx_v_root;
 
-  /* "d2d/lexbor/node.pxi":300
+  /* "d2d/lexbor/node.pxi":147
+ *         # Style stack
+ *         cdef StyleStackEntry[MAX_STACK_DEPTH] style_stack
+ *         cdef int stack_depth = 0             # <<<<<<<<<<<<<<
+ *         cdef InstructionAttrs current_attrs
+ *         cdef bint modified
+*/
+  __pyx_v_stack_depth = 0;
+
+  /* "d2d/lexbor/node.pxi":152
  * 
- *         # Pre-allocate 2MB buffer for writing
- *         cdef bytearray buffer = bytearray(2 * 1024 * 1024)             # <<<<<<<<<<<<<<
- *         cdef unsigned char* buffer_ptr = <unsigned char*>(<char*>buffer)
- *         cdef size_t pos = 0
+ *         # Table tracking
+ *         cdef bint in_table = False             # <<<<<<<<<<<<<<
+ *         cdef bint in_cell = False
+ *         cdef list table_data = []
 */
-  __pyx_t_4 = NULL;
-  __pyx_t_5 = 1;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_mstate_global->__pyx_int_2097152};
-    __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(&PyByteArray_Type), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 300, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-  }
-  __pyx_v_buffer = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_v_in_table = 0;
 
-  /* "d2d/lexbor/node.pxi":301
- *         # Pre-allocate 2MB buffer for writing
- *         cdef bytearray buffer = bytearray(2 * 1024 * 1024)
- *         cdef unsigned char* buffer_ptr = <unsigned char*>(<char*>buffer)             # <<<<<<<<<<<<<<
- *         cdef size_t pos = 0
- *         cdef size_t capacity = len(buffer)
+  /* "d2d/lexbor/node.pxi":153
+ *         # Table tracking
+ *         cdef bint in_table = False
+ *         cdef bint in_cell = False             # <<<<<<<<<<<<<<
+ *         cdef list table_data = []
+ *         cdef list table_spans = []
 */
-  __pyx_t_6 = __Pyx_PyObject_AsWritableString(__pyx_v_buffer); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(4, 301, __pyx_L1_error)
-  __pyx_v_buffer_ptr = ((unsigned char *)((char *)__pyx_t_6));
+  __pyx_v_in_cell = 0;
 
-  /* "d2d/lexbor/node.pxi":302
- *         cdef bytearray buffer = bytearray(2 * 1024 * 1024)
- *         cdef unsigned char* buffer_ptr = <unsigned char*>(<char*>buffer)
- *         cdef size_t pos = 0             # <<<<<<<<<<<<<<
- *         cdef size_t capacity = len(buffer)
- * 
+  /* "d2d/lexbor/node.pxi":154
+ *         cdef bint in_table = False
+ *         cdef bint in_cell = False
+ *         cdef list table_data = []             # <<<<<<<<<<<<<<
+ *         cdef list table_spans = []
+ *         cdef list current_cell_instructions = []
 */
-  __pyx_v_pos = 0;
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_table_data = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "d2d/lexbor/node.pxi":303
- *         cdef unsigned char* buffer_ptr = <unsigned char*>(<char*>buffer)
- *         cdef size_t pos = 0
- *         cdef size_t capacity = len(buffer)             # <<<<<<<<<<<<<<
- * 
- *         # Stacks
+  /* "d2d/lexbor/node.pxi":155
+ *         cdef bint in_cell = False
+ *         cdef list table_data = []
+ *         cdef list table_spans = []             # <<<<<<<<<<<<<<
+ *         cdef list current_cell_instructions = []
+ *         cdef int current_rowspan = 1
 */
-  __pyx_t_7 = __Pyx_PyByteArray_GET_SIZE(__pyx_v_buffer); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(4, 303, __pyx_L1_error)
-  __pyx_v_capacity = __pyx_t_7;
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 155, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_table_spans = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "d2d/lexbor/node.pxi":307
- *         # Stacks
- *         cdef char bold_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int bold_depth = 0             # <<<<<<<<<<<<<<
- *         cdef char italic_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int italic_depth = 0
+  /* "d2d/lexbor/node.pxi":156
+ *         cdef list table_data = []
+ *         cdef list table_spans = []
+ *         cdef list current_cell_instructions = []             # <<<<<<<<<<<<<<
+ *         cdef int current_rowspan = 1
+ *         cdef int current_colspan = 1
 */
-  __pyx_v_bold_depth = 0;
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 156, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_current_cell_instructions = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "d2d/lexbor/node.pxi":309
- *         cdef int bold_depth = 0
- *         cdef char italic_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int italic_depth = 0             # <<<<<<<<<<<<<<
- *         cdef char underline_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int underline_depth = 0
-*/
-  __pyx_v_italic_depth = 0;
-
-  /* "d2d/lexbor/node.pxi":311
- *         cdef int italic_depth = 0
- *         cdef char underline_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int underline_depth = 0             # <<<<<<<<<<<<<<
- *         cdef char text_center_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int text_center_depth = 0
-*/
-  __pyx_v_underline_depth = 0;
-
-  /* "d2d/lexbor/node.pxi":313
- *         cdef int underline_depth = 0
- *         cdef char text_center_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int text_center_depth = 0             # <<<<<<<<<<<<<<
- *         cdef char font_size_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int font_size_depth = 0
-*/
-  __pyx_v_text_center_depth = 0;
-
-  /* "d2d/lexbor/node.pxi":315
- *         cdef int text_center_depth = 0
- *         cdef char font_size_stack[MAX_STACK_DEPTH][MAX_STRING_LEN]
- *         cdef int font_size_depth = 0             # <<<<<<<<<<<<<<
- * 
- *         # Scalars
-*/
-  __pyx_v_font_size_depth = 0;
-
-  /* "d2d/lexbor/node.pxi":318
- * 
- *         # Scalars
- *         cdef const char* current_href = NULL             # <<<<<<<<<<<<<<
- *         cdef const char* current_src = NULL
- *         cdef const char* current_alt = NULL
-*/
-  __pyx_v_current_href = NULL;
-
-  /* "d2d/lexbor/node.pxi":319
- *         # Scalars
- *         cdef const char* current_href = NULL
- *         cdef const char* current_src = NULL             # <<<<<<<<<<<<<<
- *         cdef const char* current_alt = NULL
+  /* "d2d/lexbor/node.pxi":157
+ *         cdef list table_spans = []
+ *         cdef list current_cell_instructions = []
+ *         cdef int current_rowspan = 1             # <<<<<<<<<<<<<<
+ *         cdef int current_colspan = 1
  * 
 */
-  __pyx_v_current_src = NULL;
+  __pyx_v_current_rowspan = 1;
 
-  /* "d2d/lexbor/node.pxi":320
- *         cdef const char* current_href = NULL
- *         cdef const char* current_src = NULL
- *         cdef const char* current_alt = NULL             # <<<<<<<<<<<<<<
+  /* "d2d/lexbor/node.pxi":158
+ *         cdef list current_cell_instructions = []
+ *         cdef int current_rowspan = 1
+ *         cdef int current_colspan = 1             # <<<<<<<<<<<<<<
  * 
- *         # State tracking
+ *         # Display:none tracking
 */
-  __pyx_v_current_alt = NULL;
+  __pyx_v_current_colspan = 1;
 
-  /* "d2d/lexbor/node.pxi":323
+  /* "d2d/lexbor/node.pxi":161
  * 
- *         # State tracking
- *         cdef bint in_block = False             # <<<<<<<<<<<<<<
- *         cdef bint skip_node = False
+ *         # Display:none tracking
+ *         cdef bint skip_subtree = False             # <<<<<<<<<<<<<<
+ *         cdef size_t skip_mem_id = 0
  * 
 */
-  __pyx_v_in_block = 0;
+  __pyx_v_skip_subtree = 0;
 
-  /* "d2d/lexbor/node.pxi":324
- *         # State tracking
- *         cdef bint in_block = False
- *         cdef bint skip_node = False             # <<<<<<<<<<<<<<
+  /* "d2d/lexbor/node.pxi":162
+ *         # Display:none tracking
+ *         cdef bint skip_subtree = False
+ *         cdef size_t skip_mem_id = 0             # <<<<<<<<<<<<<<
+ * 
+ *         # Instruction block
+*/
+  __pyx_v_skip_mem_id = 0;
+
+  /* "d2d/lexbor/node.pxi":165
+ * 
+ *         # Instruction block
+ *         cdef list instructions_block = []             # <<<<<<<<<<<<<<
+ * 
+ *         # Initialize base attributes
+*/
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_instructions_block = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "d2d/lexbor/node.pxi":169
+ *         # Initialize base attributes
+ *         cdef InstructionAttrs base_attrs
+ *         base_attrs.font_weight[0] = '\0'             # <<<<<<<<<<<<<<
+ *         base_attrs.font_size[0] = '\0'
+ *         base_attrs.href[0] = '\0'
+*/
+  (__pyx_v_base_attrs.font_weight[0]) = '\x00';
+
+  /* "d2d/lexbor/node.pxi":170
+ *         cdef InstructionAttrs base_attrs
+ *         base_attrs.font_weight[0] = '\0'
+ *         base_attrs.font_size[0] = '\0'             # <<<<<<<<<<<<<<
+ *         base_attrs.href[0] = '\0'
+ *         base_attrs.header_tag[0] = '\0'
+*/
+  (__pyx_v_base_attrs.font_size[0]) = '\x00';
+
+  /* "d2d/lexbor/node.pxi":171
+ *         base_attrs.font_weight[0] = '\0'
+ *         base_attrs.font_size[0] = '\0'
+ *         base_attrs.href[0] = '\0'             # <<<<<<<<<<<<<<
+ *         base_attrs.header_tag[0] = '\0'
+ *         base_attrs.is_italic = False
+*/
+  (__pyx_v_base_attrs.href[0]) = '\x00';
+
+  /* "d2d/lexbor/node.pxi":172
+ *         base_attrs.font_size[0] = '\0'
+ *         base_attrs.href[0] = '\0'
+ *         base_attrs.header_tag[0] = '\0'             # <<<<<<<<<<<<<<
+ *         base_attrs.is_italic = False
+ *         base_attrs.is_underline = False
+*/
+  (__pyx_v_base_attrs.header_tag[0]) = '\x00';
+
+  /* "d2d/lexbor/node.pxi":173
+ *         base_attrs.href[0] = '\0'
+ *         base_attrs.header_tag[0] = '\0'
+ *         base_attrs.is_italic = False             # <<<<<<<<<<<<<<
+ *         base_attrs.is_underline = False
+ *         base_attrs.is_text_center = False
+*/
+  __pyx_v_base_attrs.is_italic = 0;
+
+  /* "d2d/lexbor/node.pxi":174
+ *         base_attrs.header_tag[0] = '\0'
+ *         base_attrs.is_italic = False
+ *         base_attrs.is_underline = False             # <<<<<<<<<<<<<<
+ *         base_attrs.is_text_center = False
+ *         base_attrs.display_none = False
+*/
+  __pyx_v_base_attrs.is_underline = 0;
+
+  /* "d2d/lexbor/node.pxi":175
+ *         base_attrs.is_italic = False
+ *         base_attrs.is_underline = False
+ *         base_attrs.is_text_center = False             # <<<<<<<<<<<<<<
+ *         base_attrs.display_none = False
+ * 
+*/
+  __pyx_v_base_attrs.is_text_center = 0;
+
+  /* "d2d/lexbor/node.pxi":176
+ *         base_attrs.is_underline = False
+ *         base_attrs.is_text_center = False
+ *         base_attrs.display_none = False             # <<<<<<<<<<<<<<
+ * 
+ *         # Push base to stack
+*/
+  __pyx_v_base_attrs.display_none = 0;
+
+  /* "d2d/lexbor/node.pxi":179
+ * 
+ *         # Push base to stack
+ *         style_stack[0].mem_id = 0             # <<<<<<<<<<<<<<
+ *         memcpy(&style_stack[0].attrs, &base_attrs, sizeof(InstructionAttrs))
+ *         stack_depth = 1
+*/
+  (__pyx_v_style_stack[0]).mem_id = 0;
+
+  /* "d2d/lexbor/node.pxi":180
+ *         # Push base to stack
+ *         style_stack[0].mem_id = 0
+ *         memcpy(&style_stack[0].attrs, &base_attrs, sizeof(InstructionAttrs))             # <<<<<<<<<<<<<<
+ *         stack_depth = 1
+ * 
+*/
+  (void)(memcpy((&(__pyx_v_style_stack[0]).attrs), (&__pyx_v_base_attrs), (sizeof(struct __pyx_t_3d2d_6lexbor_InstructionAttrs))));
+
+  /* "d2d/lexbor/node.pxi":181
+ *         style_stack[0].mem_id = 0
+ *         memcpy(&style_stack[0].attrs, &base_attrs, sizeof(InstructionAttrs))
+ *         stack_depth = 1             # <<<<<<<<<<<<<<
  * 
  *         # Helper variables
 */
-  __pyx_v_skip_node = 0;
+  __pyx_v_stack_depth = 1;
 
-  /* "d2d/lexbor/node.pxi":331
+  /* "d2d/lexbor/node.pxi":190
  * 
- *         # Open file with C stdio
- *         cdef FILE* f = fopen(filename_c, "wb")             # <<<<<<<<<<<<<<
- *         if f == NULL:
- *             raise IOError(f"Could not open file: {filename}")
+ *         # Open output file
+ *         try:             # <<<<<<<<<<<<<<
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:
 */
-  __pyx_v_f = fopen(__pyx_v_filename_c, __pyx_k_wb);
+  {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ExceptionSave(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5);
+    __Pyx_XGOTREF(__pyx_t_3);
+    __Pyx_XGOTREF(__pyx_t_4);
+    __Pyx_XGOTREF(__pyx_t_5);
+    /*try:*/ {
 
-  /* "d2d/lexbor/node.pxi":332
- *         # Open file with C stdio
- *         cdef FILE* f = fopen(filename_c, "wb")
- *         if f == NULL:             # <<<<<<<<<<<<<<
- *             raise IOError(f"Could not open file: {filename}")
+      /* "d2d/lexbor/node.pxi":191
+ *         # Open output file
+ *         try:
+ *             f = open('test.txt', 'w', encoding='utf-8')             # <<<<<<<<<<<<<<
+ *         except Exception as e:
+ *             raise RuntimeError(f"Failed to open output file: {e}")
+*/
+      __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 191, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_encoding, __pyx_mstate_global->__pyx_kp_u_utf_8) < (0)) __PYX_ERR(1, 191, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_mstate_global->__pyx_tuple[0], __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 191, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_v_f = __pyx_t_6;
+      __pyx_t_6 = 0;
+
+      /* "d2d/lexbor/node.pxi":190
+ * 
+ *         # Open output file
+ *         try:             # <<<<<<<<<<<<<<
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:
+*/
+    }
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    goto __pyx_L8_try_end;
+    __pyx_L3_error:;
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+    /* "d2d/lexbor/node.pxi":192
+ *         try:
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(f"Failed to open output file: {e}")
  * 
 */
-  __pyx_t_8 = (__pyx_v_f == NULL);
-  if (unlikely(__pyx_t_8)) {
+    __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(((PyTypeObject*)PyExc_Exception))));
+    if (__pyx_t_7) {
+      __Pyx_AddTraceback("d2d.lexbor.LexborNode.convert_html_to_instructions", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_2, &__pyx_t_8) < 0) __PYX_ERR(1, 192, __pyx_L5_except_error)
+      __Pyx_XGOTREF(__pyx_t_6);
+      __Pyx_XGOTREF(__pyx_t_2);
+      __Pyx_XGOTREF(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_v_e = __pyx_t_2;
+      /*try:*/ {
 
-    /* "d2d/lexbor/node.pxi":333
- *         cdef FILE* f = fopen(filename_c, "wb")
- *         if f == NULL:
- *             raise IOError(f"Could not open file: {filename}")             # <<<<<<<<<<<<<<
+        /* "d2d/lexbor/node.pxi":193
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:
+ *             raise RuntimeError(f"Failed to open output file: {e}")             # <<<<<<<<<<<<<<
  * 
  *         try:
 */
-    __pyx_t_4 = NULL;
-    __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_filename); if (unlikely(!__pyx_t_9)) __PYX_ERR(4, 333, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = __Pyx_PyUnicode_Concat(__pyx_mstate_global->__pyx_kp_u_Could_not_open_file, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(4, 333, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_5 = 1;
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_t_10};
-      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_IOError)), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 333, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(4, 333, __pyx_L1_error)
+        __pyx_t_10 = NULL;
+        __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_v_e, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 193, __pyx_L14_error)
+        __Pyx_GOTREF(__pyx_t_11);
+        __pyx_t_12 = __Pyx_PyUnicode_Concat(__pyx_mstate_global->__pyx_kp_u_Failed_to_open_output_file, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(1, 193, __pyx_L14_error)
+        __Pyx_GOTREF(__pyx_t_12);
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_13 = 1;
+        {
+          PyObject *__pyx_callargs[2] = {__pyx_t_10, __pyx_t_12};
+          __pyx_t_9 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (__pyx_t_13*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+          __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+          if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 193, __pyx_L14_error)
+          __Pyx_GOTREF(__pyx_t_9);
+        }
+        __Pyx_Raise(__pyx_t_9, 0, 0, 0);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __PYX_ERR(1, 193, __pyx_L14_error)
+      }
 
-    /* "d2d/lexbor/node.pxi":332
- *         # Open file with C stdio
- *         cdef FILE* f = fopen(filename_c, "wb")
- *         if f == NULL:             # <<<<<<<<<<<<<<
- *             raise IOError(f"Could not open file: {filename}")
+      /* "d2d/lexbor/node.pxi":192
+ *         try:
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(f"Failed to open output file: {e}")
  * 
 */
+      /*finally:*/ {
+        __pyx_L14_error:;
+        /*exception exit:*/{
+          __Pyx_PyThreadState_declare
+          __Pyx_PyThreadState_assign
+          __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0; __pyx_t_20 = 0; __pyx_t_21 = 0;
+          __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+          __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+          __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+           __Pyx_ExceptionSwap(&__pyx_t_19, &__pyx_t_20, &__pyx_t_21);
+          if ( unlikely(__Pyx_GetException(&__pyx_t_16, &__pyx_t_17, &__pyx_t_18) < 0)) __Pyx_ErrFetch(&__pyx_t_16, &__pyx_t_17, &__pyx_t_18);
+          __Pyx_XGOTREF(__pyx_t_16);
+          __Pyx_XGOTREF(__pyx_t_17);
+          __Pyx_XGOTREF(__pyx_t_18);
+          __Pyx_XGOTREF(__pyx_t_19);
+          __Pyx_XGOTREF(__pyx_t_20);
+          __Pyx_XGOTREF(__pyx_t_21);
+          __pyx_t_7 = __pyx_lineno; __pyx_t_14 = __pyx_clineno; __pyx_t_15 = __pyx_filename;
+          {
+            __Pyx_DECREF(__pyx_v_e); __pyx_v_e = 0;
+          }
+          __Pyx_XGIVEREF(__pyx_t_19);
+          __Pyx_XGIVEREF(__pyx_t_20);
+          __Pyx_XGIVEREF(__pyx_t_21);
+          __Pyx_ExceptionReset(__pyx_t_19, __pyx_t_20, __pyx_t_21);
+          __Pyx_XGIVEREF(__pyx_t_16);
+          __Pyx_XGIVEREF(__pyx_t_17);
+          __Pyx_XGIVEREF(__pyx_t_18);
+          __Pyx_ErrRestore(__pyx_t_16, __pyx_t_17, __pyx_t_18);
+          __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0; __pyx_t_20 = 0; __pyx_t_21 = 0;
+          __pyx_lineno = __pyx_t_7; __pyx_clineno = __pyx_t_14; __pyx_filename = __pyx_t_15;
+          goto __pyx_L5_except_error;
+        }
+      }
+    }
+    goto __pyx_L5_except_error;
+
+    /* "d2d/lexbor/node.pxi":190
+ * 
+ *         # Open output file
+ *         try:             # <<<<<<<<<<<<<<
+ *             f = open('test.txt', 'w', encoding='utf-8')
+ *         except Exception as e:
+*/
+    __pyx_L5_except_error:;
+    __Pyx_XGIVEREF(__pyx_t_3);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_ExceptionReset(__pyx_t_3, __pyx_t_4, __pyx_t_5);
+    goto __pyx_L1_error;
+    __pyx_L8_try_end:;
   }
 
-  /* "d2d/lexbor/node.pxi":335
- *             raise IOError(f"Could not open file: {filename}")
+  /* "d2d/lexbor/node.pxi":195
+ *             raise RuntimeError(f"Failed to open output file: {e}")
  * 
  *         try:             # <<<<<<<<<<<<<<
- *             with nogil:
- *                 while node != NULL:
+ *             # Main traversal loop
+ *             while node != NULL:
 */
   /*try:*/ {
 
-    /* "d2d/lexbor/node.pxi":336
- * 
+    /* "d2d/lexbor/node.pxi":197
  *         try:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 while node != NULL:
- *                     tag_id = lxb_dom_node_tag_id_noi(node)
+ *             # Main traversal loop
+ *             while node != NULL:             # <<<<<<<<<<<<<<
+ *                 # ENTER SIGNAL
+ *                 if not skip_subtree:
 */
-    {
-        PyThreadState * _save;
-        _save = PyEval_SaveThread();
-        __Pyx_FastGIL_Remember();
-        /*try:*/ {
+    while (1) {
+      __pyx_t_22 = (__pyx_v_node != NULL);
+      if (!__pyx_t_22) break;
 
-          /* "d2d/lexbor/node.pxi":337
- *         try:
- *             with nogil:
- *                 while node != NULL:             # <<<<<<<<<<<<<<
+      /* "d2d/lexbor/node.pxi":199
+ *             while node != NULL:
+ *                 # ENTER SIGNAL
+ *                 if not skip_subtree:             # <<<<<<<<<<<<<<
  *                     tag_id = lxb_dom_node_tag_id_noi(node)
  * 
 */
-          while (1) {
-            __pyx_t_8 = (__pyx_v_node != NULL);
-            if (!__pyx_t_8) break;
+      __pyx_t_22 = (!__pyx_v_skip_subtree);
+      if (__pyx_t_22) {
 
-            /* "d2d/lexbor/node.pxi":338
- *             with nogil:
- *                 while node != NULL:
+        /* "d2d/lexbor/node.pxi":200
+ *                 # ENTER SIGNAL
+ *                 if not skip_subtree:
  *                     tag_id = lxb_dom_node_tag_id_noi(node)             # <<<<<<<<<<<<<<
  * 
- *                     # Skip display:none nodes
+ *                     # Handle table structure
 */
-            __pyx_v_tag_id = lxb_dom_node_tag_id_noi(__pyx_v_node);
+        __pyx_v_tag_id = lxb_dom_node_tag_id_noi(__pyx_v_node);
 
-            /* "d2d/lexbor/node.pxi":341
+        /* "d2d/lexbor/node.pxi":203
  * 
- *                     # Skip display:none nodes
- *                     if skip_node:             # <<<<<<<<<<<<<<
- *                         if node.first_child != NULL:
- *                             node = node.first_child
+ *                     # Handle table structure
+ *                     if tag_id == LXB_TAG_TABLE:             # <<<<<<<<<<<<<<
+ *                         in_table = True
+ *                         table_data = []
 */
-            if (__pyx_v_skip_node) {
+        __pyx_t_22 = (__pyx_v_tag_id == LXB_TAG_TABLE);
+        if (__pyx_t_22) {
 
-              /* "d2d/lexbor/node.pxi":342
- *                     # Skip display:none nodes
- *                     if skip_node:
- *                         if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                             node = node.first_child
- *                             continue
+          /* "d2d/lexbor/node.pxi":204
+ *                     # Handle table structure
+ *                     if tag_id == LXB_TAG_TABLE:
+ *                         in_table = True             # <<<<<<<<<<<<<<
+ *                         table_data = []
+ *                         table_spans = []
 */
-              __pyx_t_8 = (__pyx_v_node->first_child != NULL);
-              if (__pyx_t_8) {
+          __pyx_v_in_table = 1;
 
-                /* "d2d/lexbor/node.pxi":343
- *                     if skip_node:
- *                         if node.first_child != NULL:
- *                             node = node.first_child             # <<<<<<<<<<<<<<
- *                             continue
- *                         else:
+          /* "d2d/lexbor/node.pxi":205
+ *                     if tag_id == LXB_TAG_TABLE:
+ *                         in_table = True
+ *                         table_data = []             # <<<<<<<<<<<<<<
+ *                         table_spans = []
+ *                     elif tag_id == LXB_TAG_TR and in_table:
 */
-                __pyx_t_3 = __pyx_v_node->first_child;
-                __pyx_v_node = __pyx_t_3;
+          __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 205, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __Pyx_DECREF_SET(__pyx_v_table_data, ((PyObject*)__pyx_t_8));
+          __pyx_t_8 = 0;
 
-                /* "d2d/lexbor/node.pxi":344
- *                         if node.first_child != NULL:
- *                             node = node.first_child
- *                             continue             # <<<<<<<<<<<<<<
- *                         else:
- *                             while True:
+          /* "d2d/lexbor/node.pxi":206
+ *                         in_table = True
+ *                         table_data = []
+ *                         table_spans = []             # <<<<<<<<<<<<<<
+ *                     elif tag_id == LXB_TAG_TR and in_table:
+ *                         table_data.append([])
 */
-                goto __pyx_L10_continue;
+          __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 206, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __Pyx_DECREF_SET(__pyx_v_table_spans, ((PyObject*)__pyx_t_8));
+          __pyx_t_8 = 0;
 
-                /* "d2d/lexbor/node.pxi":342
- *                     # Skip display:none nodes
- *                     if skip_node:
- *                         if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                             node = node.first_child
- *                             continue
+          /* "d2d/lexbor/node.pxi":203
+ * 
+ *                     # Handle table structure
+ *                     if tag_id == LXB_TAG_TABLE:             # <<<<<<<<<<<<<<
+ *                         in_table = True
+ *                         table_data = []
 */
+          goto __pyx_L26;
+        }
+
+        /* "d2d/lexbor/node.pxi":207
+ *                         table_data = []
+ *                         table_spans = []
+ *                     elif tag_id == LXB_TAG_TR and in_table:             # <<<<<<<<<<<<<<
+ *                         table_data.append([])
+ *                         table_spans.append([])
+*/
+        __pyx_t_23 = (__pyx_v_tag_id == LXB_TAG_TR);
+        if (__pyx_t_23) {
+        } else {
+          __pyx_t_22 = __pyx_t_23;
+          goto __pyx_L27_bool_binop_done;
+        }
+        __pyx_t_22 = __pyx_v_in_table;
+        __pyx_L27_bool_binop_done:;
+        if (__pyx_t_22) {
+
+          /* "d2d/lexbor/node.pxi":208
+ *                         table_spans = []
+ *                     elif tag_id == LXB_TAG_TR and in_table:
+ *                         table_data.append([])             # <<<<<<<<<<<<<<
+ *                         table_spans.append([])
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+*/
+          __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 208, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_table_data, __pyx_t_8); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 208, __pyx_L21_error)
+          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+          /* "d2d/lexbor/node.pxi":209
+ *                     elif tag_id == LXB_TAG_TR and in_table:
+ *                         table_data.append([])
+ *                         table_spans.append([])             # <<<<<<<<<<<<<<
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                         in_cell = True
+*/
+          __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 209, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_table_spans, __pyx_t_8); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 209, __pyx_L21_error)
+          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+          /* "d2d/lexbor/node.pxi":207
+ *                         table_data = []
+ *                         table_spans = []
+ *                     elif tag_id == LXB_TAG_TR and in_table:             # <<<<<<<<<<<<<<
+ *                         table_data.append([])
+ *                         table_spans.append([])
+*/
+          goto __pyx_L26;
+        }
+
+        /* "d2d/lexbor/node.pxi":210
+ *                         table_data.append([])
+ *                         table_spans.append([])
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:             # <<<<<<<<<<<<<<
+ *                         in_cell = True
+ *                         current_cell_instructions = []
+*/
+        switch (__pyx_v_tag_id) {
+          case LXB_TAG_TD:
+          case LXB_TAG_TH:
+          __pyx_t_23 = 1;
+          break;
+          default:
+          __pyx_t_23 = 0;
+          break;
+        }
+        if (__pyx_t_23) {
+        } else {
+          __pyx_t_22 = __pyx_t_23;
+          goto __pyx_L29_bool_binop_done;
+        }
+        __pyx_t_22 = __pyx_v_in_table;
+        __pyx_L29_bool_binop_done:;
+        if (__pyx_t_22) {
+
+          /* "d2d/lexbor/node.pxi":211
+ *                         table_spans.append([])
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                         in_cell = True             # <<<<<<<<<<<<<<
+ *                         current_cell_instructions = []
+ *                         current_rowspan = 1
+*/
+          __pyx_v_in_cell = 1;
+
+          /* "d2d/lexbor/node.pxi":212
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                         in_cell = True
+ *                         current_cell_instructions = []             # <<<<<<<<<<<<<<
+ *                         current_rowspan = 1
+ *                         current_colspan = 1
+*/
+          __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 212, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __Pyx_DECREF_SET(__pyx_v_current_cell_instructions, ((PyObject*)__pyx_t_8));
+          __pyx_t_8 = 0;
+
+          /* "d2d/lexbor/node.pxi":213
+ *                         in_cell = True
+ *                         current_cell_instructions = []
+ *                         current_rowspan = 1             # <<<<<<<<<<<<<<
+ *                         current_colspan = 1
+ * 
+*/
+          __pyx_v_current_rowspan = 1;
+
+          /* "d2d/lexbor/node.pxi":214
+ *                         current_cell_instructions = []
+ *                         current_rowspan = 1
+ *                         current_colspan = 1             # <<<<<<<<<<<<<<
+ * 
+ *                         # Get rowspan/colspan
+*/
+          __pyx_v_current_colspan = 1;
+
+          /* "d2d/lexbor/node.pxi":217
+ * 
+ *                         # Get rowspan/colspan
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+*/
+          __pyx_t_22 = (__pyx_v_node->type == LXB_DOM_NODE_TYPE_ELEMENT);
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":218
+ *                         # Get rowspan/colspan
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)             # <<<<<<<<<<<<<<
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+*/
+            __pyx_v_attr = lxb_dom_element_first_attribute_noi(((lxb_dom_element_t *)__pyx_v_node));
+
+            /* "d2d/lexbor/node.pxi":219
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:             # <<<<<<<<<<<<<<
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+*/
+            while (1) {
+              __pyx_t_22 = (__pyx_v_attr != NULL);
+              if (!__pyx_t_22) break;
+
+              /* "d2d/lexbor/node.pxi":220
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)             # <<<<<<<<<<<<<<
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and value != NULL:
+*/
+              __pyx_v_key = lxb_dom_attr_local_name_noi(__pyx_v_attr, (&__pyx_v_key_len));
+
+              /* "d2d/lexbor/node.pxi":221
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)             # <<<<<<<<<<<<<<
+ *                                 if key != NULL and value != NULL:
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+*/
+              __pyx_v_value = lxb_dom_attr_value_noi(__pyx_v_attr, (&__pyx_v_value_len));
+
+              /* "d2d/lexbor/node.pxi":222
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and value != NULL:             # <<<<<<<<<<<<<<
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+ *                                         try:
+*/
+              __pyx_t_23 = (__pyx_v_key != NULL);
+              if (__pyx_t_23) {
+              } else {
+                __pyx_t_22 = __pyx_t_23;
+                goto __pyx_L35_bool_binop_done;
               }
+              __pyx_t_23 = (__pyx_v_value != NULL);
+              __pyx_t_22 = __pyx_t_23;
+              __pyx_L35_bool_binop_done:;
+              if (__pyx_t_22) {
 
-              /* "d2d/lexbor/node.pxi":346
- *                             continue
- *                         else:
- *                             while True:             # <<<<<<<<<<<<<<
- *                                 # Check if this node set skip_node
- *                                 if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+                /* "d2d/lexbor/node.pxi":223
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and value != NULL:
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:             # <<<<<<<<<<<<<<
+ *                                         try:
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
 */
-              /*else*/ {
-                while (1) {
+                __pyx_t_23 = (__pyx_v_key_len == 7);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L38_bool_binop_done;
+                }
+                __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_rowspan) == 0);
+                __pyx_t_22 = __pyx_t_23;
+                __pyx_L38_bool_binop_done:;
+                if (__pyx_t_22) {
 
-                  /* "d2d/lexbor/node.pxi":348
- *                             while True:
- *                                 # Check if this node set skip_node
- *                                 if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
- *                                     style_attr = lxb_dom_element_attr_by_name(
- *                                         <lxb_dom_element_t*>node,
+                  /* "d2d/lexbor/node.pxi":224
+ *                                 if key != NULL and value != NULL:
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+ *                                         try:             # <<<<<<<<<<<<<<
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
 */
-                  __pyx_t_8 = (__pyx_v_node->type == LXB_DOM_NODE_TYPE_ELEMENT);
-                  if (__pyx_t_8) {
+                  {
+                    __Pyx_PyThreadState_declare
+                    __Pyx_PyThreadState_assign
+                    __Pyx_ExceptionSave(&__pyx_t_5, &__pyx_t_4, &__pyx_t_3);
+                    __Pyx_XGOTREF(__pyx_t_5);
+                    __Pyx_XGOTREF(__pyx_t_4);
+                    __Pyx_XGOTREF(__pyx_t_3);
+                    /*try:*/ {
 
-                    /* "d2d/lexbor/node.pxi":349
- *                                 # Check if this node set skip_node
- *                                 if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
- *                                     style_attr = lxb_dom_element_attr_by_name(             # <<<<<<<<<<<<<<
- *                                         <lxb_dom_element_t*>node,
- *                                         <lxb_char_t*>"style",
+                      /* "d2d/lexbor/node.pxi":225
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+ *                                         try:
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))             # <<<<<<<<<<<<<<
+ *                                         except:
+ *                                             current_rowspan = 1
 */
-                    __pyx_v_style_attr = lxb_dom_element_attr_by_name(((lxb_dom_element_t *)__pyx_v_node), ((lxb_char_t *)((lxb_char_t *)((char *)"style"))), 5);
+                      __pyx_t_8 = __Pyx_decode_c_string(((char const *)__pyx_v_value), 0, __pyx_v_value_len, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 225, __pyx_L40_error)
+                      __Pyx_GOTREF(__pyx_t_8);
+                      __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 225, __pyx_L40_error)
+                      __Pyx_GOTREF(__pyx_t_2);
+                      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                      __pyx_t_14 = __Pyx_PyLong_As_int(__pyx_t_2); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 225, __pyx_L40_error)
+                      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                      __pyx_v_current_rowspan = __pyx_t_14;
 
-                    /* "d2d/lexbor/node.pxi":354
- *                                         5
- *                                     )
- *                                     if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                         parse_style_attribute(style_value, &style_flags)
-*/
-                    __pyx_t_8 = (__pyx_v_style_attr != NULL);
-                    if (__pyx_t_8) {
-
-                      /* "d2d/lexbor/node.pxi":355
- *                                     )
- *                                     if style_attr != NULL:
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)             # <<<<<<<<<<<<<<
- *                                         parse_style_attribute(style_value, &style_flags)
- *                                         if style_flags.is_display_none:
-*/
-                      __pyx_v_style_value = lxb_dom_attr_value_noi(__pyx_v_style_attr, (&__pyx_v_str_len));
-
-                      /* "d2d/lexbor/node.pxi":356
- *                                     if style_attr != NULL:
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                         parse_style_attribute(style_value, &style_flags)             # <<<<<<<<<<<<<<
- *                                         if style_flags.is_display_none:
- *                                             skip_node = False
-*/
-                      __pyx_f_3d2d_6lexbor_parse_style_attribute(__pyx_v_style_value, (&__pyx_v_style_flags)); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 356, __pyx_L8_error)
-
-                      /* "d2d/lexbor/node.pxi":357
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                         parse_style_attribute(style_value, &style_flags)
- *                                         if style_flags.is_display_none:             # <<<<<<<<<<<<<<
- *                                             skip_node = False
- * 
-*/
-                      if (__pyx_v_style_flags.is_display_none) {
-
-                        /* "d2d/lexbor/node.pxi":358
- *                                         parse_style_attribute(style_value, &style_flags)
- *                                         if style_flags.is_display_none:
- *                                             skip_node = False             # <<<<<<<<<<<<<<
- * 
- *                                 if node == root or node.next != NULL:
-*/
-                        __pyx_v_skip_node = 0;
-
-                        /* "d2d/lexbor/node.pxi":357
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                         parse_style_attribute(style_value, &style_flags)
- *                                         if style_flags.is_display_none:             # <<<<<<<<<<<<<<
- *                                             skip_node = False
- * 
-*/
-                      }
-
-                      /* "d2d/lexbor/node.pxi":354
- *                                         5
- *                                     )
- *                                     if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                         style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                         parse_style_attribute(style_value, &style_flags)
+                      /* "d2d/lexbor/node.pxi":224
+ *                                 if key != NULL and value != NULL:
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+ *                                         try:             # <<<<<<<<<<<<<<
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
 */
                     }
+                    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+                    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+                    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    goto __pyx_L47_try_end;
+                    __pyx_L40_error:;
+                    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+                    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+                    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+                    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+                    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+                    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-                    /* "d2d/lexbor/node.pxi":348
- *                             while True:
- *                                 # Check if this node set skip_node
- *                                 if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
- *                                     style_attr = lxb_dom_element_attr_by_name(
- *                                         <lxb_dom_element_t*>node,
+                    /* "d2d/lexbor/node.pxi":226
+ *                                         try:
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:             # <<<<<<<<<<<<<<
+ *                                             current_rowspan = 1
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:
 */
+                    /*except:*/ {
+                      __Pyx_ErrRestore(0,0,0);
+
+                      /* "d2d/lexbor/node.pxi":227
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
+ *                                             current_rowspan = 1             # <<<<<<<<<<<<<<
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:
+ *                                         try:
+*/
+                      __pyx_v_current_rowspan = 1;
+                      goto __pyx_L41_exception_handled;
+                    }
+                    __pyx_L41_exception_handled:;
+                    __Pyx_XGIVEREF(__pyx_t_5);
+                    __Pyx_XGIVEREF(__pyx_t_4);
+                    __Pyx_XGIVEREF(__pyx_t_3);
+                    __Pyx_ExceptionReset(__pyx_t_5, __pyx_t_4, __pyx_t_3);
+                    __pyx_L47_try_end:;
                   }
 
-                  /* "d2d/lexbor/node.pxi":360
- *                                             skip_node = False
- * 
- *                                 if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                                     break
- *                                 node = node.parent
+                  /* "d2d/lexbor/node.pxi":223
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and value != NULL:
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:             # <<<<<<<<<<<<<<
+ *                                         try:
+ *                                             current_rowspan = int(value[:value_len].decode('utf-8'))
 */
-                  __pyx_t_11 = (__pyx_v_node == __pyx_v_root);
-                  if (!__pyx_t_11) {
-                  } else {
-                    __pyx_t_8 = __pyx_t_11;
-                    goto __pyx_L20_bool_binop_done;
-                  }
-                  __pyx_t_11 = (__pyx_v_node->next != NULL);
-                  __pyx_t_8 = __pyx_t_11;
-                  __pyx_L20_bool_binop_done:;
-                  if (__pyx_t_8) {
-
-                    /* "d2d/lexbor/node.pxi":361
- * 
- *                                 if node == root or node.next != NULL:
- *                                     break             # <<<<<<<<<<<<<<
- *                                 node = node.parent
- * 
-*/
-                    goto __pyx_L15_break;
-
-                    /* "d2d/lexbor/node.pxi":360
- *                                             skip_node = False
- * 
- *                                 if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                                     break
- *                                 node = node.parent
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":362
- *                                 if node == root or node.next != NULL:
- *                                     break
- *                                 node = node.parent             # <<<<<<<<<<<<<<
- * 
- *                             if node == root:
-*/
-                  __pyx_t_3 = __pyx_v_node->parent;
-                  __pyx_v_node = __pyx_t_3;
-                }
-                __pyx_L15_break:;
-
-                /* "d2d/lexbor/node.pxi":364
- *                                 node = node.parent
- * 
- *                             if node == root:             # <<<<<<<<<<<<<<
- *                                 break
- *                             node = node.next
-*/
-                __pyx_t_8 = (__pyx_v_node == __pyx_v_root);
-                if (__pyx_t_8) {
-
-                  /* "d2d/lexbor/node.pxi":365
- * 
- *                             if node == root:
- *                                 break             # <<<<<<<<<<<<<<
- *                             node = node.next
- *                             continue
-*/
-                  goto __pyx_L11_break;
-
-                  /* "d2d/lexbor/node.pxi":364
- *                                 node = node.parent
- * 
- *                             if node == root:             # <<<<<<<<<<<<<<
- *                                 break
- *                             node = node.next
-*/
+                  goto __pyx_L37;
                 }
 
-                /* "d2d/lexbor/node.pxi":366
- *                             if node == root:
- *                                 break
- *                             node = node.next             # <<<<<<<<<<<<<<
- *                             continue
- * 
+                /* "d2d/lexbor/node.pxi":228
+ *                                         except:
+ *                                             current_rowspan = 1
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:             # <<<<<<<<<<<<<<
+ *                                         try:
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
 */
-                __pyx_t_3 = __pyx_v_node->next;
-                __pyx_v_node = __pyx_t_3;
+                __pyx_t_23 = (__pyx_v_key_len == 7);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L50_bool_binop_done;
+                }
+                __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_colspan) == 0);
+                __pyx_t_22 = __pyx_t_23;
+                __pyx_L50_bool_binop_done:;
+                if (__pyx_t_22) {
 
-                /* "d2d/lexbor/node.pxi":367
- *                                 break
- *                             node = node.next
- *                             continue             # <<<<<<<<<<<<<<
- * 
- *                     # TEXT NODE: Record text with accumulated attributes
+                  /* "d2d/lexbor/node.pxi":229
+ *                                             current_rowspan = 1
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:
+ *                                         try:             # <<<<<<<<<<<<<<
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
 */
-                goto __pyx_L10_continue;
+                  {
+                    __Pyx_PyThreadState_declare
+                    __Pyx_PyThreadState_assign
+                    __Pyx_ExceptionSave(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5);
+                    __Pyx_XGOTREF(__pyx_t_3);
+                    __Pyx_XGOTREF(__pyx_t_4);
+                    __Pyx_XGOTREF(__pyx_t_5);
+                    /*try:*/ {
+
+                      /* "d2d/lexbor/node.pxi":230
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:
+ *                                         try:
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))             # <<<<<<<<<<<<<<
+ *                                         except:
+ *                                             current_colspan = 1
+*/
+                      __pyx_t_2 = __Pyx_decode_c_string(((char const *)__pyx_v_value), 0, __pyx_v_value_len, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 230, __pyx_L52_error)
+                      __Pyx_GOTREF(__pyx_t_2);
+                      __pyx_t_8 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 230, __pyx_L52_error)
+                      __Pyx_GOTREF(__pyx_t_8);
+                      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                      __pyx_t_14 = __Pyx_PyLong_As_int(__pyx_t_8); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 230, __pyx_L52_error)
+                      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                      __pyx_v_current_colspan = __pyx_t_14;
+
+                      /* "d2d/lexbor/node.pxi":229
+ *                                             current_rowspan = 1
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:
+ *                                         try:             # <<<<<<<<<<<<<<
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
+*/
+                    }
+                    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+                    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+                    goto __pyx_L59_try_end;
+                    __pyx_L52_error:;
+                    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+                    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+                    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+                    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+                    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+                    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+
+                    /* "d2d/lexbor/node.pxi":231
+ *                                         try:
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:             # <<<<<<<<<<<<<<
+ *                                             current_colspan = 1
+ *                                 attr = attr.next
+*/
+                    /*except:*/ {
+                      __Pyx_ErrRestore(0,0,0);
+
+                      /* "d2d/lexbor/node.pxi":232
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
+ *                                         except:
+ *                                             current_colspan = 1             # <<<<<<<<<<<<<<
+ *                                 attr = attr.next
+ * 
+*/
+                      __pyx_v_current_colspan = 1;
+                      goto __pyx_L53_exception_handled;
+                    }
+                    __pyx_L53_exception_handled:;
+                    __Pyx_XGIVEREF(__pyx_t_3);
+                    __Pyx_XGIVEREF(__pyx_t_4);
+                    __Pyx_XGIVEREF(__pyx_t_5);
+                    __Pyx_ExceptionReset(__pyx_t_3, __pyx_t_4, __pyx_t_5);
+                    __pyx_L59_try_end:;
+                  }
+
+                  /* "d2d/lexbor/node.pxi":228
+ *                                         except:
+ *                                             current_rowspan = 1
+ *                                     elif key_len == 7 and strcmp(<char*>key, "colspan") == 0:             # <<<<<<<<<<<<<<
+ *                                         try:
+ *                                             current_colspan = int(value[:value_len].decode('utf-8'))
+*/
+                }
+                __pyx_L37:;
+
+                /* "d2d/lexbor/node.pxi":222
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and value != NULL:             # <<<<<<<<<<<<<<
+ *                                     if key_len == 7 and strcmp(<char*>key, "rowspan") == 0:
+ *                                         try:
+*/
               }
 
-              /* "d2d/lexbor/node.pxi":341
+              /* "d2d/lexbor/node.pxi":233
+ *                                         except:
+ *                                             current_colspan = 1
+ *                                 attr = attr.next             # <<<<<<<<<<<<<<
  * 
- *                     # Skip display:none nodes
- *                     if skip_node:             # <<<<<<<<<<<<<<
- *                         if node.first_child != NULL:
- *                             node = node.first_child
+ *                     # Handle text nodes
+*/
+              __pyx_t_25 = __pyx_v_attr->next;
+              __pyx_v_attr = __pyx_t_25;
+            }
+
+            /* "d2d/lexbor/node.pxi":217
+ * 
+ *                         # Get rowspan/colspan
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":210
+ *                         table_data.append([])
+ *                         table_spans.append([])
+ *                     elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:             # <<<<<<<<<<<<<<
+ *                         in_cell = True
+ *                         current_cell_instructions = []
+*/
+        }
+        __pyx_L26:;
+
+        /* "d2d/lexbor/node.pxi":236
+ * 
+ *                     # Handle text nodes
+ *                     if tag_id == LXB_TAG__TEXT:             # <<<<<<<<<<<<<<
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)
+ *                         if text != NULL:
+*/
+        switch (__pyx_v_tag_id) {
+          case LXB_TAG__TEXT:
+
+          /* "d2d/lexbor/node.pxi":237
+ *                     # Handle text nodes
+ *                     if tag_id == LXB_TAG__TEXT:
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)             # <<<<<<<<<<<<<<
+ *                         if text != NULL:
+ *                             text_str = text.decode('utf-8')
+*/
+          __pyx_v_text = ((lxb_char_t const *)lexbor_str_data_noi((&((lxb_dom_character_data_t *)__pyx_v_node)->data)));
+
+          /* "d2d/lexbor/node.pxi":238
+ *                     if tag_id == LXB_TAG__TEXT:
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)
+ *                         if text != NULL:             # <<<<<<<<<<<<<<
+ *                             text_str = text.decode('utf-8')
+ *                             if text_str.strip() != '':
+*/
+          __pyx_t_22 = (__pyx_v_text != NULL);
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":239
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)
+ *                         if text != NULL:
+ *                             text_str = text.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                             if text_str.strip() != '':
+ *                                 instruction = {'text': text_str}
+*/
+            __pyx_t_26 = __Pyx_ssize_strlen(((char const *)__pyx_v_text)); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 239, __pyx_L21_error)
+            __pyx_t_8 = __Pyx_decode_c_string(((char const *)__pyx_v_text), 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 239, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            __Pyx_XDECREF_SET(__pyx_v_text_str, ((PyObject*)__pyx_t_8));
+            __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":240
+ *                         if text != NULL:
+ *                             text_str = text.decode('utf-8')
+ *                             if text_str.strip() != '':             # <<<<<<<<<<<<<<
+ *                                 instruction = {'text': text_str}
+ * 
+*/
+            __pyx_t_8 = __Pyx_CallUnboundCMethod0(&__pyx_mstate_global->__pyx_umethod_PyUnicode_Type__strip, __pyx_v_text_str); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 240, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            __pyx_t_22 = (__Pyx_PyUnicode_Equals(__pyx_t_8, __pyx_mstate_global->__pyx_kp_u__4, Py_NE)); if (unlikely((__pyx_t_22 < 0))) __PYX_ERR(1, 240, __pyx_L21_error)
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+            if (__pyx_t_22) {
+
+              /* "d2d/lexbor/node.pxi":241
+ *                             text_str = text.decode('utf-8')
+ *                             if text_str.strip() != '':
+ *                                 instruction = {'text': text_str}             # <<<<<<<<<<<<<<
+ * 
+ *                                 # Apply current style attributes
+*/
+              __pyx_t_8 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 241, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_8);
+              if (PyDict_SetItem(__pyx_t_8, __pyx_mstate_global->__pyx_n_u_text, __pyx_v_text_str) < (0)) __PYX_ERR(1, 241, __pyx_L21_error)
+              __Pyx_XDECREF_SET(__pyx_v_instruction, ((PyObject*)__pyx_t_8));
+              __pyx_t_8 = 0;
+
+              /* "d2d/lexbor/node.pxi":244
+ * 
+ *                                 # Apply current style attributes
+ *                                 current_attrs = style_stack[stack_depth - 1].attrs             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.font_weight[0] != '\0':
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+*/
+              __pyx_t_27 = (__pyx_v_style_stack[(__pyx_v_stack_depth - 1)]).attrs;
+              __pyx_v_current_attrs = __pyx_t_27;
+
+              /* "d2d/lexbor/node.pxi":245
+ *                                 # Apply current style attributes
+ *                                 current_attrs = style_stack[stack_depth - 1].attrs
+ *                                 if current_attrs.font_weight[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                                 if current_attrs.font_size[0] != '\0':
+*/
+              __pyx_t_22 = ((__pyx_v_current_attrs.font_weight[0]) != '\x00');
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":246
+ *                                 current_attrs = style_stack[stack_depth - 1].attrs
+ *                                 if current_attrs.font_weight[0] != '\0':
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.font_size[0] != '\0':
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+*/
+                __pyx_t_28 = __pyx_v_current_attrs.font_weight;
+                __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 246, __pyx_L21_error)
+                __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 246, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_8);
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_font_weight_2, __pyx_t_8) < 0))) __PYX_ERR(1, 246, __pyx_L21_error)
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+                /* "d2d/lexbor/node.pxi":245
+ *                                 # Apply current style attributes
+ *                                 current_attrs = style_stack[stack_depth - 1].attrs
+ *                                 if current_attrs.font_weight[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                                 if current_attrs.font_size[0] != '\0':
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":247
+ *                                 if current_attrs.font_weight[0] != '\0':
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                                 if current_attrs.font_size[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ *                                 if current_attrs.header_tag[0] != '\0':
+*/
+              __pyx_t_22 = ((__pyx_v_current_attrs.font_size[0]) != '\x00');
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":248
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                                 if current_attrs.font_size[0] != '\0':
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.header_tag[0] != '\0':
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+*/
+                __pyx_t_28 = __pyx_v_current_attrs.font_size;
+                __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 248, __pyx_L21_error)
+                __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 248, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_8);
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_font_size_2, __pyx_t_8) < 0))) __PYX_ERR(1, 248, __pyx_L21_error)
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+                /* "d2d/lexbor/node.pxi":247
+ *                                 if current_attrs.font_weight[0] != '\0':
+ *                                     instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                                 if current_attrs.font_size[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ *                                 if current_attrs.header_tag[0] != '\0':
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":249
+ *                                 if current_attrs.font_size[0] != '\0':
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ *                                 if current_attrs.header_tag[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+ *                                 if current_attrs.href[0] != '\0':
+*/
+              __pyx_t_22 = ((__pyx_v_current_attrs.header_tag[0]) != '\x00');
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":250
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ *                                 if current_attrs.header_tag[0] != '\0':
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.href[0] != '\0':
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+*/
+                __pyx_t_28 = __pyx_v_current_attrs.header_tag;
+                __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 250, __pyx_L21_error)
+                __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 250, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_8);
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_header_tag, __pyx_t_8) < 0))) __PYX_ERR(1, 250, __pyx_L21_error)
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+                /* "d2d/lexbor/node.pxi":249
+ *                                 if current_attrs.font_size[0] != '\0':
+ *                                     instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ *                                 if current_attrs.header_tag[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+ *                                 if current_attrs.href[0] != '\0':
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":251
+ *                                 if current_attrs.header_tag[0] != '\0':
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+ *                                 if current_attrs.href[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+ *                                 if current_attrs.is_italic:
+*/
+              __pyx_t_22 = ((__pyx_v_current_attrs.href[0]) != '\x00');
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":252
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+ *                                 if current_attrs.href[0] != '\0':
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.is_italic:
+ *                                     instruction['is_italic'] = True
+*/
+                __pyx_t_28 = __pyx_v_current_attrs.href;
+                __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 252, __pyx_L21_error)
+                __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 252, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_8);
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_href, __pyx_t_8) < 0))) __PYX_ERR(1, 252, __pyx_L21_error)
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+                /* "d2d/lexbor/node.pxi":251
+ *                                 if current_attrs.header_tag[0] != '\0':
+ *                                     instruction['header_tag'] = current_attrs.header_tag.decode('utf-8')
+ *                                 if current_attrs.href[0] != '\0':             # <<<<<<<<<<<<<<
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+ *                                 if current_attrs.is_italic:
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":253
+ *                                 if current_attrs.href[0] != '\0':
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+ *                                 if current_attrs.is_italic:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_italic'] = True
+ *                                 if current_attrs.is_underline:
+*/
+              if (__pyx_v_current_attrs.is_italic) {
+
+                /* "d2d/lexbor/node.pxi":254
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+ *                                 if current_attrs.is_italic:
+ *                                     instruction['is_italic'] = True             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.is_underline:
+ *                                     instruction['is_underline'] = True
+*/
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_is_italic, Py_True) < 0))) __PYX_ERR(1, 254, __pyx_L21_error)
+
+                /* "d2d/lexbor/node.pxi":253
+ *                                 if current_attrs.href[0] != '\0':
+ *                                     instruction['href'] = current_attrs.href.decode('utf-8')
+ *                                 if current_attrs.is_italic:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_italic'] = True
+ *                                 if current_attrs.is_underline:
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":255
+ *                                 if current_attrs.is_italic:
+ *                                     instruction['is_italic'] = True
+ *                                 if current_attrs.is_underline:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_underline'] = True
+ *                                 if current_attrs.is_text_center:
+*/
+              if (__pyx_v_current_attrs.is_underline) {
+
+                /* "d2d/lexbor/node.pxi":256
+ *                                     instruction['is_italic'] = True
+ *                                 if current_attrs.is_underline:
+ *                                     instruction['is_underline'] = True             # <<<<<<<<<<<<<<
+ *                                 if current_attrs.is_text_center:
+ *                                     instruction['is_text_center'] = True
+*/
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_is_underline, Py_True) < 0))) __PYX_ERR(1, 256, __pyx_L21_error)
+
+                /* "d2d/lexbor/node.pxi":255
+ *                                 if current_attrs.is_italic:
+ *                                     instruction['is_italic'] = True
+ *                                 if current_attrs.is_underline:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_underline'] = True
+ *                                 if current_attrs.is_text_center:
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":257
+ *                                 if current_attrs.is_underline:
+ *                                     instruction['is_underline'] = True
+ *                                 if current_attrs.is_text_center:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_text_center'] = True
+ * 
+*/
+              if (__pyx_v_current_attrs.is_text_center) {
+
+                /* "d2d/lexbor/node.pxi":258
+ *                                     instruction['is_underline'] = True
+ *                                 if current_attrs.is_text_center:
+ *                                     instruction['is_text_center'] = True             # <<<<<<<<<<<<<<
+ * 
+ *                                 if in_cell:
+*/
+                if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_is_text_center, Py_True) < 0))) __PYX_ERR(1, 258, __pyx_L21_error)
+
+                /* "d2d/lexbor/node.pxi":257
+ *                                 if current_attrs.is_underline:
+ *                                     instruction['is_underline'] = True
+ *                                 if current_attrs.is_text_center:             # <<<<<<<<<<<<<<
+ *                                     instruction['is_text_center'] = True
+ * 
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":260
+ *                                     instruction['is_text_center'] = True
+ * 
+ *                                 if in_cell:             # <<<<<<<<<<<<<<
+ *                                     current_cell_instructions.append(instruction)
+ *                                 else:
+*/
+              if (__pyx_v_in_cell) {
+
+                /* "d2d/lexbor/node.pxi":261
+ * 
+ *                                 if in_cell:
+ *                                     current_cell_instructions.append(instruction)             # <<<<<<<<<<<<<<
+ *                                 else:
+ *                                     instructions_block.append(instruction)
+*/
+                __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_current_cell_instructions, __pyx_v_instruction); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 261, __pyx_L21_error)
+
+                /* "d2d/lexbor/node.pxi":260
+ *                                     instruction['is_text_center'] = True
+ * 
+ *                                 if in_cell:             # <<<<<<<<<<<<<<
+ *                                     current_cell_instructions.append(instruction)
+ *                                 else:
+*/
+                goto __pyx_L71;
+              }
+
+              /* "d2d/lexbor/node.pxi":263
+ *                                     current_cell_instructions.append(instruction)
+ *                                 else:
+ *                                     instructions_block.append(instruction)             # <<<<<<<<<<<<<<
+ * 
+ *                     # Handle img nodes
+*/
+              /*else*/ {
+                __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_instructions_block, __pyx_v_instruction); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 263, __pyx_L21_error)
+              }
+              __pyx_L71:;
+
+              /* "d2d/lexbor/node.pxi":240
+ *                         if text != NULL:
+ *                             text_str = text.decode('utf-8')
+ *                             if text_str.strip() != '':             # <<<<<<<<<<<<<<
+ *                                 instruction = {'text': text_str}
+ * 
 */
             }
 
-            /* "d2d/lexbor/node.pxi":370
+            /* "d2d/lexbor/node.pxi":238
+ *                     if tag_id == LXB_TAG__TEXT:
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)
+ *                         if text != NULL:             # <<<<<<<<<<<<<<
+ *                             text_str = text.decode('utf-8')
+ *                             if text_str.strip() != '':
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":236
  * 
- *                     # TEXT NODE: Record text with accumulated attributes
- *                     if node.type == LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                         text_content = <unsigned char *> lexbor_str_data_noi(&(<lxb_dom_character_data_t *> node).data)
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length
+ *                     # Handle text nodes
+ *                     if tag_id == LXB_TAG__TEXT:             # <<<<<<<<<<<<<<
+ *                         text = <const lxb_char_t*>lexbor_str_data_noi(&(<lxb_dom_character_data_t*>node).data)
+ *                         if text != NULL:
 */
-            switch (__pyx_v_node->type) {
-              case LXB_DOM_NODE_TYPE_TEXT:
+          break;
+          case LXB_TAG_IMG:
 
-              /* "d2d/lexbor/node.pxi":371
- *                     # TEXT NODE: Record text with accumulated attributes
- *                     if node.type == LXB_DOM_NODE_TYPE_TEXT:
- *                         text_content = <unsigned char *> lexbor_str_data_noi(&(<lxb_dom_character_data_t *> node).data)             # <<<<<<<<<<<<<<
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length
- * 
+          /* "d2d/lexbor/node.pxi":267
+ *                     # Handle img nodes
+ *                     elif tag_id == LXB_TAG_IMG:
+ *                         instruction = {}             # <<<<<<<<<<<<<<
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
 */
-              __pyx_v_text_content = ((unsigned char *)lexbor_str_data_noi((&((lxb_dom_character_data_t *)__pyx_v_node)->data)));
+          __pyx_t_8 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 267, __pyx_L21_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __Pyx_XDECREF_SET(__pyx_v_instruction, ((PyObject*)__pyx_t_8));
+          __pyx_t_8 = 0;
 
-              /* "d2d/lexbor/node.pxi":372
- *                     if node.type == LXB_DOM_NODE_TYPE_TEXT:
- *                         text_content = <unsigned char *> lexbor_str_data_noi(&(<lxb_dom_character_data_t *> node).data)
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length             # <<<<<<<<<<<<<<
- * 
- *                         if text_content != NULL and str_len > 0:
+          /* "d2d/lexbor/node.pxi":268
+ *                     elif tag_id == LXB_TAG_IMG:
+ *                         instruction = {}
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
 */
-              __pyx_t_5 = ((lxb_dom_character_data_t *)__pyx_v_node)->data.length;
-              __pyx_v_str_len = __pyx_t_5;
+          __pyx_t_22 = (__pyx_v_node->type == LXB_DOM_NODE_TYPE_ELEMENT);
+          if (__pyx_t_22) {
 
-              /* "d2d/lexbor/node.pxi":374
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length
- * 
- *                         if text_content != NULL and str_len > 0:             # <<<<<<<<<<<<<<
- *                             # Check if text is only whitespace
- *                             is_empty = True
+            /* "d2d/lexbor/node.pxi":269
+ *                         instruction = {}
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)             # <<<<<<<<<<<<<<
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
 */
-              __pyx_t_11 = (__pyx_v_text_content != NULL);
-              if (__pyx_t_11) {
-              } else {
-                __pyx_t_8 = __pyx_t_11;
-                goto __pyx_L24_bool_binop_done;
-              }
-              __pyx_t_11 = (__pyx_v_str_len > 0);
-              __pyx_t_8 = __pyx_t_11;
-              __pyx_L24_bool_binop_done:;
-              if (__pyx_t_8) {
+            __pyx_v_attr = lxb_dom_element_first_attribute_noi(((lxb_dom_element_t *)__pyx_v_node));
 
-                /* "d2d/lexbor/node.pxi":376
- *                         if text_content != NULL and str_len > 0:
- *                             # Check if text is only whitespace
- *                             is_empty = True             # <<<<<<<<<<<<<<
- *                             for i in range(str_len):
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:
+            /* "d2d/lexbor/node.pxi":270
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:             # <<<<<<<<<<<<<<
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
 */
-                __pyx_v_is_empty = 1;
+            while (1) {
+              __pyx_t_22 = (__pyx_v_attr != NULL);
+              if (!__pyx_t_22) break;
 
-                /* "d2d/lexbor/node.pxi":377
- *                             # Check if text is only whitespace
- *                             is_empty = True
- *                             for i in range(str_len):             # <<<<<<<<<<<<<<
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:
- *                                     is_empty = False
+              /* "d2d/lexbor/node.pxi":271
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)             # <<<<<<<<<<<<<<
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL:
 */
-                __pyx_t_5 = __pyx_v_str_len;
-                __pyx_t_12 = __pyx_t_5;
-                for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
-                  __pyx_v_i = __pyx_t_13;
+              __pyx_v_key = lxb_dom_attr_local_name_noi(__pyx_v_attr, (&__pyx_v_key_len));
 
-                  /* "d2d/lexbor/node.pxi":378
- *                             is_empty = True
- *                             for i in range(str_len):
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:             # <<<<<<<<<<<<<<
- *                                     is_empty = False
- *                                     break
+              /* "d2d/lexbor/node.pxi":272
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)             # <<<<<<<<<<<<<<
+ *                                 if key != NULL:
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
 */
-                  __pyx_t_11 = ((__pyx_v_text_content[__pyx_v_i]) != 32);
-                  if (__pyx_t_11) {
-                  } else {
-                    __pyx_t_8 = __pyx_t_11;
-                    goto __pyx_L29_bool_binop_done;
-                  }
-                  __pyx_t_11 = ((__pyx_v_text_content[__pyx_v_i]) != 9);
-                  if (__pyx_t_11) {
-                  } else {
-                    __pyx_t_8 = __pyx_t_11;
-                    goto __pyx_L29_bool_binop_done;
-                  }
-                  __pyx_t_11 = ((__pyx_v_text_content[__pyx_v_i]) != 10);
-                  if (__pyx_t_11) {
-                  } else {
-                    __pyx_t_8 = __pyx_t_11;
-                    goto __pyx_L29_bool_binop_done;
-                  }
-                  __pyx_t_11 = ((__pyx_v_text_content[__pyx_v_i]) != 13);
-                  __pyx_t_8 = __pyx_t_11;
-                  __pyx_L29_bool_binop_done:;
-                  if (__pyx_t_8) {
+              __pyx_v_value = lxb_dom_attr_value_noi(__pyx_v_attr, (&__pyx_v_value_len));
 
-                    /* "d2d/lexbor/node.pxi":379
- *                             for i in range(str_len):
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:
- *                                     is_empty = False             # <<<<<<<<<<<<<<
- *                                     break
- * 
+              /* "d2d/lexbor/node.pxi":273
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL:             # <<<<<<<<<<<<<<
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
+ *                                         if value != NULL:
 */
-                    __pyx_v_is_empty = 0;
+              __pyx_t_22 = (__pyx_v_key != NULL);
+              if (__pyx_t_22) {
 
-                    /* "d2d/lexbor/node.pxi":380
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:
- *                                     is_empty = False
- *                                     break             # <<<<<<<<<<<<<<
- * 
- *                             if not is_empty:
+                /* "d2d/lexbor/node.pxi":274
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL:
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
 */
-                    goto __pyx_L27_break;
-
-                    /* "d2d/lexbor/node.pxi":378
- *                             is_empty = True
- *                             for i in range(str_len):
- *                                 if text_content[i] != 32 and text_content[i] != 9 and text_content[i] != 10 and text_content[i] != 13:             # <<<<<<<<<<<<<<
- *                                     is_empty = False
- *                                     break
-*/
-                  }
+                __pyx_t_23 = (__pyx_v_key_len == 3);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L77_bool_binop_done;
                 }
-                __pyx_L27_break:;
+                __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_src) == 0);
+                __pyx_t_22 = __pyx_t_23;
+                __pyx_L77_bool_binop_done:;
+                if (__pyx_t_22) {
 
-                /* "d2d/lexbor/node.pxi":382
- *                                     break
- * 
- *                             if not is_empty:             # <<<<<<<<<<<<<<
- *                                 # Start block if needed
- *                                 if not in_block:
+                  /* "d2d/lexbor/node.pxi":275
+ *                                 if key != NULL:
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
 */
-                __pyx_t_8 = (!__pyx_v_is_empty);
-                if (__pyx_t_8) {
+                  __pyx_t_22 = (__pyx_v_value != NULL);
+                  if (__pyx_t_22) {
 
-                  /* "d2d/lexbor/node.pxi":384
- *                             if not is_empty:
- *                                 # Start block if needed
- *                                 if not in_block:             # <<<<<<<<<<<<<<
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b'[')
+                    /* "d2d/lexbor/node.pxi":276
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
+ *                                         if value != NULL:
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
+ *                                         if value != NULL:
 */
-                  __pyx_t_8 = (!__pyx_v_in_block);
-                  if (__pyx_t_8) {
+                    __pyx_t_8 = __Pyx_decode_c_string(((char const *)__pyx_v_value), 0, __pyx_v_value_len, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 276, __pyx_L21_error)
+                    __Pyx_GOTREF(__pyx_t_8);
+                    if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_src, __pyx_t_8) < 0))) __PYX_ERR(1, 276, __pyx_L21_error)
+                    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-                    /* "d2d/lexbor/node.pxi":385
- *                                 # Start block if needed
- *                                 if not in_block:
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)             # <<<<<<<<<<<<<<
- *                                     buffer_ptr[pos] = ord(b'[')
- *                                     pos += 1
-*/
-                    __pyx_f_3d2d_6lexbor_ensure_buffer_space(__pyx_v_f, __pyx_v_buffer_ptr, (&__pyx_v_pos), 10, __pyx_v_capacity); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 385, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":386
- *                                 if not in_block:
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b'[')             # <<<<<<<<<<<<<<
- *                                     pos += 1
- *                                     in_block = True
-*/
-                    (__pyx_v_buffer_ptr[__pyx_v_pos]) = 91;
-
-                    /* "d2d/lexbor/node.pxi":387
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b'[')
- *                                     pos += 1             # <<<<<<<<<<<<<<
- *                                     in_block = True
- *                                 else:
-*/
-                    __pyx_v_pos = (__pyx_v_pos + 1);
-
-                    /* "d2d/lexbor/node.pxi":388
- *                                     buffer_ptr[pos] = ord(b'[')
- *                                     pos += 1
- *                                     in_block = True             # <<<<<<<<<<<<<<
- *                                 else:
- *                                     # Add comma separator
-*/
-                    __pyx_v_in_block = 1;
-
-                    /* "d2d/lexbor/node.pxi":384
- *                             if not is_empty:
- *                                 # Start block if needed
- *                                 if not in_block:             # <<<<<<<<<<<<<<
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b'[')
-*/
-                    goto __pyx_L34;
-                  }
-
-                  /* "d2d/lexbor/node.pxi":391
- *                                 else:
- *                                     # Add comma separator
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)             # <<<<<<<<<<<<<<
- *                                     buffer_ptr[pos] = ord(b',')
- *                                     pos += 1
-*/
-                  /*else*/ {
-                    __pyx_f_3d2d_6lexbor_ensure_buffer_space(__pyx_v_f, __pyx_v_buffer_ptr, (&__pyx_v_pos), 10, __pyx_v_capacity); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 391, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":392
- *                                     # Add comma separator
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b',')             # <<<<<<<<<<<<<<
- *                                     pos += 1
- * 
-*/
-                    (__pyx_v_buffer_ptr[__pyx_v_pos]) = 44;
-
-                    /* "d2d/lexbor/node.pxi":393
- *                                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                                     buffer_ptr[pos] = ord(b',')
- *                                     pos += 1             # <<<<<<<<<<<<<<
- * 
- *                                 # Ensure space for instruction
-*/
-                    __pyx_v_pos = (__pyx_v_pos + 1);
-                  }
-                  __pyx_L34:;
-
-                  /* "d2d/lexbor/node.pxi":396
- * 
- *                                 # Ensure space for instruction
- *                                 ensure_buffer_space(f, buffer_ptr, &pos, str_len + 1000, capacity)             # <<<<<<<<<<<<<<
- * 
- *                                 # Write instruction start
-*/
-                  __pyx_f_3d2d_6lexbor_ensure_buffer_space(__pyx_v_f, __pyx_v_buffer_ptr, (&__pyx_v_pos), (__pyx_v_str_len + 0x3E8), __pyx_v_capacity); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 396, __pyx_L8_error)
-
-                  /* "d2d/lexbor/node.pxi":399
- * 
- *                                 # Write instruction start
- *                                 memcpy(&buffer_ptr[pos], b'{"text":"', 9)             # <<<<<<<<<<<<<<
- *                                 pos += 9
- * 
-*/
-                  (void)(memcpy((&(__pyx_v_buffer_ptr[__pyx_v_pos])), __pyx_k_text, 9));
-
-                  /* "d2d/lexbor/node.pxi":400
- *                                 # Write instruction start
- *                                 memcpy(&buffer_ptr[pos], b'{"text":"', 9)
- *                                 pos += 9             # <<<<<<<<<<<<<<
- * 
- *                                 # Escape and copy text
-*/
-                  __pyx_v_pos = (__pyx_v_pos + 9);
-
-                  /* "d2d/lexbor/node.pxi":403
- * 
- *                                 # Escape and copy text
- *                                 pos = escape_and_write_json_string(buffer_ptr, pos, text_content, str_len)             # <<<<<<<<<<<<<<
- * 
- *                                 buffer_ptr[pos] = ord(b'"')
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_escape_and_write_json_string(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_v_text_content, __pyx_v_str_len); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 403, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":405
- *                                 pos = escape_and_write_json_string(buffer_ptr, pos, text_content, str_len)
- * 
- *                                 buffer_ptr[pos] = ord(b'"')             # <<<<<<<<<<<<<<
- *                                 pos += 1
- * 
-*/
-                  (__pyx_v_buffer_ptr[__pyx_v_pos]) = 34;
-
-                  /* "d2d/lexbor/node.pxi":406
- * 
- *                                 buffer_ptr[pos] = ord(b'"')
- *                                 pos += 1             # <<<<<<<<<<<<<<
- * 
- *                                 # Add stack values
-*/
-                  __pyx_v_pos = (__pyx_v_pos + 1);
-
-                  /* "d2d/lexbor/node.pxi":409
- * 
- *                                 # Add stack values
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "bold", bold_stack, bold_depth)             # <<<<<<<<<<<<<<
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "italic", italic_stack, italic_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "underline", underline_stack, underline_depth)
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_stack_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_bold, __pyx_v_bold_stack, __pyx_v_bold_depth); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 409, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":410
- *                                 # Add stack values
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "bold", bold_stack, bold_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "italic", italic_stack, italic_depth)             # <<<<<<<<<<<<<<
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "underline", underline_stack, underline_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "text-center", text_center_stack, text_center_depth)
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_stack_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_italic, __pyx_v_italic_stack, __pyx_v_italic_depth); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 410, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":411
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "bold", bold_stack, bold_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "italic", italic_stack, italic_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "underline", underline_stack, underline_depth)             # <<<<<<<<<<<<<<
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "text-center", text_center_stack, text_center_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "font-size", font_size_stack, font_size_depth)
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_stack_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_underline, __pyx_v_underline_stack, __pyx_v_underline_depth); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 411, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":412
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "italic", italic_stack, italic_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "underline", underline_stack, underline_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "text-center", text_center_stack, text_center_depth)             # <<<<<<<<<<<<<<
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "font-size", font_size_stack, font_size_depth)
- * 
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_stack_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_text_center, __pyx_v_text_center_stack, __pyx_v_text_center_depth); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 412, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":413
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "underline", underline_stack, underline_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "text-center", text_center_stack, text_center_depth)
- *                                 pos = write_stack_attribute(buffer_ptr, pos, "font-size", font_size_stack, font_size_depth)             # <<<<<<<<<<<<<<
- * 
- *                                 # Add scalars
-*/
-                  __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_stack_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_font_size, __pyx_v_font_size_stack, __pyx_v_font_size_depth); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 413, __pyx_L8_error)
-                  __pyx_v_pos = __pyx_t_5;
-
-                  /* "d2d/lexbor/node.pxi":416
- * 
- *                                 # Add scalars
- *                                 if current_href != NULL:             # <<<<<<<<<<<<<<
- *                                     pos = write_json_attribute(buffer_ptr, pos, "href", current_href)
- * 
-*/
-                  __pyx_t_8 = (__pyx_v_current_href != NULL);
-                  if (__pyx_t_8) {
-
-                    /* "d2d/lexbor/node.pxi":417
- *                                 # Add scalars
- *                                 if current_href != NULL:
- *                                     pos = write_json_attribute(buffer_ptr, pos, "href", current_href)             # <<<<<<<<<<<<<<
- * 
- *                                 buffer_ptr[pos] = ord(b'}')
-*/
-                    __pyx_t_5 = __pyx_f_3d2d_6lexbor_write_json_attribute(__pyx_v_buffer_ptr, __pyx_v_pos, __pyx_k_href, __pyx_v_current_href, NULL); if (unlikely(__pyx_t_5 == ((size_t)-1L) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 417, __pyx_L8_error)
-                    __pyx_v_pos = __pyx_t_5;
-
-                    /* "d2d/lexbor/node.pxi":416
- * 
- *                                 # Add scalars
- *                                 if current_href != NULL:             # <<<<<<<<<<<<<<
- *                                     pos = write_json_attribute(buffer_ptr, pos, "href", current_href)
- * 
+                    /* "d2d/lexbor/node.pxi":275
+ *                                 if key != NULL:
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
 */
                   }
 
-                  /* "d2d/lexbor/node.pxi":419
- *                                     pos = write_json_attribute(buffer_ptr, pos, "href", current_href)
- * 
- *                                 buffer_ptr[pos] = ord(b'}')             # <<<<<<<<<<<<<<
- *                                 pos += 1
- * 
+                  /* "d2d/lexbor/node.pxi":274
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL:
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
 */
-                  (__pyx_v_buffer_ptr[__pyx_v_pos]) = 0x7D;
-
-                  /* "d2d/lexbor/node.pxi":420
- * 
- *                                 buffer_ptr[pos] = ord(b'}')
- *                                 pos += 1             # <<<<<<<<<<<<<<
- * 
- *                     # ENTER: Element node - accumulate styles
-*/
-                  __pyx_v_pos = (__pyx_v_pos + 1);
-
-                  /* "d2d/lexbor/node.pxi":382
- *                                     break
- * 
- *                             if not is_empty:             # <<<<<<<<<<<<<<
- *                                 # Start block if needed
- *                                 if not in_block:
-*/
+                  goto __pyx_L76;
                 }
 
-                /* "d2d/lexbor/node.pxi":374
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length
+                /* "d2d/lexbor/node.pxi":277
+ *                                         if value != NULL:
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')
+*/
+                __pyx_t_23 = (__pyx_v_key_len == 3);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L80_bool_binop_done;
+                }
+                __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_alt) == 0);
+                __pyx_t_22 = __pyx_t_23;
+                __pyx_L80_bool_binop_done:;
+                if (__pyx_t_22) {
+
+                  /* "d2d/lexbor/node.pxi":278
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')
+ *                                 attr = attr.next
+*/
+                  __pyx_t_22 = (__pyx_v_value != NULL);
+                  if (__pyx_t_22) {
+
+                    /* "d2d/lexbor/node.pxi":279
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
+ *                                         if value != NULL:
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                 attr = attr.next
  * 
- *                         if text_content != NULL and str_len > 0:             # <<<<<<<<<<<<<<
- *                             # Check if text is only whitespace
- *                             is_empty = True
+*/
+                    __pyx_t_8 = __Pyx_decode_c_string(((char const *)__pyx_v_value), 0, __pyx_v_value_len, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 279, __pyx_L21_error)
+                    __Pyx_GOTREF(__pyx_t_8);
+                    if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_alt, __pyx_t_8) < 0))) __PYX_ERR(1, 279, __pyx_L21_error)
+                    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+                    /* "d2d/lexbor/node.pxi":278
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')
+ *                                 attr = attr.next
+*/
+                  }
+
+                  /* "d2d/lexbor/node.pxi":277
+ *                                         if value != NULL:
+ *                                             instruction['src'] = value[:value_len].decode('utf-8')
+ *                                     elif key_len == 3 and strcmp(<char*>key, "alt") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')
+*/
+                }
+                __pyx_L76:;
+
+                /* "d2d/lexbor/node.pxi":273
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL:             # <<<<<<<<<<<<<<
+ *                                     if key_len == 3 and strcmp(<char*>key, "src") == 0:
+ *                                         if value != NULL:
 */
               }
 
-              /* "d2d/lexbor/node.pxi":370
+              /* "d2d/lexbor/node.pxi":280
+ *                                         if value != NULL:
+ *                                             instruction['alt'] = value[:value_len].decode('utf-8')
+ *                                 attr = attr.next             # <<<<<<<<<<<<<<
  * 
- *                     # TEXT NODE: Record text with accumulated attributes
- *                     if node.type == LXB_DOM_NODE_TYPE_TEXT:             # <<<<<<<<<<<<<<
- *                         text_content = <unsigned char *> lexbor_str_data_noi(&(<lxb_dom_character_data_t *> node).data)
- *                         str_len = (<lxb_dom_character_data_t *> node).data.length
+ *                         # Apply font attributes
+*/
+              __pyx_t_25 = __pyx_v_attr->next;
+              __pyx_v_attr = __pyx_t_25;
+            }
+
+            /* "d2d/lexbor/node.pxi":268
+ *                     elif tag_id == LXB_TAG_IMG:
+ *                         instruction = {}
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":283
+ * 
+ *                         # Apply font attributes
+ *                         current_attrs = style_stack[stack_depth - 1].attrs             # <<<<<<<<<<<<<<
+ *                         if current_attrs.font_weight[0] != '\0':
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+*/
+          __pyx_t_27 = (__pyx_v_style_stack[(__pyx_v_stack_depth - 1)]).attrs;
+          __pyx_v_current_attrs = __pyx_t_27;
+
+          /* "d2d/lexbor/node.pxi":284
+ *                         # Apply font attributes
+ *                         current_attrs = style_stack[stack_depth - 1].attrs
+ *                         if current_attrs.font_weight[0] != '\0':             # <<<<<<<<<<<<<<
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                         if current_attrs.font_size[0] != '\0':
+*/
+          __pyx_t_22 = ((__pyx_v_current_attrs.font_weight[0]) != '\x00');
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":285
+ *                         current_attrs = style_stack[stack_depth - 1].attrs
+ *                         if current_attrs.font_weight[0] != '\0':
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')             # <<<<<<<<<<<<<<
+ *                         if current_attrs.font_size[0] != '\0':
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+*/
+            __pyx_t_28 = __pyx_v_current_attrs.font_weight;
+            __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 285, __pyx_L21_error)
+            __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 285, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_font_weight_2, __pyx_t_8) < 0))) __PYX_ERR(1, 285, __pyx_L21_error)
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":284
+ *                         # Apply font attributes
+ *                         current_attrs = style_stack[stack_depth - 1].attrs
+ *                         if current_attrs.font_weight[0] != '\0':             # <<<<<<<<<<<<<<
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                         if current_attrs.font_size[0] != '\0':
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":286
+ *                         if current_attrs.font_weight[0] != '\0':
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                         if current_attrs.font_size[0] != '\0':             # <<<<<<<<<<<<<<
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ * 
+*/
+          __pyx_t_22 = ((__pyx_v_current_attrs.font_size[0]) != '\x00');
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":287
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                         if current_attrs.font_size[0] != '\0':
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')             # <<<<<<<<<<<<<<
+ * 
+ *                         if in_cell:
+*/
+            __pyx_t_28 = __pyx_v_current_attrs.font_size;
+            __pyx_t_26 = __Pyx_ssize_strlen(__pyx_t_28); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 287, __pyx_L21_error)
+            __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_28, 0, __pyx_t_26, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 287, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            if (unlikely((PyDict_SetItem(__pyx_v_instruction, __pyx_mstate_global->__pyx_n_u_font_size_2, __pyx_t_8) < 0))) __PYX_ERR(1, 287, __pyx_L21_error)
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":286
+ *                         if current_attrs.font_weight[0] != '\0':
+ *                             instruction['font_weight'] = current_attrs.font_weight.decode('utf-8')
+ *                         if current_attrs.font_size[0] != '\0':             # <<<<<<<<<<<<<<
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ * 
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":289
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ * 
+ *                         if in_cell:             # <<<<<<<<<<<<<<
+ *                             current_cell_instructions.append(instruction)
+ *                         else:
+*/
+          if (__pyx_v_in_cell) {
+
+            /* "d2d/lexbor/node.pxi":290
+ * 
+ *                         if in_cell:
+ *                             current_cell_instructions.append(instruction)             # <<<<<<<<<<<<<<
+ *                         else:
+ *                             instructions_block.append(instruction)
+*/
+            __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_current_cell_instructions, __pyx_v_instruction); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 290, __pyx_L21_error)
+
+            /* "d2d/lexbor/node.pxi":289
+ *                             instruction['font_size'] = current_attrs.font_size.decode('utf-8')
+ * 
+ *                         if in_cell:             # <<<<<<<<<<<<<<
+ *                             current_cell_instructions.append(instruction)
+ *                         else:
+*/
+            goto __pyx_L85;
+          }
+
+          /* "d2d/lexbor/node.pxi":292
+ *                             current_cell_instructions.append(instruction)
+ *                         else:
+ *                             instructions_block.append(instruction)             # <<<<<<<<<<<<<<
+ * 
+ *                     # Handle other tags - check for styling
+*/
+          /*else*/ {
+            __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_instructions_block, __pyx_v_instruction); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 292, __pyx_L21_error)
+          }
+          __pyx_L85:;
+
+          /* "d2d/lexbor/node.pxi":266
+ * 
+ *                     # Handle img nodes
+ *                     elif tag_id == LXB_TAG_IMG:             # <<<<<<<<<<<<<<
+ *                         instruction = {}
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+*/
+          break;
+          default:
+
+          /* "d2d/lexbor/node.pxi":296
+ *                     # Handle other tags - check for styling
+ *                     else:
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             # Copy parent attrs
+ *                             memcpy(&current_attrs, &style_stack[stack_depth - 1].attrs, sizeof(InstructionAttrs))
+*/
+          __pyx_t_22 = (__pyx_v_node->type == LXB_DOM_NODE_TYPE_ELEMENT);
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":298
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
+ *                             # Copy parent attrs
+ *                             memcpy(&current_attrs, &style_stack[stack_depth - 1].attrs, sizeof(InstructionAttrs))             # <<<<<<<<<<<<<<
+ *                             modified = False
+ * 
+*/
+            (void)(memcpy((&__pyx_v_current_attrs), (&(__pyx_v_style_stack[(__pyx_v_stack_depth - 1)]).attrs), (sizeof(struct __pyx_t_3d2d_6lexbor_InstructionAttrs))));
+
+            /* "d2d/lexbor/node.pxi":299
+ *                             # Copy parent attrs
+ *                             memcpy(&current_attrs, &style_stack[stack_depth - 1].attrs, sizeof(InstructionAttrs))
+ *                             modified = False             # <<<<<<<<<<<<<<
+ * 
+ *                             # Tag-based styling
+*/
+            __pyx_v_modified = 0;
+
+            /* "d2d/lexbor/node.pxi":302
+ * 
+ *                             # Tag-based styling
+ *                             if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:             # <<<<<<<<<<<<<<
+ *                                 if tag_id == LXB_TAG_B:
+ *                                     strncpy(current_attrs.font_weight, "b", 31)
+*/
+            switch (__pyx_v_tag_id) {
+              case LXB_TAG_B:
+              case LXB_TAG_STRONG:
+
+              /* "d2d/lexbor/node.pxi":303
+ *                             # Tag-based styling
+ *                             if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
+ *                                 if tag_id == LXB_TAG_B:             # <<<<<<<<<<<<<<
+ *                                     strncpy(current_attrs.font_weight, "b", 31)
+ *                                 else:
+*/
+              __pyx_t_22 = (__pyx_v_tag_id == LXB_TAG_B);
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":304
+ *                             if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
+ *                                 if tag_id == LXB_TAG_B:
+ *                                     strncpy(current_attrs.font_weight, "b", 31)             # <<<<<<<<<<<<<<
+ *                                 else:
+ *                                     strncpy(current_attrs.font_weight, "strong", 31)
+*/
+                (void)(strncpy(__pyx_v_current_attrs.font_weight, __pyx_k_b, 31));
+
+                /* "d2d/lexbor/node.pxi":303
+ *                             # Tag-based styling
+ *                             if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:
+ *                                 if tag_id == LXB_TAG_B:             # <<<<<<<<<<<<<<
+ *                                     strncpy(current_attrs.font_weight, "b", 31)
+ *                                 else:
+*/
+                goto __pyx_L87;
+              }
+
+              /* "d2d/lexbor/node.pxi":306
+ *                                     strncpy(current_attrs.font_weight, "b", 31)
+ *                                 else:
+ *                                     strncpy(current_attrs.font_weight, "strong", 31)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.font_weight[31] = '\0'
+ *                                 modified = True
+*/
+              /*else*/ {
+                (void)(strncpy(__pyx_v_current_attrs.font_weight, __pyx_k_strong, 31));
+              }
+              __pyx_L87:;
+
+              /* "d2d/lexbor/node.pxi":307
+ *                                 else:
+ *                                     strncpy(current_attrs.font_weight, "strong", 31)
+ *                                 current_attrs.font_weight[31] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H1:
+*/
+              (__pyx_v_current_attrs.font_weight[31]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":308
+ *                                     strncpy(current_attrs.font_weight, "strong", 31)
+ *                                 current_attrs.font_weight[31] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H1:
+ *                                 strncpy(current_attrs.header_tag, "h1", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":302
+ * 
+ *                             # Tag-based styling
+ *                             if tag_id == LXB_TAG_B or tag_id == LXB_TAG_STRONG:             # <<<<<<<<<<<<<<
+ *                                 if tag_id == LXB_TAG_B:
+ *                                     strncpy(current_attrs.font_weight, "b", 31)
 */
               break;
-              case LXB_DOM_NODE_TYPE_ELEMENT:
+              case LXB_TAG_H1:
 
-              /* "d2d/lexbor/node.pxi":425
- *                     elif node.type == LXB_DOM_NODE_TYPE_ELEMENT:
- *                         # Get tag-based style effects
- *                         get_tag_style_effects(tag_id, &tag_effects)             # <<<<<<<<<<<<<<
+              /* "d2d/lexbor/node.pxi":310
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H1:
+ *                                 strncpy(current_attrs.header_tag, "h1", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h1, 7));
+
+              /* "d2d/lexbor/node.pxi":311
+ *                             elif tag_id == LXB_TAG_H1:
+ *                                 strncpy(current_attrs.header_tag, "h1", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H2:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":312
+ *                                 strncpy(current_attrs.header_tag, "h1", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H2:
+ *                                 strncpy(current_attrs.header_tag, "h2", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":309
+ *                                 current_attrs.font_weight[31] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H1:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h1", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_H2:
+
+              /* "d2d/lexbor/node.pxi":314
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H2:
+ *                                 strncpy(current_attrs.header_tag, "h2", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h2, 7));
+
+              /* "d2d/lexbor/node.pxi":315
+ *                             elif tag_id == LXB_TAG_H2:
+ *                                 strncpy(current_attrs.header_tag, "h2", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H3:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":316
+ *                                 strncpy(current_attrs.header_tag, "h2", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H3:
+ *                                 strncpy(current_attrs.header_tag, "h3", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":313
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H2:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h2", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_H3:
+
+              /* "d2d/lexbor/node.pxi":318
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H3:
+ *                                 strncpy(current_attrs.header_tag, "h3", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h3, 7));
+
+              /* "d2d/lexbor/node.pxi":319
+ *                             elif tag_id == LXB_TAG_H3:
+ *                                 strncpy(current_attrs.header_tag, "h3", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H4:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":320
+ *                                 strncpy(current_attrs.header_tag, "h3", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H4:
+ *                                 strncpy(current_attrs.header_tag, "h4", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":317
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H3:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h3", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_H4:
+
+              /* "d2d/lexbor/node.pxi":322
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H4:
+ *                                 strncpy(current_attrs.header_tag, "h4", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h4, 7));
+
+              /* "d2d/lexbor/node.pxi":323
+ *                             elif tag_id == LXB_TAG_H4:
+ *                                 strncpy(current_attrs.header_tag, "h4", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H5:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":324
+ *                                 strncpy(current_attrs.header_tag, "h4", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H5:
+ *                                 strncpy(current_attrs.header_tag, "h5", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":321
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H4:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h4", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_H5:
+
+              /* "d2d/lexbor/node.pxi":326
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H5:
+ *                                 strncpy(current_attrs.header_tag, "h5", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h5, 7));
+
+              /* "d2d/lexbor/node.pxi":327
+ *                             elif tag_id == LXB_TAG_H5:
+ *                                 strncpy(current_attrs.header_tag, "h5", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H6:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":328
+ *                                 strncpy(current_attrs.header_tag, "h5", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_H6:
+ *                                 strncpy(current_attrs.header_tag, "h6", 7)
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":325
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H5:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h5", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_H6:
+
+              /* "d2d/lexbor/node.pxi":330
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H6:
+ *                                 strncpy(current_attrs.header_tag, "h6", 7)             # <<<<<<<<<<<<<<
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+*/
+              (void)(strncpy(__pyx_v_current_attrs.header_tag, __pyx_k_h6, 7));
+
+              /* "d2d/lexbor/node.pxi":331
+ *                             elif tag_id == LXB_TAG_H6:
+ *                                 strncpy(current_attrs.header_tag, "h6", 7)
+ *                                 current_attrs.header_tag[7] = '\0'             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
+*/
+              (__pyx_v_current_attrs.header_tag[7]) = '\x00';
+
+              /* "d2d/lexbor/node.pxi":332
+ *                                 strncpy(current_attrs.header_tag, "h6", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
+ *                                 current_attrs.is_italic = True
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":329
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_H6:             # <<<<<<<<<<<<<<
+ *                                 strncpy(current_attrs.header_tag, "h6", 7)
+ *                                 current_attrs.header_tag[7] = '\0'
+*/
+              break;
+              case LXB_TAG_I:
+
+              /* "d2d/lexbor/node.pxi":333
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:             # <<<<<<<<<<<<<<
+ *                                 current_attrs.is_italic = True
+ *                                 modified = True
+*/
+              case LXB_TAG_EM:
+
+              /* "d2d/lexbor/node.pxi":334
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
+ *                                 current_attrs.is_italic = True             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
+*/
+              __pyx_v_current_attrs.is_italic = 1;
+
+              /* "d2d/lexbor/node.pxi":335
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:
+ *                                 current_attrs.is_italic = True
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
+ *                                 current_attrs.is_underline = True
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":333
+ *                                 current_attrs.header_tag[7] = '\0'
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_I or tag_id == LXB_TAG_EM:             # <<<<<<<<<<<<<<
+ *                                 current_attrs.is_italic = True
+ *                                 modified = True
+*/
+              break;
+              case LXB_TAG_U:
+
+              /* "d2d/lexbor/node.pxi":336
+ *                                 current_attrs.is_italic = True
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:             # <<<<<<<<<<<<<<
+ *                                 current_attrs.is_underline = True
+ *                                 modified = True
+*/
+              case LXB_TAG_INS:
+
+              /* "d2d/lexbor/node.pxi":337
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
+ *                                 current_attrs.is_underline = True             # <<<<<<<<<<<<<<
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_A:
+*/
+              __pyx_v_current_attrs.is_underline = 1;
+
+              /* "d2d/lexbor/node.pxi":338
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:
+ *                                 current_attrs.is_underline = True
+ *                                 modified = True             # <<<<<<<<<<<<<<
+ *                             elif tag_id == LXB_TAG_A:
+ *                                 # Get href attribute
+*/
+              __pyx_v_modified = 1;
+
+              /* "d2d/lexbor/node.pxi":336
+ *                                 current_attrs.is_italic = True
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_U or tag_id == LXB_TAG_INS:             # <<<<<<<<<<<<<<
+ *                                 current_attrs.is_underline = True
+ *                                 modified = True
+*/
+              break;
+              case LXB_TAG_A:
+
+              /* "d2d/lexbor/node.pxi":341
+ *                             elif tag_id == LXB_TAG_A:
+ *                                 # Get href attribute
+ *                                 attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)             # <<<<<<<<<<<<<<
+ *                                 while attr != NULL:
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)
+*/
+              __pyx_v_attr = lxb_dom_element_first_attribute_noi(((lxb_dom_element_t *)__pyx_v_node));
+
+              /* "d2d/lexbor/node.pxi":342
+ *                                 # Get href attribute
+ *                                 attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                                 while attr != NULL:             # <<<<<<<<<<<<<<
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+*/
+              while (1) {
+                __pyx_t_22 = (__pyx_v_attr != NULL);
+                if (!__pyx_t_22) break;
+
+                /* "d2d/lexbor/node.pxi":343
+ *                                 attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                                 while attr != NULL:
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)             # <<<<<<<<<<<<<<
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:
+*/
+                __pyx_v_key = lxb_dom_attr_local_name_noi(__pyx_v_attr, (&__pyx_v_key_len));
+
+                /* "d2d/lexbor/node.pxi":344
+ *                                 while attr != NULL:
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)             # <<<<<<<<<<<<<<
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:
+ *                                         if value != NULL:
+*/
+                __pyx_v_value = lxb_dom_attr_value_noi(__pyx_v_attr, (&__pyx_v_value_len));
+
+                /* "d2d/lexbor/node.pxi":345
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             strncpy(current_attrs.href, <char*>value, 511)
+*/
+                __pyx_t_23 = (__pyx_v_key != NULL);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L91_bool_binop_done;
+                }
+                __pyx_t_23 = (__pyx_v_key_len == 4);
+                if (__pyx_t_23) {
+                } else {
+                  __pyx_t_22 = __pyx_t_23;
+                  goto __pyx_L91_bool_binop_done;
+                }
+                __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_href) == 0);
+                __pyx_t_22 = __pyx_t_23;
+                __pyx_L91_bool_binop_done:;
+                if (__pyx_t_22) {
+
+                  /* "d2d/lexbor/node.pxi":346
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             strncpy(current_attrs.href, <char*>value, 511)
+ *                                             current_attrs.href[511] = '\0'
+*/
+                  __pyx_t_22 = (__pyx_v_value != NULL);
+                  if (__pyx_t_22) {
+
+                    /* "d2d/lexbor/node.pxi":347
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:
+ *                                         if value != NULL:
+ *                                             strncpy(current_attrs.href, <char*>value, 511)             # <<<<<<<<<<<<<<
+ *                                             current_attrs.href[511] = '\0'
+ *                                         else:
+*/
+                    (void)(strncpy(__pyx_v_current_attrs.href, ((char *)__pyx_v_value), 0x1FF));
+
+                    /* "d2d/lexbor/node.pxi":348
+ *                                         if value != NULL:
+ *                                             strncpy(current_attrs.href, <char*>value, 511)
+ *                                             current_attrs.href[511] = '\0'             # <<<<<<<<<<<<<<
+ *                                         else:
+ *                                             current_attrs.href[0] = '\0'
+*/
+                    (__pyx_v_current_attrs.href[0x1FF]) = '\x00';
+
+                    /* "d2d/lexbor/node.pxi":346
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:
+ *                                         if value != NULL:             # <<<<<<<<<<<<<<
+ *                                             strncpy(current_attrs.href, <char*>value, 511)
+ *                                             current_attrs.href[511] = '\0'
+*/
+                    goto __pyx_L94;
+                  }
+
+                  /* "d2d/lexbor/node.pxi":350
+ *                                             current_attrs.href[511] = '\0'
+ *                                         else:
+ *                                             current_attrs.href[0] = '\0'             # <<<<<<<<<<<<<<
+ *                                         modified = True
+ *                                         break
+*/
+                  /*else*/ {
+                    (__pyx_v_current_attrs.href[0]) = '\x00';
+                  }
+                  __pyx_L94:;
+
+                  /* "d2d/lexbor/node.pxi":351
+ *                                         else:
+ *                                             current_attrs.href[0] = '\0'
+ *                                         modified = True             # <<<<<<<<<<<<<<
+ *                                         break
+ *                                     attr = attr.next
+*/
+                  __pyx_v_modified = 1;
+
+                  /* "d2d/lexbor/node.pxi":352
+ *                                             current_attrs.href[0] = '\0'
+ *                                         modified = True
+ *                                         break             # <<<<<<<<<<<<<<
+ *                                     attr = attr.next
  * 
- *                         # Push tag-based styles
 */
-              __pyx_f_3d2d_6lexbor_get_tag_style_effects(__pyx_v_tag_id, (&__pyx_v_tag_effects)); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 425, __pyx_L8_error)
+                  goto __pyx_L89_break;
 
-              /* "d2d/lexbor/node.pxi":428
- * 
- *                         # Push tag-based styles
- *                         if tag_effects.push_bold:             # <<<<<<<<<<<<<<
- *                             push_to_stack(bold_stack, &bold_depth, "bold")
- *                         if tag_effects.push_italic:
-*/
-              if (__pyx_v_tag_effects.push_bold) {
-
-                /* "d2d/lexbor/node.pxi":429
- *                         # Push tag-based styles
- *                         if tag_effects.push_bold:
- *                             push_to_stack(bold_stack, &bold_depth, "bold")             # <<<<<<<<<<<<<<
- *                         if tag_effects.push_italic:
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
-*/
-                __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_bold_stack, (&__pyx_v_bold_depth), __pyx_k_bold); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 429, __pyx_L8_error)
-
-                /* "d2d/lexbor/node.pxi":428
- * 
- *                         # Push tag-based styles
- *                         if tag_effects.push_bold:             # <<<<<<<<<<<<<<
- *                             push_to_stack(bold_stack, &bold_depth, "bold")
- *                         if tag_effects.push_italic:
-*/
-              }
-
-              /* "d2d/lexbor/node.pxi":430
- *                         if tag_effects.push_bold:
- *                             push_to_stack(bold_stack, &bold_depth, "bold")
- *                         if tag_effects.push_italic:             # <<<<<<<<<<<<<<
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
- *                         if tag_effects.push_underline:
-*/
-              if (__pyx_v_tag_effects.push_italic) {
-
-                /* "d2d/lexbor/node.pxi":431
- *                             push_to_stack(bold_stack, &bold_depth, "bold")
- *                         if tag_effects.push_italic:
- *                             push_to_stack(italic_stack, &italic_depth, "italic")             # <<<<<<<<<<<<<<
- *                         if tag_effects.push_underline:
- *                             push_to_stack(underline_stack, &underline_depth, "underline")
-*/
-                __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_italic_stack, (&__pyx_v_italic_depth), __pyx_k_italic); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 431, __pyx_L8_error)
-
-                /* "d2d/lexbor/node.pxi":430
- *                         if tag_effects.push_bold:
- *                             push_to_stack(bold_stack, &bold_depth, "bold")
- *                         if tag_effects.push_italic:             # <<<<<<<<<<<<<<
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
- *                         if tag_effects.push_underline:
-*/
-              }
-
-              /* "d2d/lexbor/node.pxi":432
- *                         if tag_effects.push_italic:
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
- *                         if tag_effects.push_underline:             # <<<<<<<<<<<<<<
- *                             push_to_stack(underline_stack, &underline_depth, "underline")
- * 
-*/
-              if (__pyx_v_tag_effects.push_underline) {
-
-                /* "d2d/lexbor/node.pxi":433
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
- *                         if tag_effects.push_underline:
- *                             push_to_stack(underline_stack, &underline_depth, "underline")             # <<<<<<<<<<<<<<
- * 
- *                         # Handle link href
-*/
-                __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_underline_stack, (&__pyx_v_underline_depth), __pyx_k_underline); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 433, __pyx_L8_error)
-
-                /* "d2d/lexbor/node.pxi":432
- *                         if tag_effects.push_italic:
- *                             push_to_stack(italic_stack, &italic_depth, "italic")
- *                         if tag_effects.push_underline:             # <<<<<<<<<<<<<<
- *                             push_to_stack(underline_stack, &underline_depth, "underline")
- * 
-*/
-              }
-
-              /* "d2d/lexbor/node.pxi":436
- * 
- *                         # Handle link href
- *                         if tag_effects.is_link:             # <<<<<<<<<<<<<<
- *                             style_attr = lxb_dom_element_attr_by_name(
- *                                 <lxb_dom_element_t*>node,
-*/
-              if (__pyx_v_tag_effects.is_link) {
-
-                /* "d2d/lexbor/node.pxi":437
- *                         # Handle link href
- *                         if tag_effects.is_link:
- *                             style_attr = lxb_dom_element_attr_by_name(             # <<<<<<<<<<<<<<
- *                                 <lxb_dom_element_t*>node,
- *                                 <lxb_char_t*>"href",
-*/
-                __pyx_v_style_attr = lxb_dom_element_attr_by_name(((lxb_dom_element_t *)__pyx_v_node), ((lxb_char_t *)((lxb_char_t *)((char *)"href"))), 4);
-
-                /* "d2d/lexbor/node.pxi":442
- *                                 4
- *                             )
- *                             if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                 current_href = <const char*>lxb_dom_attr_value_noi(style_attr, &str_len)
- * 
-*/
-                __pyx_t_8 = (__pyx_v_style_attr != NULL);
-                if (__pyx_t_8) {
-
-                  /* "d2d/lexbor/node.pxi":443
- *                             )
- *                             if style_attr != NULL:
- *                                 current_href = <const char*>lxb_dom_attr_value_noi(style_attr, &str_len)             # <<<<<<<<<<<<<<
- * 
- *                         # Parse CSS styles
-*/
-                  __pyx_v_current_href = ((char const *)lxb_dom_attr_value_noi(__pyx_v_style_attr, (&__pyx_v_str_len)));
-
-                  /* "d2d/lexbor/node.pxi":442
- *                                 4
- *                             )
- *                             if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                 current_href = <const char*>lxb_dom_attr_value_noi(style_attr, &str_len)
- * 
+                  /* "d2d/lexbor/node.pxi":345
+ *                                     key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                     value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                     if key != NULL and key_len == 4 and strcmp(<char*>key, "href") == 0:             # <<<<<<<<<<<<<<
+ *                                         if value != NULL:
+ *                                             strncpy(current_attrs.href, <char*>value, 511)
 */
                 }
 
-                /* "d2d/lexbor/node.pxi":436
+                /* "d2d/lexbor/node.pxi":353
+ *                                         modified = True
+ *                                         break
+ *                                     attr = attr.next             # <<<<<<<<<<<<<<
  * 
- *                         # Handle link href
- *                         if tag_effects.is_link:             # <<<<<<<<<<<<<<
- *                             style_attr = lxb_dom_element_attr_by_name(
- *                                 <lxb_dom_element_t*>node,
+ *                             # Parse inline style attribute
 */
+                __pyx_t_25 = __pyx_v_attr->next;
+                __pyx_v_attr = __pyx_t_25;
               }
+              __pyx_L89_break:;
 
-              /* "d2d/lexbor/node.pxi":446
- * 
- *                         # Parse CSS styles
- *                         style_attr = lxb_dom_element_attr_by_name(             # <<<<<<<<<<<<<<
- *                             <lxb_dom_element_t*>node,
- *                             <lxb_char_t*>"style",
-*/
-              __pyx_v_style_attr = lxb_dom_element_attr_by_name(((lxb_dom_element_t *)__pyx_v_node), ((lxb_char_t *)((lxb_char_t *)((char *)"style"))), 5);
-
-              /* "d2d/lexbor/node.pxi":452
- *                         )
- * 
- *                         if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                             style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                             parse_style_attribute(style_value, &style_flags)
-*/
-              __pyx_t_8 = (__pyx_v_style_attr != NULL);
-              if (__pyx_t_8) {
-
-                /* "d2d/lexbor/node.pxi":453
- * 
- *                         if style_attr != NULL:
- *                             style_value = lxb_dom_attr_value_noi(style_attr, &str_len)             # <<<<<<<<<<<<<<
- *                             parse_style_attribute(style_value, &style_flags)
- * 
-*/
-                __pyx_v_style_value = lxb_dom_attr_value_noi(__pyx_v_style_attr, (&__pyx_v_str_len));
-
-                /* "d2d/lexbor/node.pxi":454
- *                         if style_attr != NULL:
- *                             style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                             parse_style_attribute(style_value, &style_flags)             # <<<<<<<<<<<<<<
- * 
- *                             if style_flags.is_display_none:
-*/
-                __pyx_f_3d2d_6lexbor_parse_style_attribute(__pyx_v_style_value, (&__pyx_v_style_flags)); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 454, __pyx_L8_error)
-
-                /* "d2d/lexbor/node.pxi":456
- *                             parse_style_attribute(style_value, &style_flags)
- * 
- *                             if style_flags.is_display_none:             # <<<<<<<<<<<<<<
- *                                 skip_node = True
- * 
-*/
-                if (__pyx_v_style_flags.is_display_none) {
-
-                  /* "d2d/lexbor/node.pxi":457
- * 
- *                             if style_flags.is_display_none:
- *                                 skip_node = True             # <<<<<<<<<<<<<<
- * 
- *                             if style_flags.has_bold:
-*/
-                  __pyx_v_skip_node = 1;
-
-                  /* "d2d/lexbor/node.pxi":456
- *                             parse_style_attribute(style_value, &style_flags)
- * 
- *                             if style_flags.is_display_none:             # <<<<<<<<<<<<<<
- *                                 skip_node = True
- * 
-*/
-                }
-
-                /* "d2d/lexbor/node.pxi":459
- *                                 skip_node = True
- * 
- *                             if style_flags.has_bold:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")
- *                             if style_flags.has_italic:
-*/
-                if (__pyx_v_style_flags.has_bold) {
-
-                  /* "d2d/lexbor/node.pxi":460
- * 
- *                             if style_flags.has_bold:
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")             # <<<<<<<<<<<<<<
- *                             if style_flags.has_italic:
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
-*/
-                  __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_bold_stack, (&__pyx_v_bold_depth), __pyx_k_font_weight_bold); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 460, __pyx_L8_error)
-
-                  /* "d2d/lexbor/node.pxi":459
- *                                 skip_node = True
- * 
- *                             if style_flags.has_bold:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")
- *                             if style_flags.has_italic:
-*/
-                }
-
-                /* "d2d/lexbor/node.pxi":461
- *                             if style_flags.has_bold:
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")
- *                             if style_flags.has_italic:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
- *                             if style_flags.has_underline:
-*/
-                if (__pyx_v_style_flags.has_italic) {
-
-                  /* "d2d/lexbor/node.pxi":462
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")
- *                             if style_flags.has_italic:
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")             # <<<<<<<<<<<<<<
- *                             if style_flags.has_underline:
- *                                 push_to_stack(underline_stack, &underline_depth, "text-decoration:underline")
-*/
-                  __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_italic_stack, (&__pyx_v_italic_depth), __pyx_k_font_style_italic); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 462, __pyx_L8_error)
-
-                  /* "d2d/lexbor/node.pxi":461
- *                             if style_flags.has_bold:
- *                                 push_to_stack(bold_stack, &bold_depth, "font-weight:bold")
- *                             if style_flags.has_italic:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
- *                             if style_flags.has_underline:
-*/
-                }
-
-                /* "d2d/lexbor/node.pxi":463
- *                             if style_flags.has_italic:
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
- *                             if style_flags.has_underline:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(underline_stack, &underline_depth, "text-decoration:underline")
- * 
-*/
-                if (__pyx_v_style_flags.has_underline) {
-
-                  /* "d2d/lexbor/node.pxi":464
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
- *                             if style_flags.has_underline:
- *                                 push_to_stack(underline_stack, &underline_depth, "text-decoration:underline")             # <<<<<<<<<<<<<<
- * 
- *                     # Traverse down
-*/
-                  __pyx_f_3d2d_6lexbor_push_to_stack(__pyx_v_underline_stack, (&__pyx_v_underline_depth), __pyx_k_text_decoration_underline); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 464, __pyx_L8_error)
-
-                  /* "d2d/lexbor/node.pxi":463
- *                             if style_flags.has_italic:
- *                                 push_to_stack(italic_stack, &italic_depth, "font-style:italic")
- *                             if style_flags.has_underline:             # <<<<<<<<<<<<<<
- *                                 push_to_stack(underline_stack, &underline_depth, "text-decoration:underline")
- * 
-*/
-                }
-
-                /* "d2d/lexbor/node.pxi":452
- *                         )
- * 
- *                         if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                             style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                             parse_style_attribute(style_value, &style_flags)
-*/
-              }
-
-              /* "d2d/lexbor/node.pxi":423
- * 
- *                     # ENTER: Element node - accumulate styles
- *                     elif node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
- *                         # Get tag-based style effects
- *                         get_tag_style_effects(tag_id, &tag_effects)
+              /* "d2d/lexbor/node.pxi":339
+ *                                 current_attrs.is_underline = True
+ *                                 modified = True
+ *                             elif tag_id == LXB_TAG_A:             # <<<<<<<<<<<<<<
+ *                                 # Get href attribute
+ *                                 attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
 */
               break;
               default: break;
             }
 
-            /* "d2d/lexbor/node.pxi":467
+            /* "d2d/lexbor/node.pxi":356
  * 
- *                     # Traverse down
- *                     if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                         node = node.first_child
- *                     else:
+ *                             # Parse inline style attribute
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)             # <<<<<<<<<<<<<<
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
 */
-            __pyx_t_8 = (__pyx_v_node->first_child != NULL);
-            if (__pyx_t_8) {
+            __pyx_v_attr = lxb_dom_element_first_attribute_noi(((lxb_dom_element_t *)__pyx_v_node));
 
-              /* "d2d/lexbor/node.pxi":468
- *                     # Traverse down
- *                     if node.first_child != NULL:
- *                         node = node.first_child             # <<<<<<<<<<<<<<
- *                     else:
- *                         # EXIT nodes while going back up
+            /* "d2d/lexbor/node.pxi":357
+ *                             # Parse inline style attribute
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:             # <<<<<<<<<<<<<<
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
 */
-              __pyx_t_3 = __pyx_v_node->first_child;
-              __pyx_v_node = __pyx_t_3;
+            while (1) {
+              __pyx_t_22 = (__pyx_v_attr != NULL);
+              if (!__pyx_t_22) break;
 
-              /* "d2d/lexbor/node.pxi":467
+              /* "d2d/lexbor/node.pxi":358
+ *                             attr = lxb_dom_element_first_attribute_noi(<lxb_dom_element_t*>node)
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)             # <<<<<<<<<<<<<<
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:
+*/
+              __pyx_v_key = lxb_dom_attr_local_name_noi(__pyx_v_attr, (&__pyx_v_key_len));
+
+              /* "d2d/lexbor/node.pxi":359
+ *                             while attr != NULL:
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)             # <<<<<<<<<<<<<<
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:
+ *                                     if value != NULL:
+*/
+              __pyx_v_value = lxb_dom_attr_value_noi(__pyx_v_attr, (&__pyx_v_value_len));
+
+              /* "d2d/lexbor/node.pxi":360
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:             # <<<<<<<<<<<<<<
+ *                                     if value != NULL:
+ *                                         style_str = value[:value_len].decode('utf-8')
+*/
+              __pyx_t_23 = (__pyx_v_key != NULL);
+              if (__pyx_t_23) {
+              } else {
+                __pyx_t_22 = __pyx_t_23;
+                goto __pyx_L98_bool_binop_done;
+              }
+              __pyx_t_23 = (__pyx_v_key_len == 5);
+              if (__pyx_t_23) {
+              } else {
+                __pyx_t_22 = __pyx_t_23;
+                goto __pyx_L98_bool_binop_done;
+              }
+              __pyx_t_23 = (strcmp(((char *)__pyx_v_key), __pyx_k_style) == 0);
+              __pyx_t_22 = __pyx_t_23;
+              __pyx_L98_bool_binop_done:;
+              if (__pyx_t_22) {
+
+                /* "d2d/lexbor/node.pxi":361
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:
+ *                                     if value != NULL:             # <<<<<<<<<<<<<<
+ *                                         style_str = value[:value_len].decode('utf-8')
+ *                                         if self._parse_style(style_str, &current_attrs):
+*/
+                __pyx_t_22 = (__pyx_v_value != NULL);
+                if (__pyx_t_22) {
+
+                  /* "d2d/lexbor/node.pxi":362
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:
+ *                                     if value != NULL:
+ *                                         style_str = value[:value_len].decode('utf-8')             # <<<<<<<<<<<<<<
+ *                                         if self._parse_style(style_str, &current_attrs):
+ *                                             modified = True
+*/
+                  __pyx_t_8 = __Pyx_decode_c_string(((char const *)__pyx_v_value), 0, __pyx_v_value_len, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 362, __pyx_L21_error)
+                  __Pyx_GOTREF(__pyx_t_8);
+                  __Pyx_XDECREF_SET(__pyx_v_style_str, ((PyObject*)__pyx_t_8));
+                  __pyx_t_8 = 0;
+
+                  /* "d2d/lexbor/node.pxi":363
+ *                                     if value != NULL:
+ *                                         style_str = value[:value_len].decode('utf-8')
+ *                                         if self._parse_style(style_str, &current_attrs):             # <<<<<<<<<<<<<<
+ *                                             modified = True
+ *                                     break
+*/
+                  __pyx_t_22 = __pyx_f_3d2d_6lexbor_10LexborNode__parse_style(__pyx_v_self, __pyx_v_style_str, (&__pyx_v_current_attrs)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 363, __pyx_L21_error)
+                  if (__pyx_t_22) {
+
+                    /* "d2d/lexbor/node.pxi":364
+ *                                         style_str = value[:value_len].decode('utf-8')
+ *                                         if self._parse_style(style_str, &current_attrs):
+ *                                             modified = True             # <<<<<<<<<<<<<<
+ *                                     break
+ *                                 attr = attr.next
+*/
+                    __pyx_v_modified = 1;
+
+                    /* "d2d/lexbor/node.pxi":363
+ *                                     if value != NULL:
+ *                                         style_str = value[:value_len].decode('utf-8')
+ *                                         if self._parse_style(style_str, &current_attrs):             # <<<<<<<<<<<<<<
+ *                                             modified = True
+ *                                     break
+*/
+                  }
+
+                  /* "d2d/lexbor/node.pxi":361
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:
+ *                                     if value != NULL:             # <<<<<<<<<<<<<<
+ *                                         style_str = value[:value_len].decode('utf-8')
+ *                                         if self._parse_style(style_str, &current_attrs):
+*/
+                }
+
+                /* "d2d/lexbor/node.pxi":365
+ *                                         if self._parse_style(style_str, &current_attrs):
+ *                                             modified = True
+ *                                     break             # <<<<<<<<<<<<<<
+ *                                 attr = attr.next
  * 
- *                     # Traverse down
- *                     if node.first_child != NULL:             # <<<<<<<<<<<<<<
- *                         node = node.first_child
- *                     else:
 */
-              goto __pyx_L46;
+                goto __pyx_L96_break;
+
+                /* "d2d/lexbor/node.pxi":360
+ *                                 key = lxb_dom_attr_local_name_noi(attr, &key_len)
+ *                                 value = lxb_dom_attr_value_noi(attr, &value_len)
+ *                                 if key != NULL and key_len == 5 and strcmp(<char*>key, "style") == 0:             # <<<<<<<<<<<<<<
+ *                                     if value != NULL:
+ *                                         style_str = value[:value_len].decode('utf-8')
+*/
+              }
+
+              /* "d2d/lexbor/node.pxi":366
+ *                                             modified = True
+ *                                     break
+ *                                 attr = attr.next             # <<<<<<<<<<<<<<
+ * 
+ *                             # Check for display:none
+*/
+              __pyx_t_25 = __pyx_v_attr->next;
+              __pyx_v_attr = __pyx_t_25;
+            }
+            __pyx_L96_break:;
+
+            /* "d2d/lexbor/node.pxi":369
+ * 
+ *                             # Check for display:none
+ *                             if current_attrs.display_none:             # <<<<<<<<<<<<<<
+ *                                 skip_subtree = True
+ *                                 skip_mem_id = <size_t>node
+*/
+            if (__pyx_v_current_attrs.display_none) {
+
+              /* "d2d/lexbor/node.pxi":370
+ *                             # Check for display:none
+ *                             if current_attrs.display_none:
+ *                                 skip_subtree = True             # <<<<<<<<<<<<<<
+ *                                 skip_mem_id = <size_t>node
+ * 
+*/
+              __pyx_v_skip_subtree = 1;
+
+              /* "d2d/lexbor/node.pxi":371
+ *                             if current_attrs.display_none:
+ *                                 skip_subtree = True
+ *                                 skip_mem_id = <size_t>node             # <<<<<<<<<<<<<<
+ * 
+ *                             # Push to stack if modified
+*/
+              __pyx_v_skip_mem_id = ((size_t)__pyx_v_node);
+
+              /* "d2d/lexbor/node.pxi":369
+ * 
+ *                             # Check for display:none
+ *                             if current_attrs.display_none:             # <<<<<<<<<<<<<<
+ *                                 skip_subtree = True
+ *                                 skip_mem_id = <size_t>node
+*/
             }
 
-            /* "d2d/lexbor/node.pxi":471
- *                     else:
- *                         # EXIT nodes while going back up
- *                         while True:             # <<<<<<<<<<<<<<
- *                             tag_id = lxb_dom_node_tag_id_noi(node)
+            /* "d2d/lexbor/node.pxi":374
  * 
+ *                             # Push to stack if modified
+ *                             if modified:             # <<<<<<<<<<<<<<
+ *                                 if stack_depth >= MAX_STACK_DEPTH:
+ *                                     raise RuntimeError("Style stack overflow")
 */
-            /*else*/ {
-              while (1) {
+            if (__pyx_v_modified) {
 
-                /* "d2d/lexbor/node.pxi":472
- *                         # EXIT nodes while going back up
- *                         while True:
- *                             tag_id = lxb_dom_node_tag_id_noi(node)             # <<<<<<<<<<<<<<
- * 
- *                             # Pop stacks based on tag and styles
+              /* "d2d/lexbor/node.pxi":375
+ *                             # Push to stack if modified
+ *                             if modified:
+ *                                 if stack_depth >= MAX_STACK_DEPTH:             # <<<<<<<<<<<<<<
+ *                                     raise RuntimeError("Style stack overflow")
+ *                                 style_stack[stack_depth].mem_id = <size_t>node
 */
-                __pyx_v_tag_id = lxb_dom_node_tag_id_noi(__pyx_v_node);
+              __pyx_t_22 = (__pyx_v_stack_depth >= 0x3E8);
+              if (unlikely(__pyx_t_22)) {
 
-                /* "d2d/lexbor/node.pxi":475
- * 
- *                             # Pop stacks based on tag and styles
- *                             if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
- *                                 get_tag_style_effects(tag_id, &tag_effects)
- * 
+                /* "d2d/lexbor/node.pxi":376
+ *                             if modified:
+ *                                 if stack_depth >= MAX_STACK_DEPTH:
+ *                                     raise RuntimeError("Style stack overflow")             # <<<<<<<<<<<<<<
+ *                                 style_stack[stack_depth].mem_id = <size_t>node
+ *                                 memcpy(&style_stack[stack_depth].attrs, &current_attrs, sizeof(InstructionAttrs))
 */
-                __pyx_t_8 = (__pyx_v_node->type == LXB_DOM_NODE_TYPE_ELEMENT);
-                if (__pyx_t_8) {
-
-                  /* "d2d/lexbor/node.pxi":476
- *                             # Pop stacks based on tag and styles
- *                             if node.type == LXB_DOM_NODE_TYPE_ELEMENT:
- *                                 get_tag_style_effects(tag_id, &tag_effects)             # <<<<<<<<<<<<<<
- * 
- *                                 # Pop tag-based styles
-*/
-                  __pyx_f_3d2d_6lexbor_get_tag_style_effects(__pyx_v_tag_id, (&__pyx_v_tag_effects)); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 476, __pyx_L8_error)
-
-                  /* "d2d/lexbor/node.pxi":479
- * 
- *                                 # Pop tag-based styles
- *                                 if tag_effects.push_bold:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&bold_depth, 1)
- *                                 if tag_effects.push_italic:
-*/
-                  if (__pyx_v_tag_effects.push_bold) {
-
-                    /* "d2d/lexbor/node.pxi":480
- *                                 # Pop tag-based styles
- *                                 if tag_effects.push_bold:
- *                                     pop_from_stack(&bold_depth, 1)             # <<<<<<<<<<<<<<
- *                                 if tag_effects.push_italic:
- *                                     pop_from_stack(&italic_depth, 1)
-*/
-                    __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_bold_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 480, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":479
- * 
- *                                 # Pop tag-based styles
- *                                 if tag_effects.push_bold:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&bold_depth, 1)
- *                                 if tag_effects.push_italic:
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":481
- *                                 if tag_effects.push_bold:
- *                                     pop_from_stack(&bold_depth, 1)
- *                                 if tag_effects.push_italic:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&italic_depth, 1)
- *                                 if tag_effects.push_underline:
-*/
-                  if (__pyx_v_tag_effects.push_italic) {
-
-                    /* "d2d/lexbor/node.pxi":482
- *                                     pop_from_stack(&bold_depth, 1)
- *                                 if tag_effects.push_italic:
- *                                     pop_from_stack(&italic_depth, 1)             # <<<<<<<<<<<<<<
- *                                 if tag_effects.push_underline:
- *                                     pop_from_stack(&underline_depth, 1)
-*/
-                    __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_italic_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 482, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":481
- *                                 if tag_effects.push_bold:
- *                                     pop_from_stack(&bold_depth, 1)
- *                                 if tag_effects.push_italic:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&italic_depth, 1)
- *                                 if tag_effects.push_underline:
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":483
- *                                 if tag_effects.push_italic:
- *                                     pop_from_stack(&italic_depth, 1)
- *                                 if tag_effects.push_underline:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&underline_depth, 1)
- *                                 if tag_effects.is_link:
-*/
-                  if (__pyx_v_tag_effects.push_underline) {
-
-                    /* "d2d/lexbor/node.pxi":484
- *                                     pop_from_stack(&italic_depth, 1)
- *                                 if tag_effects.push_underline:
- *                                     pop_from_stack(&underline_depth, 1)             # <<<<<<<<<<<<<<
- *                                 if tag_effects.is_link:
- *                                     current_href = NULL
-*/
-                    __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_underline_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 484, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":483
- *                                 if tag_effects.push_italic:
- *                                     pop_from_stack(&italic_depth, 1)
- *                                 if tag_effects.push_underline:             # <<<<<<<<<<<<<<
- *                                     pop_from_stack(&underline_depth, 1)
- *                                 if tag_effects.is_link:
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":485
- *                                 if tag_effects.push_underline:
- *                                     pop_from_stack(&underline_depth, 1)
- *                                 if tag_effects.is_link:             # <<<<<<<<<<<<<<
- *                                     current_href = NULL
- * 
-*/
-                  if (__pyx_v_tag_effects.is_link) {
-
-                    /* "d2d/lexbor/node.pxi":486
- *                                     pop_from_stack(&underline_depth, 1)
- *                                 if tag_effects.is_link:
- *                                     current_href = NULL             # <<<<<<<<<<<<<<
- * 
- *                                 # Pop CSS-based styles
-*/
-                    __pyx_v_current_href = NULL;
-
-                    /* "d2d/lexbor/node.pxi":485
- *                                 if tag_effects.push_underline:
- *                                     pop_from_stack(&underline_depth, 1)
- *                                 if tag_effects.is_link:             # <<<<<<<<<<<<<<
- *                                     current_href = NULL
- * 
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":489
- * 
- *                                 # Pop CSS-based styles
- *                                 style_attr = lxb_dom_element_attr_by_name(             # <<<<<<<<<<<<<<
- *                                     <lxb_dom_element_t*>node,
- *                                     <lxb_char_t*>"style",
-*/
-                  __pyx_v_style_attr = lxb_dom_element_attr_by_name(((lxb_dom_element_t *)__pyx_v_node), ((lxb_char_t *)((lxb_char_t *)((char *)"style"))), 5);
-
-                  /* "d2d/lexbor/node.pxi":495
- *                                 )
- * 
- *                                 if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                     style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                     parse_style_attribute(style_value, &style_flags)
-*/
-                  __pyx_t_8 = (__pyx_v_style_attr != NULL);
-                  if (__pyx_t_8) {
-
-                    /* "d2d/lexbor/node.pxi":496
- * 
- *                                 if style_attr != NULL:
- *                                     style_value = lxb_dom_attr_value_noi(style_attr, &str_len)             # <<<<<<<<<<<<<<
- *                                     parse_style_attribute(style_value, &style_flags)
- * 
-*/
-                    __pyx_v_style_value = lxb_dom_attr_value_noi(__pyx_v_style_attr, (&__pyx_v_str_len));
-
-                    /* "d2d/lexbor/node.pxi":497
- *                                 if style_attr != NULL:
- *                                     style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                     parse_style_attribute(style_value, &style_flags)             # <<<<<<<<<<<<<<
- * 
- *                                     if style_flags.has_bold:
-*/
-                    __pyx_f_3d2d_6lexbor_parse_style_attribute(__pyx_v_style_value, (&__pyx_v_style_flags)); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 497, __pyx_L8_error)
-
-                    /* "d2d/lexbor/node.pxi":499
- *                                     parse_style_attribute(style_value, &style_flags)
- * 
- *                                     if style_flags.has_bold:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&bold_depth, 1)
- *                                     if style_flags.has_italic:
-*/
-                    if (__pyx_v_style_flags.has_bold) {
-
-                      /* "d2d/lexbor/node.pxi":500
- * 
- *                                     if style_flags.has_bold:
- *                                         pop_from_stack(&bold_depth, 1)             # <<<<<<<<<<<<<<
- *                                     if style_flags.has_italic:
- *                                         pop_from_stack(&italic_depth, 1)
-*/
-                      __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_bold_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 500, __pyx_L8_error)
-
-                      /* "d2d/lexbor/node.pxi":499
- *                                     parse_style_attribute(style_value, &style_flags)
- * 
- *                                     if style_flags.has_bold:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&bold_depth, 1)
- *                                     if style_flags.has_italic:
-*/
-                    }
-
-                    /* "d2d/lexbor/node.pxi":501
- *                                     if style_flags.has_bold:
- *                                         pop_from_stack(&bold_depth, 1)
- *                                     if style_flags.has_italic:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&italic_depth, 1)
- *                                     if style_flags.has_underline:
-*/
-                    if (__pyx_v_style_flags.has_italic) {
-
-                      /* "d2d/lexbor/node.pxi":502
- *                                         pop_from_stack(&bold_depth, 1)
- *                                     if style_flags.has_italic:
- *                                         pop_from_stack(&italic_depth, 1)             # <<<<<<<<<<<<<<
- *                                     if style_flags.has_underline:
- *                                         pop_from_stack(&underline_depth, 1)
-*/
-                      __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_italic_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 502, __pyx_L8_error)
-
-                      /* "d2d/lexbor/node.pxi":501
- *                                     if style_flags.has_bold:
- *                                         pop_from_stack(&bold_depth, 1)
- *                                     if style_flags.has_italic:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&italic_depth, 1)
- *                                     if style_flags.has_underline:
-*/
-                    }
-
-                    /* "d2d/lexbor/node.pxi":503
- *                                     if style_flags.has_italic:
- *                                         pop_from_stack(&italic_depth, 1)
- *                                     if style_flags.has_underline:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&underline_depth, 1)
- * 
-*/
-                    if (__pyx_v_style_flags.has_underline) {
-
-                      /* "d2d/lexbor/node.pxi":504
- *                                         pop_from_stack(&italic_depth, 1)
- *                                     if style_flags.has_underline:
- *                                         pop_from_stack(&underline_depth, 1)             # <<<<<<<<<<<<<<
- * 
- *                                 # Check if block-level element - trigger BLOCK_END
-*/
-                      __pyx_f_3d2d_6lexbor_pop_from_stack((&__pyx_v_underline_depth), 1); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 504, __pyx_L8_error)
-
-                      /* "d2d/lexbor/node.pxi":503
- *                                     if style_flags.has_italic:
- *                                         pop_from_stack(&italic_depth, 1)
- *                                     if style_flags.has_underline:             # <<<<<<<<<<<<<<
- *                                         pop_from_stack(&underline_depth, 1)
- * 
-*/
-                    }
-
-                    /* "d2d/lexbor/node.pxi":495
- *                                 )
- * 
- *                                 if style_attr != NULL:             # <<<<<<<<<<<<<<
- *                                     style_value = lxb_dom_attr_value_noi(style_attr, &str_len)
- *                                     parse_style_attribute(style_value, &style_flags)
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":507
- * 
- *                                 # Check if block-level element - trigger BLOCK_END
- *                                 if is_block_level_tag(tag_id):             # <<<<<<<<<<<<<<
- *                                     if in_block:
- *                                         # Close block
-*/
-                  __pyx_t_8 = __pyx_f_3d2d_6lexbor_is_block_level_tag(__pyx_v_tag_id); if (unlikely(__pyx_t_8 == ((int)-1) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 507, __pyx_L8_error)
-                  if (__pyx_t_8) {
-
-                    /* "d2d/lexbor/node.pxi":508
- *                                 # Check if block-level element - trigger BLOCK_END
- *                                 if is_block_level_tag(tag_id):
- *                                     if in_block:             # <<<<<<<<<<<<<<
- *                                         # Close block
- *                                         ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
-*/
-                    if (__pyx_v_in_block) {
-
-                      /* "d2d/lexbor/node.pxi":510
- *                                     if in_block:
- *                                         # Close block
- *                                         ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)             # <<<<<<<<<<<<<<
- * 
- *                                         buffer_ptr[pos] = ord(b']')
-*/
-                      __pyx_f_3d2d_6lexbor_ensure_buffer_space(__pyx_v_f, __pyx_v_buffer_ptr, (&__pyx_v_pos), 10, __pyx_v_capacity); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 510, __pyx_L8_error)
-
-                      /* "d2d/lexbor/node.pxi":512
- *                                         ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- * 
- *                                         buffer_ptr[pos] = ord(b']')             # <<<<<<<<<<<<<<
- *                                         pos += 1
- *                                         buffer_ptr[pos] = ord(b'\n')
-*/
-                      (__pyx_v_buffer_ptr[__pyx_v_pos]) = 93;
-
-                      /* "d2d/lexbor/node.pxi":513
- * 
- *                                         buffer_ptr[pos] = ord(b']')
- *                                         pos += 1             # <<<<<<<<<<<<<<
- *                                         buffer_ptr[pos] = ord(b'\n')
- *                                         pos += 1
-*/
-                      __pyx_v_pos = (__pyx_v_pos + 1);
-
-                      /* "d2d/lexbor/node.pxi":514
- *                                         buffer_ptr[pos] = ord(b']')
- *                                         pos += 1
- *                                         buffer_ptr[pos] = ord(b'\n')             # <<<<<<<<<<<<<<
- *                                         pos += 1
- * 
-*/
-                      (__pyx_v_buffer_ptr[__pyx_v_pos]) = 10;
-
-                      /* "d2d/lexbor/node.pxi":515
- *                                         pos += 1
- *                                         buffer_ptr[pos] = ord(b'\n')
- *                                         pos += 1             # <<<<<<<<<<<<<<
- * 
- *                                         in_block = False
-*/
-                      __pyx_v_pos = (__pyx_v_pos + 1);
-
-                      /* "d2d/lexbor/node.pxi":517
- *                                         pos += 1
- * 
- *                                         in_block = False             # <<<<<<<<<<<<<<
- * 
- *                                         # Reset all stacks and scalars
-*/
-                      __pyx_v_in_block = 0;
-
-                      /* "d2d/lexbor/node.pxi":520
- * 
- *                                         # Reset all stacks and scalars
- *                                         bold_depth = 0             # <<<<<<<<<<<<<<
- *                                         italic_depth = 0
- *                                         underline_depth = 0
-*/
-                      __pyx_v_bold_depth = 0;
-
-                      /* "d2d/lexbor/node.pxi":521
- *                                         # Reset all stacks and scalars
- *                                         bold_depth = 0
- *                                         italic_depth = 0             # <<<<<<<<<<<<<<
- *                                         underline_depth = 0
- *                                         text_center_depth = 0
-*/
-                      __pyx_v_italic_depth = 0;
-
-                      /* "d2d/lexbor/node.pxi":522
- *                                         bold_depth = 0
- *                                         italic_depth = 0
- *                                         underline_depth = 0             # <<<<<<<<<<<<<<
- *                                         text_center_depth = 0
- *                                         font_size_depth = 0
-*/
-                      __pyx_v_underline_depth = 0;
-
-                      /* "d2d/lexbor/node.pxi":523
- *                                         italic_depth = 0
- *                                         underline_depth = 0
- *                                         text_center_depth = 0             # <<<<<<<<<<<<<<
- *                                         font_size_depth = 0
- *                                         current_href = NULL
-*/
-                      __pyx_v_text_center_depth = 0;
-
-                      /* "d2d/lexbor/node.pxi":524
- *                                         underline_depth = 0
- *                                         text_center_depth = 0
- *                                         font_size_depth = 0             # <<<<<<<<<<<<<<
- *                                         current_href = NULL
- *                                         current_src = NULL
-*/
-                      __pyx_v_font_size_depth = 0;
-
-                      /* "d2d/lexbor/node.pxi":525
- *                                         text_center_depth = 0
- *                                         font_size_depth = 0
- *                                         current_href = NULL             # <<<<<<<<<<<<<<
- *                                         current_src = NULL
- *                                         current_alt = NULL
-*/
-                      __pyx_v_current_href = NULL;
-
-                      /* "d2d/lexbor/node.pxi":526
- *                                         font_size_depth = 0
- *                                         current_href = NULL
- *                                         current_src = NULL             # <<<<<<<<<<<<<<
- *                                         current_alt = NULL
- * 
-*/
-                      __pyx_v_current_src = NULL;
-
-                      /* "d2d/lexbor/node.pxi":527
- *                                         current_href = NULL
- *                                         current_src = NULL
- *                                         current_alt = NULL             # <<<<<<<<<<<<<<
- * 
- *                             if node == root or node.next != NULL:
-*/
-                      __pyx_v_current_alt = NULL;
-
-                      /* "d2d/lexbor/node.pxi":508
- *                                 # Check if block-level element - trigger BLOCK_END
- *                                 if is_block_level_tag(tag_id):
- *                                     if in_block:             # <<<<<<<<<<<<<<
- *                                         # Close block
- *                                         ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
-*/
-                    }
-
-                    /* "d2d/lexbor/node.pxi":507
- * 
- *                                 # Check if block-level element - trigger BLOCK_END
- *                                 if is_block_level_tag(tag_id):             # <<<<<<<<<<<<<<
- *                                     if in_block:
- *                                         # Close block
-*/
-                  }
-
-                  /* "d2d/lexbor/node.pxi":475
- * 
- *                             # Pop stacks based on tag and styles
- *                             if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
- *                                 get_tag_style_effects(tag_id, &tag_effects)
- * 
-*/
+                __pyx_t_2 = NULL;
+                __pyx_t_13 = 1;
+                {
+                  PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_mstate_global->__pyx_kp_u_Style_stack_overflow};
+                  __pyx_t_8 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (__pyx_t_13*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+                  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+                  if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 376, __pyx_L21_error)
+                  __Pyx_GOTREF(__pyx_t_8);
                 }
+                __Pyx_Raise(__pyx_t_8, 0, 0, 0);
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                __PYX_ERR(1, 376, __pyx_L21_error)
 
-                /* "d2d/lexbor/node.pxi":529
- *                                         current_alt = NULL
- * 
- *                             if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                                 break
- *                             node = node.parent
+                /* "d2d/lexbor/node.pxi":375
+ *                             # Push to stack if modified
+ *                             if modified:
+ *                                 if stack_depth >= MAX_STACK_DEPTH:             # <<<<<<<<<<<<<<
+ *                                     raise RuntimeError("Style stack overflow")
+ *                                 style_stack[stack_depth].mem_id = <size_t>node
 */
-                __pyx_t_11 = (__pyx_v_node == __pyx_v_root);
-                if (!__pyx_t_11) {
-                } else {
-                  __pyx_t_8 = __pyx_t_11;
-                  goto __pyx_L61_bool_binop_done;
-                }
-                __pyx_t_11 = (__pyx_v_node->next != NULL);
-                __pyx_t_8 = __pyx_t_11;
-                __pyx_L61_bool_binop_done:;
-                if (__pyx_t_8) {
-
-                  /* "d2d/lexbor/node.pxi":530
- * 
- *                             if node == root or node.next != NULL:
- *                                 break             # <<<<<<<<<<<<<<
- *                             node = node.parent
- * 
-*/
-                  goto __pyx_L48_break;
-
-                  /* "d2d/lexbor/node.pxi":529
- *                                         current_alt = NULL
- * 
- *                             if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
- *                                 break
- *                             node = node.parent
-*/
-                }
-
-                /* "d2d/lexbor/node.pxi":531
- *                             if node == root or node.next != NULL:
- *                                 break
- *                             node = node.parent             # <<<<<<<<<<<<<<
- * 
- *                         if node == root:
-*/
-                __pyx_t_3 = __pyx_v_node->parent;
-                __pyx_v_node = __pyx_t_3;
               }
-              __pyx_L48_break:;
 
-              /* "d2d/lexbor/node.pxi":533
- *                             node = node.parent
- * 
- *                         if node == root:             # <<<<<<<<<<<<<<
- *                             break
- *                         node = node.next
+              /* "d2d/lexbor/node.pxi":377
+ *                                 if stack_depth >= MAX_STACK_DEPTH:
+ *                                     raise RuntimeError("Style stack overflow")
+ *                                 style_stack[stack_depth].mem_id = <size_t>node             # <<<<<<<<<<<<<<
+ *                                 memcpy(&style_stack[stack_depth].attrs, &current_attrs, sizeof(InstructionAttrs))
+ *                                 stack_depth += 1
 */
-              __pyx_t_8 = (__pyx_v_node == __pyx_v_root);
-              if (__pyx_t_8) {
+              (__pyx_v_style_stack[__pyx_v_stack_depth]).mem_id = ((size_t)__pyx_v_node);
 
-                /* "d2d/lexbor/node.pxi":534
+              /* "d2d/lexbor/node.pxi":378
+ *                                     raise RuntimeError("Style stack overflow")
+ *                                 style_stack[stack_depth].mem_id = <size_t>node
+ *                                 memcpy(&style_stack[stack_depth].attrs, &current_attrs, sizeof(InstructionAttrs))             # <<<<<<<<<<<<<<
+ *                                 stack_depth += 1
  * 
- *                         if node == root:
+*/
+              (void)(memcpy((&(__pyx_v_style_stack[__pyx_v_stack_depth]).attrs), (&__pyx_v_current_attrs), (sizeof(struct __pyx_t_3d2d_6lexbor_InstructionAttrs))));
+
+              /* "d2d/lexbor/node.pxi":379
+ *                                 style_stack[stack_depth].mem_id = <size_t>node
+ *                                 memcpy(&style_stack[stack_depth].attrs, &current_attrs, sizeof(InstructionAttrs))
+ *                                 stack_depth += 1             # <<<<<<<<<<<<<<
+ * 
+ *                 # Traverse to next node
+*/
+              __pyx_v_stack_depth = (__pyx_v_stack_depth + 1);
+
+              /* "d2d/lexbor/node.pxi":374
+ * 
+ *                             # Push to stack if modified
+ *                             if modified:             # <<<<<<<<<<<<<<
+ *                                 if stack_depth >= MAX_STACK_DEPTH:
+ *                                     raise RuntimeError("Style stack overflow")
+*/
+            }
+
+            /* "d2d/lexbor/node.pxi":296
+ *                     # Handle other tags - check for styling
+ *                     else:
+ *                         if node.type == LXB_DOM_NODE_TYPE_ELEMENT:             # <<<<<<<<<<<<<<
+ *                             # Copy parent attrs
+ *                             memcpy(&current_attrs, &style_stack[stack_depth - 1].attrs, sizeof(InstructionAttrs))
+*/
+          }
+          break;
+        }
+
+        /* "d2d/lexbor/node.pxi":199
+ *             while node != NULL:
+ *                 # ENTER SIGNAL
+ *                 if not skip_subtree:             # <<<<<<<<<<<<<<
+ *                     tag_id = lxb_dom_node_tag_id_noi(node)
+ * 
+*/
+      }
+
+      /* "d2d/lexbor/node.pxi":382
+ * 
+ *                 # Traverse to next node
+ *                 if node.first_child != NULL:             # <<<<<<<<<<<<<<
+ *                     node = node.first_child
+ *                 else:
+*/
+      __pyx_t_22 = (__pyx_v_node->first_child != NULL);
+      if (__pyx_t_22) {
+
+        /* "d2d/lexbor/node.pxi":383
+ *                 # Traverse to next node
+ *                 if node.first_child != NULL:
+ *                     node = node.first_child             # <<<<<<<<<<<<<<
+ *                 else:
+ *                     # EXIT SIGNAL LOOP
+*/
+        __pyx_t_1 = __pyx_v_node->first_child;
+        __pyx_v_node = __pyx_t_1;
+
+        /* "d2d/lexbor/node.pxi":382
+ * 
+ *                 # Traverse to next node
+ *                 if node.first_child != NULL:             # <<<<<<<<<<<<<<
+ *                     node = node.first_child
+ *                 else:
+*/
+        goto __pyx_L106;
+      }
+
+      /* "d2d/lexbor/node.pxi":386
+ *                 else:
+ *                     # EXIT SIGNAL LOOP
+ *                     while True:             # <<<<<<<<<<<<<<
+ *                         # Handle display:none exit
+ *                         if skip_subtree and <size_t>node == skip_mem_id:
+*/
+      /*else*/ {
+        while (1) {
+
+          /* "d2d/lexbor/node.pxi":388
+ *                     while True:
+ *                         # Handle display:none exit
+ *                         if skip_subtree and <size_t>node == skip_mem_id:             # <<<<<<<<<<<<<<
+ *                             skip_subtree = False
+ *                             skip_mem_id = 0
+*/
+          if (__pyx_v_skip_subtree) {
+          } else {
+            __pyx_t_22 = __pyx_v_skip_subtree;
+            goto __pyx_L110_bool_binop_done;
+          }
+          __pyx_t_23 = (((size_t)__pyx_v_node) == __pyx_v_skip_mem_id);
+          __pyx_t_22 = __pyx_t_23;
+          __pyx_L110_bool_binop_done:;
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":389
+ *                         # Handle display:none exit
+ *                         if skip_subtree and <size_t>node == skip_mem_id:
+ *                             skip_subtree = False             # <<<<<<<<<<<<<<
+ *                             skip_mem_id = 0
+ * 
+*/
+            __pyx_v_skip_subtree = 0;
+
+            /* "d2d/lexbor/node.pxi":390
+ *                         if skip_subtree and <size_t>node == skip_mem_id:
+ *                             skip_subtree = False
+ *                             skip_mem_id = 0             # <<<<<<<<<<<<<<
+ * 
+ *                         # Pop style stack
+*/
+            __pyx_v_skip_mem_id = 0;
+
+            /* "d2d/lexbor/node.pxi":388
+ *                     while True:
+ *                         # Handle display:none exit
+ *                         if skip_subtree and <size_t>node == skip_mem_id:             # <<<<<<<<<<<<<<
+ *                             skip_subtree = False
+ *                             skip_mem_id = 0
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":393
+ * 
+ *                         # Pop style stack
+ *                         if stack_depth > 1 and style_stack[stack_depth - 1].mem_id == <size_t>node:             # <<<<<<<<<<<<<<
+ *                             stack_depth -= 1
+ * 
+*/
+          __pyx_t_23 = (__pyx_v_stack_depth > 1);
+          if (__pyx_t_23) {
+          } else {
+            __pyx_t_22 = __pyx_t_23;
+            goto __pyx_L113_bool_binop_done;
+          }
+          __pyx_t_23 = ((__pyx_v_style_stack[(__pyx_v_stack_depth - 1)]).mem_id == ((size_t)__pyx_v_node));
+          __pyx_t_22 = __pyx_t_23;
+          __pyx_L113_bool_binop_done:;
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":394
+ *                         # Pop style stack
+ *                         if stack_depth > 1 and style_stack[stack_depth - 1].mem_id == <size_t>node:
+ *                             stack_depth -= 1             # <<<<<<<<<<<<<<
+ * 
+ *                         tag_id = lxb_dom_node_tag_id_noi(node)
+*/
+            __pyx_v_stack_depth = (__pyx_v_stack_depth - 1);
+
+            /* "d2d/lexbor/node.pxi":393
+ * 
+ *                         # Pop style stack
+ *                         if stack_depth > 1 and style_stack[stack_depth - 1].mem_id == <size_t>node:             # <<<<<<<<<<<<<<
+ *                             stack_depth -= 1
+ * 
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":396
+ *                             stack_depth -= 1
+ * 
+ *                         tag_id = lxb_dom_node_tag_id_noi(node)             # <<<<<<<<<<<<<<
+ * 
+ *                         # Handle table structure exit
+*/
+          __pyx_v_tag_id = lxb_dom_node_tag_id_noi(__pyx_v_node);
+
+          /* "d2d/lexbor/node.pxi":399
+ * 
+ *                         # Handle table structure exit
+ *                         if tag_id == LXB_TAG_TABLE:             # <<<<<<<<<<<<<<
+ *                             instructions_block.append({
+ *                                 'table_data': table_data,
+*/
+          __pyx_t_22 = (__pyx_v_tag_id == LXB_TAG_TABLE);
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":401
+ *                         if tag_id == LXB_TAG_TABLE:
+ *                             instructions_block.append({
+ *                                 'table_data': table_data,             # <<<<<<<<<<<<<<
+ *                                 'table_spans': table_spans
+ *                             })
+*/
+            __pyx_t_8 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 401, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            if (PyDict_SetItem(__pyx_t_8, __pyx_mstate_global->__pyx_n_u_table_data, __pyx_v_table_data) < (0)) __PYX_ERR(1, 401, __pyx_L21_error)
+
+            /* "d2d/lexbor/node.pxi":402
+ *                             instructions_block.append({
+ *                                 'table_data': table_data,
+ *                                 'table_spans': table_spans             # <<<<<<<<<<<<<<
+ *                             })
+ *                             in_table = False
+*/
+            if (PyDict_SetItem(__pyx_t_8, __pyx_mstate_global->__pyx_n_u_table_spans, __pyx_v_table_spans) < (0)) __PYX_ERR(1, 401, __pyx_L21_error)
+
+            /* "d2d/lexbor/node.pxi":400
+ *                         # Handle table structure exit
+ *                         if tag_id == LXB_TAG_TABLE:
+ *                             instructions_block.append({             # <<<<<<<<<<<<<<
+ *                                 'table_data': table_data,
+ *                                 'table_spans': table_spans
+*/
+            __pyx_t_24 = __Pyx_PyList_Append(__pyx_v_instructions_block, __pyx_t_8); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 400, __pyx_L21_error)
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":404
+ *                                 'table_spans': table_spans
+ *                             })
+ *                             in_table = False             # <<<<<<<<<<<<<<
+ *                             table_data = []
+ *                             table_spans = []
+*/
+            __pyx_v_in_table = 0;
+
+            /* "d2d/lexbor/node.pxi":405
+ *                             })
+ *                             in_table = False
+ *                             table_data = []             # <<<<<<<<<<<<<<
+ *                             table_spans = []
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+*/
+            __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 405, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            __Pyx_DECREF_SET(__pyx_v_table_data, ((PyObject*)__pyx_t_8));
+            __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":406
+ *                             in_table = False
+ *                             table_data = []
+ *                             table_spans = []             # <<<<<<<<<<<<<<
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                             if len(table_data) > 0:
+*/
+            __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 406, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            __Pyx_DECREF_SET(__pyx_v_table_spans, ((PyObject*)__pyx_t_8));
+            __pyx_t_8 = 0;
+
+            /* "d2d/lexbor/node.pxi":399
+ * 
+ *                         # Handle table structure exit
+ *                         if tag_id == LXB_TAG_TABLE:             # <<<<<<<<<<<<<<
+ *                             instructions_block.append({
+ *                                 'table_data': table_data,
+*/
+            goto __pyx_L115;
+          }
+
+          /* "d2d/lexbor/node.pxi":407
+ *                             table_data = []
+ *                             table_spans = []
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:             # <<<<<<<<<<<<<<
+ *                             if len(table_data) > 0:
+ *                                 table_data[-1].append(current_cell_instructions)
+*/
+          switch (__pyx_v_tag_id) {
+            case LXB_TAG_TD:
+            case LXB_TAG_TH:
+            __pyx_t_23 = 1;
+            break;
+            default:
+            __pyx_t_23 = 0;
+            break;
+          }
+          if (__pyx_t_23) {
+          } else {
+            __pyx_t_22 = __pyx_t_23;
+            goto __pyx_L116_bool_binop_done;
+          }
+          __pyx_t_22 = __pyx_v_in_table;
+          __pyx_L116_bool_binop_done:;
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":408
+ *                             table_spans = []
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                             if len(table_data) > 0:             # <<<<<<<<<<<<<<
+ *                                 table_data[-1].append(current_cell_instructions)
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))
+*/
+            __pyx_t_26 = __Pyx_PyList_GET_SIZE(__pyx_v_table_data); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 408, __pyx_L21_error)
+            __pyx_t_22 = (__pyx_t_26 > 0);
+            if (__pyx_t_22) {
+
+              /* "d2d/lexbor/node.pxi":409
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                             if len(table_data) > 0:
+ *                                 table_data[-1].append(current_cell_instructions)             # <<<<<<<<<<<<<<
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))
+ *                             in_cell = False
+*/
+              __pyx_t_24 = __Pyx_PyObject_Append(__Pyx_PyList_GET_ITEM(__pyx_v_table_data, -1L), __pyx_v_current_cell_instructions); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 409, __pyx_L21_error)
+
+              /* "d2d/lexbor/node.pxi":410
+ *                             if len(table_data) > 0:
+ *                                 table_data[-1].append(current_cell_instructions)
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))             # <<<<<<<<<<<<<<
+ *                             in_cell = False
+ *                             current_cell_instructions = []
+*/
+              __pyx_t_8 = __Pyx_PyLong_From_int(__pyx_v_current_rowspan); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 410, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_8);
+              __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_current_colspan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 410, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_2);
+              __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 410, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_6);
+              __Pyx_GIVEREF(__pyx_t_8);
+              if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8) != (0)) __PYX_ERR(1, 410, __pyx_L21_error);
+              __Pyx_GIVEREF(__pyx_t_2);
+              if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2) != (0)) __PYX_ERR(1, 410, __pyx_L21_error);
+              __pyx_t_8 = 0;
+              __pyx_t_2 = 0;
+              __pyx_t_24 = __Pyx_PyObject_Append(__Pyx_PyList_GET_ITEM(__pyx_v_table_spans, -1L), __pyx_t_6); if (unlikely(__pyx_t_24 == ((int)-1))) __PYX_ERR(1, 410, __pyx_L21_error)
+              __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+              /* "d2d/lexbor/node.pxi":408
+ *                             table_spans = []
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:
+ *                             if len(table_data) > 0:             # <<<<<<<<<<<<<<
+ *                                 table_data[-1].append(current_cell_instructions)
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))
+*/
+            }
+
+            /* "d2d/lexbor/node.pxi":411
+ *                                 table_data[-1].append(current_cell_instructions)
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))
+ *                             in_cell = False             # <<<<<<<<<<<<<<
+ *                             current_cell_instructions = []
+ * 
+*/
+            __pyx_v_in_cell = 0;
+
+            /* "d2d/lexbor/node.pxi":412
+ *                                 table_spans[-1].append((current_rowspan, current_colspan))
+ *                             in_cell = False
+ *                             current_cell_instructions = []             # <<<<<<<<<<<<<<
+ * 
+ *                         # Block boundaries
+*/
+            __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 412, __pyx_L21_error)
+            __Pyx_GOTREF(__pyx_t_6);
+            __Pyx_DECREF_SET(__pyx_v_current_cell_instructions, ((PyObject*)__pyx_t_6));
+            __pyx_t_6 = 0;
+
+            /* "d2d/lexbor/node.pxi":407
+ *                             table_data = []
+ *                             table_spans = []
+ *                         elif (tag_id == LXB_TAG_TD or tag_id == LXB_TAG_TH) and in_table:             # <<<<<<<<<<<<<<
+ *                             if len(table_data) > 0:
+ *                                 table_data[-1].append(current_cell_instructions)
+*/
+          }
+          __pyx_L115:;
+
+          /* "d2d/lexbor/node.pxi":415
+ * 
+ *                         # Block boundaries
+ *                         if not in_table and self._check_new_instruction_block(tag_id):             # <<<<<<<<<<<<<<
+ *                             if len(instructions_block) > 0:
+ *                                 f.write(str(instructions_block))
+*/
+          __pyx_t_23 = (!__pyx_v_in_table);
+          if (__pyx_t_23) {
+          } else {
+            __pyx_t_22 = __pyx_t_23;
+            goto __pyx_L120_bool_binop_done;
+          }
+          __pyx_t_23 = __pyx_f_3d2d_6lexbor_10LexborNode__check_new_instruction_block(__pyx_v_self, __pyx_v_tag_id); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 415, __pyx_L21_error)
+          __pyx_t_22 = __pyx_t_23;
+          __pyx_L120_bool_binop_done:;
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":416
+ *                         # Block boundaries
+ *                         if not in_table and self._check_new_instruction_block(tag_id):
+ *                             if len(instructions_block) > 0:             # <<<<<<<<<<<<<<
+ *                                 f.write(str(instructions_block))
+ *                                 f.write('\n')
+*/
+            __pyx_t_26 = __Pyx_PyList_GET_SIZE(__pyx_v_instructions_block); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 416, __pyx_L21_error)
+            __pyx_t_22 = (__pyx_t_26 > 0);
+            if (__pyx_t_22) {
+
+              /* "d2d/lexbor/node.pxi":417
+ *                         if not in_table and self._check_new_instruction_block(tag_id):
+ *                             if len(instructions_block) > 0:
+ *                                 f.write(str(instructions_block))             # <<<<<<<<<<<<<<
+ *                                 f.write('\n')
+ *                                 instructions_block = []
+*/
+              __pyx_t_2 = __pyx_v_f;
+              __Pyx_INCREF(__pyx_t_2);
+              __pyx_t_8 = __Pyx_PyObject_Unicode(__pyx_v_instructions_block); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 417, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_8);
+              __pyx_t_13 = 0;
+              {
+                PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_8};
+                __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_write, __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+                __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+                __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 417, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_6);
+              }
+              __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+              /* "d2d/lexbor/node.pxi":418
+ *                             if len(instructions_block) > 0:
+ *                                 f.write(str(instructions_block))
+ *                                 f.write('\n')             # <<<<<<<<<<<<<<
+ *                                 instructions_block = []
+ * 
+*/
+              __pyx_t_8 = __pyx_v_f;
+              __Pyx_INCREF(__pyx_t_8);
+              __pyx_t_13 = 0;
+              {
+                PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_mstate_global->__pyx_kp_u__7};
+                __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_write, __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+                __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+                if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 418, __pyx_L21_error)
+                __Pyx_GOTREF(__pyx_t_6);
+              }
+              __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+              /* "d2d/lexbor/node.pxi":419
+ *                                 f.write(str(instructions_block))
+ *                                 f.write('\n')
+ *                                 instructions_block = []             # <<<<<<<<<<<<<<
+ * 
+ *                         if node == root or node.next != NULL:
+*/
+              __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 419, __pyx_L21_error)
+              __Pyx_GOTREF(__pyx_t_6);
+              __Pyx_DECREF_SET(__pyx_v_instructions_block, ((PyObject*)__pyx_t_6));
+              __pyx_t_6 = 0;
+
+              /* "d2d/lexbor/node.pxi":416
+ *                         # Block boundaries
+ *                         if not in_table and self._check_new_instruction_block(tag_id):
+ *                             if len(instructions_block) > 0:             # <<<<<<<<<<<<<<
+ *                                 f.write(str(instructions_block))
+ *                                 f.write('\n')
+*/
+            }
+
+            /* "d2d/lexbor/node.pxi":415
+ * 
+ *                         # Block boundaries
+ *                         if not in_table and self._check_new_instruction_block(tag_id):             # <<<<<<<<<<<<<<
+ *                             if len(instructions_block) > 0:
+ *                                 f.write(str(instructions_block))
+*/
+          }
+
+          /* "d2d/lexbor/node.pxi":421
+ *                                 instructions_block = []
+ * 
+ *                         if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
+ *                             break
+ *                         node = node.parent
+*/
+          __pyx_t_23 = (__pyx_v_node == __pyx_v_root);
+          if (!__pyx_t_23) {
+          } else {
+            __pyx_t_22 = __pyx_t_23;
+            goto __pyx_L124_bool_binop_done;
+          }
+          __pyx_t_23 = (__pyx_v_node->next != NULL);
+          __pyx_t_22 = __pyx_t_23;
+          __pyx_L124_bool_binop_done:;
+          if (__pyx_t_22) {
+
+            /* "d2d/lexbor/node.pxi":422
+ * 
+ *                         if node == root or node.next != NULL:
  *                             break             # <<<<<<<<<<<<<<
- *                         node = node.next
+ *                         node = node.parent
  * 
 */
-                goto __pyx_L11_break;
+            goto __pyx_L108_break;
 
-                /* "d2d/lexbor/node.pxi":533
- *                             node = node.parent
+            /* "d2d/lexbor/node.pxi":421
+ *                                 instructions_block = []
  * 
- *                         if node == root:             # <<<<<<<<<<<<<<
+ *                         if node == root or node.next != NULL:             # <<<<<<<<<<<<<<
  *                             break
- *                         node = node.next
-*/
-              }
-
-              /* "d2d/lexbor/node.pxi":535
- *                         if node == root:
- *                             break
- *                         node = node.next             # <<<<<<<<<<<<<<
- * 
- *                 # Close any remaining block
-*/
-              __pyx_t_3 = __pyx_v_node->next;
-              __pyx_v_node = __pyx_t_3;
-            }
-            __pyx_L46:;
-            __pyx_L10_continue:;
-          }
-          __pyx_L11_break:;
-
-          /* "d2d/lexbor/node.pxi":538
- * 
- *                 # Close any remaining block
- *                 if in_block:             # <<<<<<<<<<<<<<
- *                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                     buffer_ptr[pos] = ord(b']')
-*/
-          if (__pyx_v_in_block) {
-
-            /* "d2d/lexbor/node.pxi":539
- *                 # Close any remaining block
- *                 if in_block:
- *                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)             # <<<<<<<<<<<<<<
- *                     buffer_ptr[pos] = ord(b']')
- *                     pos += 1
-*/
-            __pyx_f_3d2d_6lexbor_ensure_buffer_space(__pyx_v_f, __pyx_v_buffer_ptr, (&__pyx_v_pos), 10, __pyx_v_capacity); if (unlikely(__Pyx_ErrOccurredWithGIL())) __PYX_ERR(4, 539, __pyx_L8_error)
-
-            /* "d2d/lexbor/node.pxi":540
- *                 if in_block:
- *                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                     buffer_ptr[pos] = ord(b']')             # <<<<<<<<<<<<<<
- *                     pos += 1
- *                     buffer_ptr[pos] = ord(b'\n')
-*/
-            (__pyx_v_buffer_ptr[__pyx_v_pos]) = 93;
-
-            /* "d2d/lexbor/node.pxi":541
- *                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                     buffer_ptr[pos] = ord(b']')
- *                     pos += 1             # <<<<<<<<<<<<<<
- *                     buffer_ptr[pos] = ord(b'\n')
- *                     pos += 1
-*/
-            __pyx_v_pos = (__pyx_v_pos + 1);
-
-            /* "d2d/lexbor/node.pxi":542
- *                     buffer_ptr[pos] = ord(b']')
- *                     pos += 1
- *                     buffer_ptr[pos] = ord(b'\n')             # <<<<<<<<<<<<<<
- *                     pos += 1
- * 
-*/
-            (__pyx_v_buffer_ptr[__pyx_v_pos]) = 10;
-
-            /* "d2d/lexbor/node.pxi":543
- *                     pos += 1
- *                     buffer_ptr[pos] = ord(b'\n')
- *                     pos += 1             # <<<<<<<<<<<<<<
- * 
- *                 # Final flush
-*/
-            __pyx_v_pos = (__pyx_v_pos + 1);
-
-            /* "d2d/lexbor/node.pxi":538
- * 
- *                 # Close any remaining block
- *                 if in_block:             # <<<<<<<<<<<<<<
- *                     ensure_buffer_space(f, buffer_ptr, &pos, 10, capacity)
- *                     buffer_ptr[pos] = ord(b']')
+ *                         node = node.parent
 */
           }
 
-          /* "d2d/lexbor/node.pxi":546
+          /* "d2d/lexbor/node.pxi":423
+ *                         if node == root or node.next != NULL:
+ *                             break
+ *                         node = node.parent             # <<<<<<<<<<<<<<
  * 
- *                 # Final flush
- *                 if pos > 0:             # <<<<<<<<<<<<<<
- *                     fwrite(buffer_ptr, 1, pos, f)
+ *                     if node == root:
+*/
+          __pyx_t_1 = __pyx_v_node->parent;
+          __pyx_v_node = __pyx_t_1;
+        }
+        __pyx_L108_break:;
+
+        /* "d2d/lexbor/node.pxi":425
+ *                         node = node.parent
+ * 
+ *                     if node == root:             # <<<<<<<<<<<<<<
+ *                         break
+ *                     node = node.next
+*/
+        __pyx_t_22 = (__pyx_v_node == __pyx_v_root);
+        if (__pyx_t_22) {
+
+          /* "d2d/lexbor/node.pxi":426
+ * 
+ *                     if node == root:
+ *                         break             # <<<<<<<<<<<<<<
+ *                     node = node.next
  * 
 */
-          __pyx_t_8 = (__pyx_v_pos > 0);
-          if (__pyx_t_8) {
+          goto __pyx_L24_break;
 
-            /* "d2d/lexbor/node.pxi":547
- *                 # Final flush
- *                 if pos > 0:
- *                     fwrite(buffer_ptr, 1, pos, f)             # <<<<<<<<<<<<<<
+          /* "d2d/lexbor/node.pxi":425
+ *                         node = node.parent
+ * 
+ *                     if node == root:             # <<<<<<<<<<<<<<
+ *                         break
+ *                     node = node.next
+*/
+        }
+
+        /* "d2d/lexbor/node.pxi":427
+ *                     if node == root:
+ *                         break
+ *                     node = node.next             # <<<<<<<<<<<<<<
+ * 
+ *             # Write remaining block
+*/
+        __pyx_t_1 = __pyx_v_node->next;
+        __pyx_v_node = __pyx_t_1;
+      }
+      __pyx_L106:;
+    }
+    __pyx_L24_break:;
+
+    /* "d2d/lexbor/node.pxi":430
+ * 
+ *             # Write remaining block
+ *             if len(instructions_block) > 0:             # <<<<<<<<<<<<<<
+ *                 f.write(str(instructions_block))
+ *                 f.write('\n')
+*/
+    __pyx_t_26 = __Pyx_PyList_GET_SIZE(__pyx_v_instructions_block); if (unlikely(__pyx_t_26 == ((Py_ssize_t)-1))) __PYX_ERR(1, 430, __pyx_L21_error)
+    __pyx_t_22 = (__pyx_t_26 > 0);
+    if (__pyx_t_22) {
+
+      /* "d2d/lexbor/node.pxi":431
+ *             # Write remaining block
+ *             if len(instructions_block) > 0:
+ *                 f.write(str(instructions_block))             # <<<<<<<<<<<<<<
+ *                 f.write('\n')
+ * 
+*/
+      __pyx_t_8 = __pyx_v_f;
+      __Pyx_INCREF(__pyx_t_8);
+      __pyx_t_2 = __Pyx_PyObject_Unicode(__pyx_v_instructions_block); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 431, __pyx_L21_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_13 = 0;
+      {
+        PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_t_2};
+        __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_write, __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+        __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 431, __pyx_L21_error)
+        __Pyx_GOTREF(__pyx_t_6);
+      }
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+      /* "d2d/lexbor/node.pxi":432
+ *             if len(instructions_block) > 0:
+ *                 f.write(str(instructions_block))
+ *                 f.write('\n')             # <<<<<<<<<<<<<<
  * 
  *         finally:
 */
-            (void)(fwrite(__pyx_v_buffer_ptr, 1, __pyx_v_pos, __pyx_v_f));
+      __pyx_t_2 = __pyx_v_f;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_t_13 = 0;
+      {
+        PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_mstate_global->__pyx_kp_u__7};
+        __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_write, __pyx_callargs+__pyx_t_13, (2-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+        __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+        if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 432, __pyx_L21_error)
+        __Pyx_GOTREF(__pyx_t_6);
+      }
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-            /* "d2d/lexbor/node.pxi":546
+      /* "d2d/lexbor/node.pxi":430
  * 
- *                 # Final flush
- *                 if pos > 0:             # <<<<<<<<<<<<<<
- *                     fwrite(buffer_ptr, 1, pos, f)
- * 
+ *             # Write remaining block
+ *             if len(instructions_block) > 0:             # <<<<<<<<<<<<<<
+ *                 f.write(str(instructions_block))
+ *                 f.write('\n')
 */
-          }
-        }
-
-        /* "d2d/lexbor/node.pxi":336
- * 
- *         try:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 while node != NULL:
- *                     tag_id = lxb_dom_node_tag_id_noi(node)
-*/
-        /*finally:*/ {
-          /*normal exit:*/{
-            __Pyx_FastGIL_Forget();
-            PyEval_RestoreThread(_save);
-            goto __pyx_L9;
-          }
-          __pyx_L8_error: {
-            __Pyx_FastGIL_Forget();
-            PyEval_RestoreThread(_save);
-            goto __pyx_L5_error;
-          }
-          __pyx_L9:;
-        }
     }
   }
 
-  /* "d2d/lexbor/node.pxi":550
+  /* "d2d/lexbor/node.pxi":435
  * 
  *         finally:
- *             fclose(f)             # <<<<<<<<<<<<<<
+ *             f.close()             # <<<<<<<<<<<<<<
 */
   /*finally:*/ {
     /*normal exit:*/{
-      (void)(fclose(__pyx_v_f));
-      goto __pyx_L6;
+      __pyx_t_2 = __pyx_v_f;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_t_13 = 0;
+      {
+        PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
+        __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_close, __pyx_callargs+__pyx_t_13, (1-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+        __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+        if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 435, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_6);
+      }
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      goto __pyx_L22;
     }
-    __pyx_L5_error:;
+    __pyx_L21_error:;
     /*exception exit:*/{
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
-      __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0; __pyx_t_20 = 0; __pyx_t_21 = 0; __pyx_t_22 = 0;
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_5 = 0; __pyx_t_4 = 0; __pyx_t_3 = 0; __pyx_t_21 = 0; __pyx_t_20 = 0; __pyx_t_19 = 0;
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-       __Pyx_ExceptionSwap(&__pyx_t_20, &__pyx_t_21, &__pyx_t_22);
-      if ( unlikely(__Pyx_GetException(&__pyx_t_17, &__pyx_t_18, &__pyx_t_19) < 0)) __Pyx_ErrFetch(&__pyx_t_17, &__pyx_t_18, &__pyx_t_19);
-      __Pyx_XGOTREF(__pyx_t_17);
-      __Pyx_XGOTREF(__pyx_t_18);
-      __Pyx_XGOTREF(__pyx_t_19);
-      __Pyx_XGOTREF(__pyx_t_20);
+       __Pyx_ExceptionSwap(&__pyx_t_21, &__pyx_t_20, &__pyx_t_19);
+      if ( unlikely(__Pyx_GetException(&__pyx_t_5, &__pyx_t_4, &__pyx_t_3) < 0)) __Pyx_ErrFetch(&__pyx_t_5, &__pyx_t_4, &__pyx_t_3);
+      __Pyx_XGOTREF(__pyx_t_5);
+      __Pyx_XGOTREF(__pyx_t_4);
+      __Pyx_XGOTREF(__pyx_t_3);
       __Pyx_XGOTREF(__pyx_t_21);
-      __Pyx_XGOTREF(__pyx_t_22);
-      __pyx_t_14 = __pyx_lineno; __pyx_t_15 = __pyx_clineno; __pyx_t_16 = __pyx_filename;
+      __Pyx_XGOTREF(__pyx_t_20);
+      __Pyx_XGOTREF(__pyx_t_19);
+      __pyx_t_14 = __pyx_lineno; __pyx_t_7 = __pyx_clineno; __pyx_t_29 = __pyx_filename;
       {
-        (void)(fclose(__pyx_v_f));
+        __pyx_t_2 = __pyx_v_f;
+        __Pyx_INCREF(__pyx_t_2);
+        __pyx_t_13 = 0;
+        {
+          PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
+          __pyx_t_6 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_close, __pyx_callargs+__pyx_t_13, (1-__pyx_t_13) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+          __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+          if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 435, __pyx_L129_error)
+          __Pyx_GOTREF(__pyx_t_6);
+        }
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
-      __Pyx_XGIVEREF(__pyx_t_20);
       __Pyx_XGIVEREF(__pyx_t_21);
-      __Pyx_XGIVEREF(__pyx_t_22);
-      __Pyx_ExceptionReset(__pyx_t_20, __pyx_t_21, __pyx_t_22);
-      __Pyx_XGIVEREF(__pyx_t_17);
-      __Pyx_XGIVEREF(__pyx_t_18);
+      __Pyx_XGIVEREF(__pyx_t_20);
       __Pyx_XGIVEREF(__pyx_t_19);
-      __Pyx_ErrRestore(__pyx_t_17, __pyx_t_18, __pyx_t_19);
-      __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0; __pyx_t_20 = 0; __pyx_t_21 = 0; __pyx_t_22 = 0;
-      __pyx_lineno = __pyx_t_14; __pyx_clineno = __pyx_t_15; __pyx_filename = __pyx_t_16;
+      __Pyx_ExceptionReset(__pyx_t_21, __pyx_t_20, __pyx_t_19);
+      __Pyx_XGIVEREF(__pyx_t_5);
+      __Pyx_XGIVEREF(__pyx_t_4);
+      __Pyx_XGIVEREF(__pyx_t_3);
+      __Pyx_ErrRestore(__pyx_t_5, __pyx_t_4, __pyx_t_3);
+      __pyx_t_5 = 0; __pyx_t_4 = 0; __pyx_t_3 = 0; __pyx_t_21 = 0; __pyx_t_20 = 0; __pyx_t_19 = 0;
+      __pyx_lineno = __pyx_t_14; __pyx_clineno = __pyx_t_7; __pyx_filename = __pyx_t_29;
+      goto __pyx_L1_error;
+      __pyx_L129_error:;
+      __Pyx_XGIVEREF(__pyx_t_21);
+      __Pyx_XGIVEREF(__pyx_t_20);
+      __Pyx_XGIVEREF(__pyx_t_19);
+      __Pyx_ExceptionReset(__pyx_t_21, __pyx_t_20, __pyx_t_19);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_21 = 0; __pyx_t_20 = 0; __pyx_t_19 = 0;
       goto __pyx_L1_error;
     }
-    __pyx_L6:;
+    __pyx_L22:;
   }
 
-  /* "d2d/lexbor/node.pxi":283
- *                 node = node.next
+  /* "d2d/lexbor/node.pxi":132
+ *         return modified
  * 
- *     def convert_html_to_instructions(self, str filename):             # <<<<<<<<<<<<<<
- *         """Convert HTML to instructions, extracting raw tag + style data."""
- *         # Convert filename to bytes for C FILE operations
+ *     def convert_html_to_instructions(self):             # <<<<<<<<<<<<<<
+ *         """Convert HTML to instructions and write to file."""
+ *         cdef lxb_dom_node_t *root = self.node
 */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_AddTraceback("d2d.lexbor.LexborNode.convert_html_to_instructions", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_filename_bytes);
-  __Pyx_XDECREF(__pyx_v_buffer);
+  __Pyx_XDECREF(__pyx_v_table_data);
+  __Pyx_XDECREF(__pyx_v_table_spans);
+  __Pyx_XDECREF(__pyx_v_current_cell_instructions);
+  __Pyx_XDECREF(__pyx_v_instructions_block);
+  __Pyx_XDECREF(__pyx_v_instruction);
+  __Pyx_XDECREF(__pyx_v_text_str);
+  __Pyx_XDECREF(__pyx_v_style_str);
+  __Pyx_XDECREF(__pyx_v_f);
+  __Pyx_XDECREF(__pyx_v_e);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "d2d/lexbor.pxd":255
+/* "d2d/lexbor.pxd":265
  *     cdef:
  *         lxb_dom_node_t *node
  *         public LexborHTMLParser parser             # <<<<<<<<<<<<<<
- *         cdef bint _is_fragment_root
+ *         bint _is_fragment_root
  * 
 */
 
@@ -13159,7 +13234,7 @@ static int __pyx_pf_3d2d_6lexbor_10LexborNode_6parser_2__set__(struct __pyx_obj_
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborHTMLParser))))) __PYX_ERR(5, 255, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborHTMLParser))))) __PYX_ERR(5, 265, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->parser);
   __Pyx_DECREF((PyObject *)__pyx_v_self->parser);
@@ -13216,16 +13291,16 @@ static int __pyx_pf_3d2d_6lexbor_10LexborNode_6parser_4__del__(struct __pyx_obj_
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_5__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_3__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_4__reduce_cython__, "LexborNode.__reduce_cython__(self)");
-static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_5__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_5__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_4__reduce_cython__};
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_5__reduce_cython__(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_2__reduce_cython__, "LexborNode.__reduce_cython__(self)");
+static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_3__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_3__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_2__reduce_cython__};
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_3__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -13251,14 +13326,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
   if (unlikely(__pyx_kwds_len < 0)) return NULL;
   if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("__reduce_cython__", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_4__reduce_cython__(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self));
+  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_2__reduce_cython__(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self) {
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -13273,7 +13348,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__reduce_cython__(CYTHON_UN
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_node_cannot_be_converted_to, 0, 0);
-  __PYX_ERR(3, 2, __pyx_L1_error)
+  __PYX_ERR(4, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -13298,16 +13373,16 @@ static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__reduce_cython__(CYTHON_UN
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_7__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_5__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_6__setstate_cython__, "LexborNode.__setstate_cython__(self, __pyx_state)");
-static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_7__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_7__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_6__setstate_cython__};
-static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_7__setstate_cython__(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_3d2d_6lexbor_10LexborNode_4__setstate_cython__, "LexborNode.__setstate_cython__(self, __pyx_state)");
+static PyMethodDef __pyx_mdef_3d2d_6lexbor_10LexborNode_5__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_5__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_4__setstate_cython__};
+static PyObject *__pyx_pw_3d2d_6lexbor_10LexborNode_5__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -13337,32 +13412,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 3, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 3, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(4, 3, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(3, 3, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(4, 3, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
     }
     __pyx_v___pyx_state = values[0];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(3, 3, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 3, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -13373,7 +13448,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_6__setstate_cython__(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_3d2d_6lexbor_10LexborNode_4__setstate_cython__(((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -13383,7 +13458,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3d2d_6lexbor_LexborNode *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -13397,7 +13472,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_10LexborNode_6__setstate_cython__(CYTHON_
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"             # <<<<<<<<<<<<<<
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_node_cannot_be_converted_to, 0, 0);
-  __PYX_ERR(3, 4, __pyx_L1_error)
+  __PYX_ERR(4, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -15141,7 +15216,7 @@ static void __pyx_pf_3d2d_6lexbor_17LexborCSSSelector_10__dealloc__(struct __pyx
   /* function exit code */
 }
 
-/* "d2d/lexbor.pxd":272
+/* "d2d/lexbor.pxd":284
  *     cdef lxb_selectors_t * selectors
  *     cdef lxb_css_selectors_t * css_selectors
  *     cdef public list results             # <<<<<<<<<<<<<<
@@ -15205,7 +15280,7 @@ static int __pyx_pf_3d2d_6lexbor_17LexborCSSSelector_7results_2__set__(struct __
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(5, 272, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(5, 284, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->results);
   __Pyx_DECREF(__pyx_v_self->results);
@@ -15255,7 +15330,7 @@ static int __pyx_pf_3d2d_6lexbor_17LexborCSSSelector_7results_4__del__(struct __
   return __pyx_r;
 }
 
-/* "d2d/lexbor.pxd":273
+/* "d2d/lexbor.pxd":285
  *     cdef lxb_css_selectors_t * css_selectors
  *     cdef public list results
  *     cdef public LexborNode current_node             # <<<<<<<<<<<<<<
@@ -15319,7 +15394,7 @@ static int __pyx_pf_3d2d_6lexbor_17LexborCSSSelector_12current_node_2__set__(str
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode))))) __PYX_ERR(5, 273, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode))))) __PYX_ERR(5, 285, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->current_node);
   __Pyx_DECREF((PyObject *)__pyx_v_self->current_node);
@@ -15433,7 +15508,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_17LexborCSSSelector_12__reduce_cython__(C
  *     raise TypeError, "self.css_selectors,self.parser,self.selectors cannot be converted to a Python object for pickling"
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_css_selectors_self_parser_s, 0, 0);
-  __PYX_ERR(3, 2, __pyx_L1_error)
+  __PYX_ERR(4, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -15497,32 +15572,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 3, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 3, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(4, 3, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(3, 3, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(4, 3, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
     }
     __pyx_v___pyx_state = values[0];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(3, 3, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 3, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -15557,7 +15632,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_17LexborCSSSelector_14__setstate_cython__
  *     raise TypeError, "self.css_selectors,self.parser,self.selectors cannot be converted to a Python object for pickling"             # <<<<<<<<<<<<<<
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self_css_selectors_self_parser_s, 0, 0);
-  __PYX_ERR(3, 4, __pyx_L1_error)
+  __PYX_ERR(4, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -16190,7 +16265,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text_2,&__pyx_mstate_global->__pyx_n_u_deep,&__pyx_mstate_global->__pyx_n_u_separator,&__pyx_mstate_global->__pyx_n_u_strip,0};
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text,&__pyx_mstate_global->__pyx_n_u_deep,&__pyx_mstate_global->__pyx_n_u_separator,&__pyx_mstate_global->__pyx_n_u_strip,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
     if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(6, 141, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
@@ -16364,7 +16439,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_4text_contains(struct __
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_deep, ((PyObject *)__pyx_v_deep), __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(6, 145, __pyx_L1_error)
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_separator, __pyx_v_separator, __pyx_t_6, __pyx_callargs+1, 1) < (0)) __PYX_ERR(6, 145, __pyx_L1_error)
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_strip, ((PyObject *)__pyx_v_strip), __pyx_t_6, __pyx_callargs+1, 2) < (0)) __PYX_ERR(6, 145, __pyx_L1_error)
-      __pyx_t_3 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text_2, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
+      __pyx_t_3 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 145, __pyx_L1_error)
@@ -16518,7 +16593,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text_2,&__pyx_mstate_global->__pyx_n_u_deep,&__pyx_mstate_global->__pyx_n_u_separator,&__pyx_mstate_global->__pyx_n_u_strip,0};
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text,&__pyx_mstate_global->__pyx_n_u_deep,&__pyx_mstate_global->__pyx_n_u_separator,&__pyx_mstate_global->__pyx_n_u_strip,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
     if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(6, 151, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
@@ -16679,7 +16754,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_6any_text_contains(struc
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_deep, ((PyObject *)__pyx_v_deep), __pyx_t_6, __pyx_callargs+1, 0) < (0)) __PYX_ERR(6, 155, __pyx_L1_error)
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_separator, __pyx_v_separator, __pyx_t_6, __pyx_callargs+1, 1) < (0)) __PYX_ERR(6, 155, __pyx_L1_error)
       if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_strip, ((PyObject *)__pyx_v_strip), __pyx_t_6, __pyx_callargs+1, 2) < (0)) __PYX_ERR(6, 155, __pyx_L1_error)
-      __pyx_t_3 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text_2, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
+      __pyx_t_3 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 155, __pyx_L1_error)
@@ -17678,14 +17753,14 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
  *     _dict = getattr(self, '__dict__', None)
  *     if _dict is not None and _dict:
 */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 5, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF((PyObject *)__pyx_v_self->node);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self->node);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_self->node)) != (0)) __PYX_ERR(3, 5, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_self->node)) != (0)) __PYX_ERR(4, 5, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_self->nodes);
   __Pyx_GIVEREF(__pyx_v_self->nodes);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_self->nodes) != (0)) __PYX_ERR(3, 5, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_self->nodes) != (0)) __PYX_ERR(4, 5, __pyx_L1_error);
   __pyx_v_state = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
@@ -17696,7 +17771,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
  *     if _dict is not None and _dict:
  *         state += (_dict,)
 */
-  __pyx_t_1 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_mstate_global->__pyx_n_u_dict, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 6, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_mstate_global->__pyx_n_u_dict, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v__dict = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17714,7 +17789,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
     __pyx_t_2 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v__dict); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(3, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v__dict); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(4, 7, __pyx_L1_error)
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_2) {
@@ -17726,12 +17801,12 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
  *         use_setstate = True
  *     else:
 */
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 8, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 8, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v__dict);
     __Pyx_GIVEREF(__pyx_v__dict);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v__dict) != (0)) __PYX_ERR(3, 8, __pyx_L1_error);
-    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 8, __pyx_L1_error)
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v__dict) != (0)) __PYX_ERR(4, 8, __pyx_L1_error);
+    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 8, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_4));
@@ -17794,28 +17869,28 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
  *         return __pyx_unpickle_LexborSelector, (type(self), 0xc5dfe7e, state)
 */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 13, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 13, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 13, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 13, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
     __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
     __Pyx_INCREF(__pyx_mstate_global->__pyx_int_207486590);
     __Pyx_GIVEREF(__pyx_mstate_global->__pyx_int_207486590);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_mstate_global->__pyx_int_207486590) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_mstate_global->__pyx_int_207486590) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
     __Pyx_INCREF(Py_None);
     __Pyx_GIVEREF(Py_None);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 2, Py_None) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 13, __pyx_L1_error)
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 2, Py_None) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
+    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 13, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
     __Pyx_GIVEREF(__pyx_t_1);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_1) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_1) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
     __Pyx_INCREF(__pyx_v_state);
     __Pyx_GIVEREF(__pyx_v_state);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_v_state) != (0)) __PYX_ERR(3, 13, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_v_state) != (0)) __PYX_ERR(4, 13, __pyx_L1_error);
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
     __pyx_r = __pyx_t_5;
@@ -17840,25 +17915,25 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_14__reduce_cython__(stru
 */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 15, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 15, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 15, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 15, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
     __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))) != (0)) __PYX_ERR(3, 15, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))) != (0)) __PYX_ERR(4, 15, __pyx_L1_error);
     __Pyx_INCREF(__pyx_mstate_global->__pyx_int_207486590);
     __Pyx_GIVEREF(__pyx_mstate_global->__pyx_int_207486590);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_mstate_global->__pyx_int_207486590) != (0)) __PYX_ERR(3, 15, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_mstate_global->__pyx_int_207486590) != (0)) __PYX_ERR(4, 15, __pyx_L1_error);
     __Pyx_INCREF(__pyx_v_state);
     __Pyx_GIVEREF(__pyx_v_state);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_state) != (0)) __PYX_ERR(3, 15, __pyx_L1_error);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 15, __pyx_L1_error)
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_state) != (0)) __PYX_ERR(4, 15, __pyx_L1_error);
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 15, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_5);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5) != (0)) __PYX_ERR(3, 15, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5) != (0)) __PYX_ERR(4, 15, __pyx_L1_error);
     __Pyx_GIVEREF(__pyx_t_1);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_1) != (0)) __PYX_ERR(3, 15, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_1) != (0)) __PYX_ERR(4, 15, __pyx_L1_error);
     __pyx_t_5 = 0;
     __pyx_t_1 = 0;
     __pyx_r = __pyx_t_4;
@@ -17934,32 +18009,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 16, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 16, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 16, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 16, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(3, 16, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(4, 16, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(3, 16, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(4, 16, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 16, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 16, __pyx_L3_error)
     }
     __pyx_v___pyx_state = values[0];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(3, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 16, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17994,7 +18069,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_14LexborSelector_16__setstate_cython__(st
  * def __setstate_cython__(self, __pyx_state):
  *     __pyx_unpickle_LexborSelector__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
 */
-  __pyx_t_1 = __pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(__pyx_v_self, __pyx_v___pyx_state); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(__pyx_v_self, __pyx_v___pyx_state); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -20769,7 +20844,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text_2,0};
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_text,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
     if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(8, 27, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
@@ -22688,7 +22763,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_4__repr__(struct __pyx
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6[0] = __pyx_mstate_global->__pyx_kp_u_LexborHTMLParser_chars;
   __pyx_t_6[1] = __pyx_t_1;
-  __pyx_t_6[2] = __pyx_mstate_global->__pyx_kp_u__5;
+  __pyx_t_6[2] = __pyx_mstate_global->__pyx_kp_u__8;
   __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_6, 3, 25 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1) + 2, 127);
   if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -23976,7 +24051,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_8text(struct __pyx_obj
     if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_separator, __pyx_v_separator, __pyx_t_6, __pyx_callargs+1, 1) < (0)) __PYX_ERR(0, 375, __pyx_L1_error)
     if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_strip, __pyx_v_strip, __pyx_t_6, __pyx_callargs+1, 2) < (0)) __PYX_ERR(0, 375, __pyx_L1_error)
     if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_skip_empty, __pyx_v_skip_empty, __pyx_t_6, __pyx_callargs+1, 3) < (0)) __PYX_ERR(0, 375, __pyx_L1_error)
-    __pyx_t_1 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text_2, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
+    __pyx_t_1 = __Pyx_Object_VectorcallMethod_CallFromBuilder((PyObject*)__pyx_mstate_global->__pyx_n_u_text, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_6);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -27037,7 +27112,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_32create_node(struct _
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_10[0] = __pyx_mstate_global->__pyx_kp_u_Can_t_create_element_for_tag;
     __pyx_t_10[1] = __pyx_t_9;
-    __pyx_t_10[2] = __pyx_mstate_global->__pyx_kp_u__6;
+    __pyx_t_10[2] = __pyx_mstate_global->__pyx_kp_u__9;
     __pyx_t_11 = __Pyx_PyUnicode_Join(__pyx_t_10, 3, 30 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9) + 1, 127 | __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9));
     if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 761, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
@@ -27123,7 +27198,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_32create_node(struct _
   return __pyx_r;
 }
 
-/* "d2d/lexbor.pxd":284
+/* "d2d/lexbor.pxd":296
  *     cdef lxb_html_document_t *_fragment_document
  *     cdef bint _is_fragment
  *     cdef public bytes raw_html             # <<<<<<<<<<<<<<
@@ -27187,7 +27262,7 @@ static int __pyx_pf_3d2d_6lexbor_16LexborHTMLParser_8raw_html_2__set__(struct __
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
-  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("bytes", __pyx_t_1))) __PYX_ERR(5, 284, __pyx_L1_error)
+  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("bytes", __pyx_t_1))) __PYX_ERR(5, 296, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->raw_html);
   __Pyx_DECREF(__pyx_v_self->raw_html);
@@ -27301,7 +27376,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_34__reduce_cython__(CY
  *     raise TypeError, "self._fragment_document,self.document cannot be converted to a Python object for pickling"
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self__fragment_document_self_doc, 0, 0);
-  __PYX_ERR(3, 2, __pyx_L1_error)
+  __PYX_ERR(4, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -27365,32 +27440,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 3, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 3, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__setstate_cython__", 0) < (0)) __PYX_ERR(4, 3, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(3, 3, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, i); __PYX_ERR(4, 3, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 3, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 3, __pyx_L3_error)
     }
     __pyx_v___pyx_state = values[0];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(3, 3, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(4, 3, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -27425,7 +27500,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_16LexborHTMLParser_36__setstate_cython__(
  *     raise TypeError, "self._fragment_document,self.document cannot be converted to a Python object for pickling"             # <<<<<<<<<<<<<<
 */
   __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_TypeError))), __pyx_mstate_global->__pyx_kp_u_self__fragment_document_self_doc, 0, 0);
-  __PYX_ERR(3, 4, __pyx_L1_error)
+  __PYX_ERR(4, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -27493,46 +27568,46 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_pyx_type,&__pyx_mstate_global->__pyx_n_u_pyx_checksum,&__pyx_mstate_global->__pyx_n_u_pyx_state,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(3, 4, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(4, 4, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(3, 4, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(4, 4, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 4, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(4, 4, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 4, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 4, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__pyx_unpickle_LexborSelector", 0) < (0)) __PYX_ERR(3, 4, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__pyx_unpickle_LexborSelector", 0) < (0)) __PYX_ERR(4, 4, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 3; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_LexborSelector", 1, 3, 3, i); __PYX_ERR(3, 4, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_LexborSelector", 1, 3, 3, i); __PYX_ERR(4, 4, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(3, 4, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(4, 4, __pyx_L3_error)
       values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(3, 4, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(4, 4, __pyx_L3_error)
       values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(3, 4, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(4, 4, __pyx_L3_error)
     }
     __pyx_v___pyx_type = values[0];
-    __pyx_v___pyx_checksum = __Pyx_PyLong_As_long(values[1]); if (unlikely((__pyx_v___pyx_checksum == (long)-1) && PyErr_Occurred())) __PYX_ERR(3, 4, __pyx_L3_error)
+    __pyx_v___pyx_checksum = __Pyx_PyLong_As_long(values[1]); if (unlikely((__pyx_v___pyx_checksum == (long)-1) && PyErr_Occurred())) __PYX_ERR(4, 4, __pyx_L3_error)
     __pyx_v___pyx_state = ((PyObject*)values[2]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_LexborSelector", 1, 3, 3, __pyx_nargs); __PYX_ERR(3, 4, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_LexborSelector", 1, 3, 3, __pyx_nargs); __PYX_ERR(4, 4, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -27543,7 +27618,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___pyx_state), (&PyTuple_Type), 1, "__pyx_state", 1))) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___pyx_state), (&PyTuple_Type), 1, "__pyx_state", 1))) __PYX_ERR(4, 4, __pyx_L1_error)
   __pyx_r = __pyx_pf_3d2d_6lexbor_22__pyx_unpickle_LexborSelector(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
@@ -27584,7 +27659,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_22__pyx_unpickle_LexborSelector(CYTHON_UN
  *     __pyx_result = LexborSelector.__new__(__pyx_type)
  *     if __pyx_state is not None:
 */
-  __pyx_t_1 = __Pyx_CheckUnpickleChecksum(__pyx_v___pyx_checksum, 0xc5dfe7e, 0xad8d8ab, 0xc00154f, __pyx_k_node_nodes); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(3, 6, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CheckUnpickleChecksum(__pyx_v___pyx_checksum, 0xc5dfe7e, 0xad8d8ab, 0xc00154f, __pyx_k_node_nodes); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(4, 6, __pyx_L1_error)
 
   /* "(tree fragment)":7
  *     cdef object __pyx_result
@@ -27600,7 +27675,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_22__pyx_unpickle_LexborSelector(CYTHON_UN
     PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_v___pyx_type};
     __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_new, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(3, 7, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(4, 7, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   }
   __pyx_v___pyx_result = __pyx_t_2;
@@ -27623,7 +27698,7 @@ static PyObject *__pyx_pf_3d2d_6lexbor_22__pyx_unpickle_LexborSelector(CYTHON_UN
  *     return __pyx_result
  * cdef __pyx_unpickle_LexborSelector__set_state(LexborSelector __pyx_result, __pyx_state: tuple):
 */
-    __pyx_t_2 = __pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(((struct __pyx_obj_3d2d_6lexbor_LexborSelector *)__pyx_v___pyx_result), __pyx_v___pyx_state); if (unlikely(!__pyx_t_2)) __PYX_ERR(3, 9, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(((struct __pyx_obj_3d2d_6lexbor_LexborSelector *)__pyx_v___pyx_result), __pyx_v___pyx_state); if (unlikely(!__pyx_t_2)) __PYX_ERR(4, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -27693,17 +27768,17 @@ static PyObject *__pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(s
  *     __pyx_result.node = __pyx_state[0]; __pyx_result.nodes = __pyx_state[1]             # <<<<<<<<<<<<<<
  *     __Pyx_UpdateUnpickledDict(__pyx_result, __pyx_state, 2)
 */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v___pyx_state, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_FunctionArgument); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v___pyx_state, 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_FunctionArgument); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode))))) __PYX_ERR(3, 12, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode))))) __PYX_ERR(4, 12, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->node);
   __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->node);
   __pyx_v___pyx_result->node = ((struct __pyx_obj_3d2d_6lexbor_LexborNode *)__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v___pyx_state, 1, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_FunctionArgument); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v___pyx_state, 1, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_FunctionArgument); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(3, 12, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(4, 12, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v___pyx_result->nodes);
   __Pyx_DECREF(__pyx_v___pyx_result->nodes);
@@ -27715,7 +27790,7 @@ static PyObject *__pyx_f_3d2d_6lexbor___pyx_unpickle_LexborSelector__set_state(s
  *     __pyx_result.node = __pyx_state[0]; __pyx_result.nodes = __pyx_state[1]
  *     __Pyx_UpdateUnpickledDict(__pyx_result, __pyx_state, 2)             # <<<<<<<<<<<<<<
 */
-  __pyx_t_2 = __Pyx_UpdateUnpickledDict(((PyObject *)__pyx_v___pyx_result), __pyx_v___pyx_state, 2); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(3, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_UpdateUnpickledDict(((PyObject *)__pyx_v___pyx_result), __pyx_v___pyx_state, 2); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(4, 13, __pyx_L1_error)
 
   /* "(tree fragment)":11
  *         __pyx_unpickle_LexborSelector__set_state(<LexborSelector> __pyx_result, __pyx_state)
@@ -27791,6 +27866,10 @@ static int __pyx_tp_clear_3d2d_6lexbor_LexborNode(PyObject *o) {
   return 0;
 }
 
+static PyObject *__pyx_getprop_3d2d_6lexbor_10LexborNode_mem_id(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_3d2d_6lexbor_10LexborNode_6mem_id_1__get__(o);
+}
+
 static PyObject *__pyx_getprop_3d2d_6lexbor_10LexborNode_parser(PyObject *o, CYTHON_UNUSED void *x) {
   return __pyx_pw_3d2d_6lexbor_10LexborNode_6parser_1__get__(o);
 }
@@ -27805,14 +27884,14 @@ static int __pyx_setprop_3d2d_6lexbor_10LexborNode_parser(PyObject *o, PyObject 
 }
 
 static PyMethodDef __pyx_methods_3d2d_6lexbor_LexborNode[] = {
-  {"traverse_signals_benchmark", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_traverse_signals_benchmark},
-  {"convert_html_to_instructions", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_2convert_html_to_instructions},
-  {"__reduce_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_5__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_4__reduce_cython__},
-  {"__setstate_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_7__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_6__setstate_cython__},
+  {"convert_html_to_instructions", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_convert_html_to_instructions},
+  {"__reduce_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_3__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_2__reduce_cython__},
+  {"__setstate_cython__", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_3d2d_6lexbor_10LexborNode_5__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_3d2d_6lexbor_10LexborNode_4__setstate_cython__},
   {0, 0, 0, 0}
 };
 
 static struct PyGetSetDef __pyx_getsets_3d2d_6lexbor_LexborNode[] = {
+  {"mem_id", __pyx_getprop_3d2d_6lexbor_10LexborNode_mem_id, 0, 0, 0},
   {"parser", __pyx_getprop_3d2d_6lexbor_10LexborNode_parser, __pyx_setprop_3d2d_6lexbor_10LexborNode_parser, PyDoc_STR("parser: d2d.lexbor.LexborHTMLParser"), 0},
   {0, 0, 0, 0, 0}
 };
@@ -29347,16 +29426,18 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   __pyx_vtabptr_3d2d_6lexbor_LexborNode = &__pyx_vtable_3d2d_6lexbor_LexborNode;
   __pyx_vtable_3d2d_6lexbor_LexborNode.__pyx_new = (struct __pyx_obj_3d2d_6lexbor_LexborNode *(*)(lxb_dom_node_t *, struct __pyx_obj_3d2d_6lexbor_LexborHTMLParser *))__pyx_f_3d2d_6lexbor_10LexborNode_new;
   __pyx_vtable_3d2d_6lexbor_LexborNode.set_as_fragment_root = (void (*)(struct __pyx_obj_3d2d_6lexbor_LexborNode *))__pyx_f_3d2d_6lexbor_10LexborNode_set_as_fragment_root;
+  __pyx_vtable_3d2d_6lexbor_LexborNode._check_new_instruction_block = (int (*)(struct __pyx_obj_3d2d_6lexbor_LexborNode *, lxb_tag_id_t))__pyx_f_3d2d_6lexbor_10LexborNode__check_new_instruction_block;
+  __pyx_vtable_3d2d_6lexbor_LexborNode._parse_style = (int (*)(struct __pyx_obj_3d2d_6lexbor_LexborNode *, PyObject *, struct __pyx_t_3d2d_6lexbor_InstructionAttrs *))__pyx_f_3d2d_6lexbor_10LexborNode__parse_style;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor_LexborNode_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode)) __PYX_ERR(4, 232, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor_LexborNode_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor_LexborNode_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode)) __PYX_ERR(1, 53, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor_LexborNode_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode = &__pyx_type_3d2d_6lexbor_LexborNode;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode);
@@ -29366,10 +29447,10 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode->tp_getattro = PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode, __pyx_vtabptr_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
-  if (__Pyx_MergeVtables(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_LexborNode, (PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(4, 232, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode, __pyx_vtabptr_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_LexborNode, (PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborNode) < (0)) __PYX_ERR(1, 53, __pyx_L1_error)
   __pyx_vtabptr_3d2d_6lexbor_LexborCSSSelector = &__pyx_vtable_3d2d_6lexbor_LexborCSSSelector;
   __pyx_vtable_3d2d_6lexbor_LexborCSSSelector._create_css_parser = (int (*)(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *))__pyx_f_3d2d_6lexbor_17LexborCSSSelector__create_css_parser;
   __pyx_vtable_3d2d_6lexbor_LexborCSSSelector.find = (PyObject *(*)(struct __pyx_obj_3d2d_6lexbor_LexborCSSSelector *, PyObject *, struct __pyx_obj_3d2d_6lexbor_LexborNode *, int __pyx_skip_dispatch))__pyx_f_3d2d_6lexbor_17LexborCSSSelector_find;
@@ -29452,15 +29533,15 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   __pyx_vtabptr_3d2d_6lexbor_LexborAttributes = &__pyx_vtable_3d2d_6lexbor_LexborAttributes;
   __pyx_vtable_3d2d_6lexbor_LexborAttributes.create = (struct __pyx_obj_3d2d_6lexbor_LexborAttributes *(*)(lxb_dom_node_t *))__pyx_f_3d2d_6lexbor_16LexborAttributes_create;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor_LexborAttributes_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes)) __PYX_ERR(2, 4, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor_LexborAttributes_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor_LexborAttributes_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes)) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor_LexborAttributes_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes = &__pyx_type_3d2d_6lexbor_LexborAttributes;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes);
@@ -29470,10 +29551,10 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes->tp_getattro = PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_vtabptr_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
-  if (__Pyx_MergeVtables(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_LexborAttributes, (PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(2, 4, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_vtabptr_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_LexborAttributes, (PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborAttributes) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
   __pyx_vtabptr_3d2d_6lexbor_LexborSelector = &__pyx_vtable_3d2d_6lexbor_LexborSelector;
   __pyx_vtable_3d2d_6lexbor_LexborSelector.css = (PyObject *(*)(struct __pyx_obj_3d2d_6lexbor_LexborSelector *, PyObject *, int __pyx_skip_dispatch))__pyx_f_3d2d_6lexbor_14LexborSelector_css;
   #if CYTHON_USE_TYPE_SPECS
@@ -29500,15 +29581,15 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_LexborSelector, (PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborSelector) < (0)) __PYX_ERR(6, 113, __pyx_L1_error)
   if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_3d2d_6lexbor_LexborSelector) < (0)) __PYX_ERR(6, 113, __pyx_L1_error)
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__ = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct____iter___spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__)) __PYX_ERR(2, 16, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct____iter___spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__) < (0)) __PYX_ERR(2, 16, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__ = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct____iter___spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__)) __PYX_ERR(3, 16, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct____iter___spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__) < (0)) __PYX_ERR(3, 16, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__ = &__pyx_type_3d2d_6lexbor___pyx_scope_struct____iter__;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__) < (0)) __PYX_ERR(2, 16, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__) < (0)) __PYX_ERR(3, 16, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct____iter__);
@@ -29519,15 +29600,15 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   }
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct_1_items_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items)) __PYX_ERR(2, 83, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct_1_items_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items) < (0)) __PYX_ERR(2, 83, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct_1_items_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items)) __PYX_ERR(3, 83, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct_1_items_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items) < (0)) __PYX_ERR(3, 83, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items = &__pyx_type_3d2d_6lexbor___pyx_scope_struct_1_items;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items) < (0)) __PYX_ERR(2, 83, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items) < (0)) __PYX_ERR(3, 83, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_1_items);
@@ -29538,15 +29619,15 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   }
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values)) __PYX_ERR(2, 87, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values) < (0)) __PYX_ERR(2, 87, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values)) __PYX_ERR(3, 87, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values_spec, __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values) < (0)) __PYX_ERR(3, 87, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values = &__pyx_type_3d2d_6lexbor___pyx_scope_struct_2_values;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values) < (0)) __PYX_ERR(2, 87, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values) < (0)) __PYX_ERR(3, 87, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_3d2d_6lexbor___pyx_scope_struct_2_values);
@@ -29939,16 +30020,16 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
 */
   {
     PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_Literal,__pyx_mstate_global->__pyx_n_u_Optional,__pyx_mstate_global->__pyx_n_u_Union,__pyx_mstate_global->__pyx_n_u_Type};
-    __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_typing, __pyx_imported_names, 4, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_typing, __pyx_imported_names, 4, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 1, __pyx_L1_error)
   }
   __pyx_t_3 = __pyx_t_1;
   __Pyx_GOTREF(__pyx_t_3);
   {
     PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_Literal,__pyx_mstate_global->__pyx_n_u_Optional,__pyx_mstate_global->__pyx_n_u_Union,__pyx_mstate_global->__pyx_n_u_Type};
     for (__pyx_t_6=0; __pyx_t_6 < 4; __pyx_t_6++) {
-      __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_3, __pyx_imported_names[__pyx_t_6]); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_3, __pyx_imported_names[__pyx_t_6]); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 1, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_imported_names[__pyx_t_6], __pyx_t_4) < (0)) __PYX_ERR(1, 1, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_imported_names[__pyx_t_6], __pyx_t_4) < (0)) __PYX_ERR(2, 1, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
   }
@@ -29961,7 +30042,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * 
  * ParserCls = Union[Type["HTMLParser"], Type["LexborHTMLParser"]]
 */
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_MAX_HTML_INPUT_SIZE, __pyx_mstate_global->__pyx_float_250e_7) < (0)) __PYX_ERR(1, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_MAX_HTML_INPUT_SIZE, __pyx_mstate_global->__pyx_float_250e_7) < (0)) __PYX_ERR(2, 3, __pyx_L1_error)
 
   /* "d2d/utils.pxi":5
  * MAX_HTML_INPUT_SIZE = 250e+7
@@ -29970,27 +30051,27 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * Parser = Union["HTMLParser", "LexborHTMLParser"]
  * FRAGMENT = Literal[
 */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_Union); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_Union); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Type); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Type); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_Dict_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_HTMLParser); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Dict_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_HTMLParser); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Type); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Type); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_Pack(2, __pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_Pack(2, __pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_ParserCls, __pyx_t_2) < (0)) __PYX_ERR(1, 5, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_ParserCls, __pyx_t_2) < (0)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "d2d/utils.pxi":6
@@ -30000,12 +30081,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * FRAGMENT = Literal[
  *     "document",
 */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_Union); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 6, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_Union); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[0]); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 6, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[1]); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_Parser, __pyx_t_4) < (0)) __PYX_ERR(1, 6, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_Parser, __pyx_t_4) < (0)) __PYX_ERR(2, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/utils.pxi":7
@@ -30015,12 +30096,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     "document",
  *     "fragment",
 */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Literal); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_Literal); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[1]); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[2]); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_FRAGMENT, __pyx_t_2) < (0)) __PYX_ERR(1, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_FRAGMENT, __pyx_t_2) < (0)) __PYX_ERR(2, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "d2d/utils.pxi":19
@@ -30030,13 +30111,13 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     if isinstance(html, (str, unicode)):
  *         bytes_html = html.encode('UTF-8', errors=decode_errors)
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_1preprocess_input, 0, __pyx_mstate_global->__pyx_n_u_preprocess_input, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 19, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_1preprocess_input, 0, __pyx_mstate_global->__pyx_n_u_preprocess_input, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[2]);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_preprocess_input, __pyx_t_2) < (0)) __PYX_ERR(1, 19, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[3]);
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_preprocess_input, __pyx_t_2) < (0)) __PYX_ERR(2, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "d2d/utils.pxi":32
@@ -30046,18 +30127,18 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     if not tag:
  *         raise ValueError("Tag name cannot be empty")
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_tag, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(1, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(1, 32, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_3do_create_tag, 0, __pyx_mstate_global->__pyx_n_u_do_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_tag, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(2, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(2, 32, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_3do_create_tag, 0, __pyx_mstate_global->__pyx_n_u_do_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_do_create_tag, __pyx_t_4) < (0)) __PYX_ERR(1, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_do_create_tag, __pyx_t_4) < (0)) __PYX_ERR(2, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/utils.pxi":38
@@ -30067,21 +30148,21 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     html: str,
  *     parser_cls: ParserCls,
 */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(1, 38, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(1, 38, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_tree, __pyx_mstate_global->__pyx_kp_u_Optional_Parser) < (0)) __PYX_ERR(1, 38, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_FRAGMENT) < (0)) __PYX_ERR(1, 38, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_5get_fragment_type, 0, __pyx_mstate_global->__pyx_n_u_get_fragment_type, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[5])); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(2, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(2, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_tree, __pyx_mstate_global->__pyx_kp_u_Optional_Parser) < (0)) __PYX_ERR(2, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_FRAGMENT) < (0)) __PYX_ERR(2, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_5get_fragment_type, 0, __pyx_mstate_global->__pyx_n_u_get_fragment_type, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[5])); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_mstate_global->__pyx_tuple[4]);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_4);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_get_fragment_type, __pyx_t_2) < (0)) __PYX_ERR(1, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_get_fragment_type, __pyx_t_2) < (0)) __PYX_ERR(2, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "d2d/utils.pxi":81
@@ -30091,18 +30172,18 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     """
  *     Given HTML, parse it into a list of Nodes, such that the nodes
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(1, 81, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(1, 81, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_7do_parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[6])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(2, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(2, 81, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_7do_parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[6])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, __pyx_t_4) < (0)) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, __pyx_t_4) < (0)) __PYX_ERR(2, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/attrs.pxi":80
@@ -30112,12 +30193,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         return self.__iter__()
  * 
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_12keys, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_keys, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 80, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_12keys, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_keys, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_keys, __pyx_t_4) < (0)) __PYX_ERR(2, 80, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_keys, __pyx_t_4) < (0)) __PYX_ERR(3, 80, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/attrs.pxi":83
@@ -30127,12 +30208,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         for key in self.__iter__():
  *             yield key, self[key]
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_14items, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_items, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 83, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_14items, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_items, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_items, __pyx_t_4) < (0)) __PYX_ERR(2, 83, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_items, __pyx_t_4) < (0)) __PYX_ERR(3, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/attrs.pxi":87
@@ -30142,12 +30223,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         for key in self.__iter__():
  *             yield self[key]
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_17values, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_values, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 87, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_17values, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_values, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_values, __pyx_t_4) < (0)) __PYX_ERR(2, 87, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_values, __pyx_t_4) < (0)) __PYX_ERR(3, 87, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/attrs.pxi":91
@@ -30157,13 +30238,13 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         try:
  *             return self[key]
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_20get, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_get, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 91, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_20get, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_get, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[3]);
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_get, __pyx_t_4) < (0)) __PYX_ERR(2, 91, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[4]);
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_get, __pyx_t_4) < (0)) __PYX_ERR(3, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/attrs.pxi":97
@@ -30173,13 +30254,13 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Same as get, but returns empty strings instead of None values for empty attributes."""
  *         try:
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_22sget, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_sget, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 97, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_22sget, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes_sget, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[4]);
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_sget, __pyx_t_4) < (0)) __PYX_ERR(2, 97, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[5]);
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborAttributes, __pyx_mstate_global->__pyx_n_u_sget, __pyx_t_4) < (0)) __PYX_ERR(3, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":1
@@ -30187,12 +30268,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_28__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_28__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":3
@@ -30201,28 +30282,28 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_30__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes___setstate_cyth, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[11])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 3, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborAttributes_30__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborAttributes___setstate_cyth, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[11])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "d2d/lexbor/node.pxi":10
- * DEF MAX_STRING_LEN = 200
+  /* "d2d/lexbor/node.pxi":9
+ * DEF MAX_STACK_DEPTH = 1000
  * 
  * import logging             # <<<<<<<<<<<<<<
  * 
  * logger = logging.getLogger("selectolax")
 */
-  __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_logging, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 10, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_logging, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
   __pyx_t_4 = __pyx_t_1;
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_logging, __pyx_t_4) < (0)) __PYX_ERR(4, 10, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_logging, __pyx_t_4) < (0)) __PYX_ERR(1, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "d2d/lexbor/node.pxi":12
+  /* "d2d/lexbor/node.pxi":11
  * import logging
  * 
  * logger = logging.getLogger("selectolax")             # <<<<<<<<<<<<<<
@@ -30230,9 +30311,9 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * _TAG_TO_NAME = {
 */
   __pyx_t_2 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(4, 12, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_getLogger); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 12, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_getLogger); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_7 = 1;
@@ -30241,56 +30322,40 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
     __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_5, __pyx_callargs+__pyx_t_7, (2-__pyx_t_7) | (__pyx_t_7*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 12, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 11, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
   }
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_logger, __pyx_t_4) < (0)) __PYX_ERR(4, 12, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_logger, __pyx_t_4) < (0)) __PYX_ERR(1, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "d2d/lexbor/node.pxi":15
+  /* "d2d/lexbor/node.pxi":14
  * 
  * _TAG_TO_NAME = {
  *     0x0005: "-doctype",             # <<<<<<<<<<<<<<
  *     0x0002: "-text",
  *     0x0004: "-comment",
 */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 15, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_5, __pyx_mstate_global->__pyx_kp_u_doctype) < (0)) __PYX_ERR(4, 15, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_2, __pyx_mstate_global->__pyx_kp_u_text_3) < (0)) __PYX_ERR(4, 15, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_4, __pyx_mstate_global->__pyx_kp_u_comment) < (0)) __PYX_ERR(4, 15, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_TAG_TO_NAME, __pyx_t_4) < (0)) __PYX_ERR(4, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_5, __pyx_mstate_global->__pyx_kp_u_doctype) < (0)) __PYX_ERR(1, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_2, __pyx_mstate_global->__pyx_kp_u_text_2) < (0)) __PYX_ERR(1, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_int_4, __pyx_mstate_global->__pyx_kp_u_comment) < (0)) __PYX_ERR(1, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_TAG_TO_NAME, __pyx_t_4) < (0)) __PYX_ERR(1, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "d2d/lexbor/node.pxi":247
- *         return lxbnode
+  /* "d2d/lexbor/node.pxi":132
+ *         return modified
  * 
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):             # <<<<<<<<<<<<<<
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node
+ *     def convert_html_to_instructions(self):             # <<<<<<<<<<<<<<
+ *         """Convert HTML to instructions and write to file."""
+ *         cdef lxb_dom_node_t *root = self.node
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_1traverse_signals_benchmark, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode_traverse_signals_benc, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[12])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 247, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_1convert_html_to_instructions, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode_convert_html_to_instr, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[12])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[5]);
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode, __pyx_mstate_global->__pyx_n_u_traverse_signals_benchmark, __pyx_t_4) < (0)) __PYX_ERR(4, 247, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-  /* "d2d/lexbor/node.pxi":283
- *                 node = node.next
- * 
- *     def convert_html_to_instructions(self, str filename):             # <<<<<<<<<<<<<<
- *         """Convert HTML to instructions, extracting raw tag + style data."""
- *         # Convert filename to bytes for C FILE operations
-*/
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_3convert_html_to_instructions, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode_convert_html_to_instr, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[13])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 283, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode, __pyx_mstate_global->__pyx_n_u_convert_html_to_instructions, __pyx_t_4) < (0)) __PYX_ERR(4, 283, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborNode, __pyx_mstate_global->__pyx_n_u_convert_html_to_instructions, __pyx_t_4) < (0)) __PYX_ERR(1, 132, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":1
@@ -30298,12 +30363,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_5__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[14])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_3__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[13])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":3
@@ -30312,12 +30377,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self.node cannot be converted to a Python object for pickling"
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_7__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[15])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 3, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_10LexborNode_5__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborNode___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[14])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/selection.pxi":41
@@ -30327,7 +30392,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         return self._find(query, node, 0)
  * 
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_3find, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_find, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[16])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 41, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_3find, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_find, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[15])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30342,7 +30407,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         return self._find(query, node, 1)
  * 
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_5find_first, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_find_first, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[17])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 44, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_5find_first, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_find_first, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[16])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30357,7 +30422,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         cdef lxb_css_selector_list_t* selectors
  *         cdef lxb_char_t* c_selector
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_7_find, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector__find, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[18])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 47, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_7_find, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector__find, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[17])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30372,7 +30437,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         cdef lxb_css_selector_list_t * selectors
  *         cdef lxb_char_t * c_selector
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_9any_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_any_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[19])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 75, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_9any_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector_any_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[18])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30385,12 +30450,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     raise TypeError, "self.css_selectors,self.parser,self.selectors cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector___reduce_cytho, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[20])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector___reduce_cytho, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[19])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":3
@@ -30399,12 +30464,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self.css_selectors,self.parser,self.selectors cannot be converted to a Python object for pickling"
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector___setstate_cyt, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[21])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 3, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17LexborCSSSelector_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborCSSSelector___setstate_cyt, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[20])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/lexbor/selection.pxi":127
@@ -30414,7 +30479,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Evaluate CSS selector against current scope."""
  *         raise NotImplementedError("This features is not supported by the lexbor backend. Please use Modest backend.")
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_3css, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_css, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[22])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 127, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_3css, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_css, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[21])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30432,7 +30497,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_LexborSelector) < (0)) __PYX_ERR(6, 141, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_5text_contains, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_text_contains, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[23])); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 141, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_5text_contains, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_text_contains, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[22])); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30453,7 +30518,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_bool) < (0)) __PYX_ERR(6, 151, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_7any_text_contains, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_any_text_contains, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[24])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 151, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_7any_text_contains, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_any_text_contains, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[23])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
@@ -30474,12 +30539,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_LexborSelector) < (0)) __PYX_ERR(6, 160, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_9attribute_longer_than, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_attribute_longer, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[25])); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 160, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_9attribute_longer_than, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_attribute_longer, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[24])); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[4]);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_4);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_attribute_longer_than, __pyx_t_5) < (0)) __PYX_ERR(6, 160, __pyx_L1_error)
@@ -30495,12 +30560,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_bool) < (0)) __PYX_ERR(6, 177, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_11any_attribute_longer_than, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_any_attribute_lon, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[26])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 177, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_11any_attribute_longer_than, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector_any_attribute_lon, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[25])); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[4]);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_any_attribute_longer_than, __pyx_t_4) < (0)) __PYX_ERR(6, 177, __pyx_L1_error)
@@ -30511,12 +30576,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_15__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[27])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_15__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[26])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 1, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":16
@@ -30525,12 +30590,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_LexborSelector__set_state(self, __pyx_state)
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_17__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[28])); if (unlikely(!__pyx_t_4)) __PYX_ERR(3, 16, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_14LexborSelector_17__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborSelector___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[27])); if (unlikely(!__pyx_t_4)) __PYX_ERR(4, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(3, 16, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborSelector, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(4, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "d2d/utils.pxi":1
@@ -30603,7 +30668,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
 */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_Union); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[0]); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 6, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[1]); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_Parser, __pyx_t_5) < (0)) __PYX_ERR(7, 6, __pyx_L1_error)
@@ -30618,7 +30683,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
 */
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_Literal); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[1]); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[2]); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_FRAGMENT, __pyx_t_3) < (0)) __PYX_ERR(7, 7, __pyx_L1_error)
@@ -30631,12 +30696,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     if isinstance(html, (str, unicode)):
  *         bytes_html = html.encode('UTF-8', errors=decode_errors)
 */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_9preprocess_input, 0, __pyx_mstate_global->__pyx_n_u_preprocess_input, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[29])); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 19, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_9preprocess_input, 0, __pyx_mstate_global->__pyx_n_u_preprocess_input, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[28])); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[2]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[3]);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_preprocess_input, __pyx_t_3) < (0)) __PYX_ERR(7, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -30651,7 +30716,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_tag, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(7, 32, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(7, 32, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_11do_create_tag, 0, __pyx_mstate_global->__pyx_n_u_do_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[30])); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 32, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_11do_create_tag, 0, __pyx_mstate_global->__pyx_n_u_do_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[29])); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30674,12 +30739,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(7, 38, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_tree, __pyx_mstate_global->__pyx_kp_u_Optional_Parser) < (0)) __PYX_ERR(7, 38, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_FRAGMENT) < (0)) __PYX_ERR(7, 38, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_13get_fragment_type, 0, __pyx_mstate_global->__pyx_n_u_get_fragment_type, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[31])); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 38, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_13get_fragment_type, 0, __pyx_mstate_global->__pyx_n_u_get_fragment_type, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[30])); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_mstate_global->__pyx_tuple[4]);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_get_fragment_type, __pyx_t_3) < (0)) __PYX_ERR(7, 38, __pyx_L1_error)
@@ -30696,7 +30761,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(7, 81, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_parser_cls, __pyx_mstate_global->__pyx_n_u_ParserCls) < (0)) __PYX_ERR(7, 81, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_15do_parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[32])); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 81, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_15do_parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_do_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[31])); if (unlikely(!__pyx_t_5)) __PYX_ERR(7, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30729,7 +30794,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(8, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_tag, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(8, 6, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17create_tag, 0, __pyx_mstate_global->__pyx_n_u_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[33])); if (unlikely(!__pyx_t_3)) __PYX_ERR(8, 6, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_17create_tag, 0, __pyx_mstate_global->__pyx_n_u_create_tag, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[32])); if (unlikely(!__pyx_t_3)) __PYX_ERR(8, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
@@ -30749,7 +30814,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(8, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_html, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(8, 16, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_19parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[34])); if (unlikely(!__pyx_t_5)) __PYX_ERR(8, 16, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_19parse_fragment, 0, __pyx_mstate_global->__pyx_n_u_parse_fragment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[33])); if (unlikely(!__pyx_t_5)) __PYX_ERR(8, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30768,9 +30833,9 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
 */
   __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(8, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_text_2, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(8, 27, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_text, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(8, 27, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(8, 27, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_21extract_html_comment, 0, __pyx_mstate_global->__pyx_n_u_extract_html_comment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[35])); if (unlikely(!__pyx_t_3)) __PYX_ERR(8, 27, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_21extract_html_comment, 0, __pyx_mstate_global->__pyx_n_u_extract_html_comment, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[34])); if (unlikely(!__pyx_t_3)) __PYX_ERR(8, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
@@ -30787,7 +30852,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Return all tags that match the provided name.
  * 
 */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_7tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[36])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_7tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[35])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 292, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
@@ -30809,7 +30874,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_strip, __pyx_mstate_global->__pyx_n_u_bool) < (0)) __PYX_ERR(0, 346, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_skip_empty, __pyx_mstate_global->__pyx_n_u_bool) < (0)) __PYX_ERR(0, 346, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(0, 346, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_9text, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_text, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[37])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_9text, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_text, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[36])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 346, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30817,7 +30882,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[7]);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborHTMLParser, __pyx_mstate_global->__pyx_n_u_text_2, __pyx_t_5) < (0)) __PYX_ERR(0, 346, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborHTMLParser, __pyx_mstate_global->__pyx_n_u_text, __pyx_t_5) < (0)) __PYX_ERR(0, 346, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "d2d/lexbor.pyx":395
@@ -30827,7 +30892,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """A CSS selector.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_11css, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[38])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 395, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_11css, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[37])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30842,7 +30907,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Same as `css` but returns only the first match.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_13css_first, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css_first, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[39])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 417, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_13css_first, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css_first, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[38])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 417, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30858,7 +30923,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Remove specified tags from the node.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_15strip_tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_strip_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[40])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 436, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_15strip_tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_strip_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[39])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 436, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30874,12 +30939,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Select nodes given a CSS selector.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_17select, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_select, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[41])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 487, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_17select, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_select, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[40])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 487, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_mstate_global->__pyx_tuple[4]);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_3d2d_6lexbor_LexborHTMLParser, __pyx_mstate_global->__pyx_n_u_select, __pyx_t_5) < (0)) __PYX_ERR(0, 487, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
@@ -30890,7 +30955,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Return ``True`` if any of the specified CSS selectors match.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_19any_css_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_any_css_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[42])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 508, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_19any_css_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_any_css_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[41])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 508, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30905,7 +30970,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Return ``True`` if any script tag contains the given text.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_21scripts_contain, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_scripts_contain, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[43])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 523, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_21scripts_contain, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_scripts_contain, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[42])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 523, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30920,7 +30985,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Return ``True`` if any script ``src`` contains one of the strings.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_23script_srcs_contain, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_script_srcs_con, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[44])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 540, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_23script_srcs_contain, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_script_srcs_con, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[43])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 540, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30935,7 +31000,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Return ``True`` if the document matches the selector at least once.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_25css_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[45])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 557, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_25css_matches, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_css_matches, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[44])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30950,7 +31015,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Iterates over all text nodes and merges all text nodes that are close to each other.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_27merge_text_nodes, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_merge_text_node, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[46])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 572, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_27merge_text_nodes, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_merge_text_node, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[45])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 572, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30965,7 +31030,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Clone the current document tree.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_29clone, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_clone, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[47])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_29clone, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_clone, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[46])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 620, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30980,7 +31045,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Unwraps specified tags from the HTML tree.
  * 
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_31unwrap_tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_unwrap_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[48])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 660, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_31unwrap_tags, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_unwrap_tags, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[47])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 660, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -30996,7 +31061,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *         """Given an HTML tag name, e.g. `"div"`, create a single empty node for that tag,
  *         e.g. `"<div></div>"`.
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_33create_node, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_create_node, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[49])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 719, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_33create_node, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser_create_node, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[48])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 719, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
@@ -31009,12 +31074,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     raise TypeError, "self._fragment_document,self.document cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_35__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[50])); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 1, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_35__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[49])); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_5) < (0)) __PYX_ERR(3, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_5) < (0)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "(tree fragment)":3
@@ -31023,12 +31088,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self._fragment_document,self.document cannot be converted to a Python object for pickling"
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_37__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser___setstate_cyth, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[51])); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 3, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_16LexborHTMLParser_37__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser___setstate_cyth, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[50])); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_5) < (0)) __PYX_ERR(3, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_5) < (0)) __PYX_ERR(4, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "d2d/lexbor.pyx":776
@@ -31086,12 +31151,12 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
  *     cdef object __pyx_result
  *     __Pyx_CheckUnpickleChecksum(__pyx_checksum, 0xc5dfe7e, 0xad8d8ab, 0xc00154f, b'node, nodes')
 */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_23__pyx_unpickle_LexborSelector, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[52])); if (unlikely(!__pyx_t_5)) __PYX_ERR(3, 4, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3d2d_6lexbor_23__pyx_unpickle_LexborSelector, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector, NULL, __pyx_mstate_global->__pyx_n_u_d2d_lexbor, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[51])); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_5);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector, __pyx_t_5) < (0)) __PYX_ERR(3, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_LexborSelector, __pyx_t_5) < (0)) __PYX_ERR(4, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "d2d/lexbor.pyx":1
@@ -31148,6 +31213,7 @@ __Pyx_RefNannySetupContext("PyInit_lexbor", 0);
 
 static int __Pyx_InitCachedBuiltins(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
+  __pyx_builtin_open = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_open); if (!__pyx_builtin_open) __PYX_ERR(1, 191, __pyx_L1_error)
 
   /* Cached unbound methods */
   __pyx_mstate->__pyx_umethod_PyDict_Type_items.type = (PyObject*)&PyDict_Type;
@@ -31156,7 +31222,11 @@ static int __Pyx_InitCachedBuiltins(__pyx_mstatetype *__pyx_mstate) {
   __pyx_mstate->__pyx_umethod_PyDict_Type_pop.method_name = &__pyx_mstate->__pyx_n_u_pop;
   __pyx_mstate->__pyx_umethod_PyDict_Type_values.type = (PyObject*)&PyDict_Type;
   __pyx_mstate->__pyx_umethod_PyDict_Type_values.method_name = &__pyx_mstate->__pyx_n_u_values;
+  __pyx_mstate->__pyx_umethod_PyUnicode_Type__strip.type = (PyObject*)(&PyUnicode_Type);
+  __pyx_mstate->__pyx_umethod_PyUnicode_Type__strip.method_name = &__pyx_mstate->__pyx_n_u_strip;
   return 0;
+  __pyx_L1_error:;
+  return -1;
 }
 /* #### Code section: cached_constants ### */
 
@@ -31165,6 +31235,17 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
+  /* "d2d/lexbor/node.pxi":191
+ *         # Open output file
+ *         try:
+ *             f = open('test.txt', 'w', encoding='utf-8')             # <<<<<<<<<<<<<<
+ *         except Exception as e:
+ *             raise RuntimeError(f"Failed to open output file: {e}")
+*/
+  __pyx_mstate_global->__pyx_tuple[0] = PyTuple_Pack(2, __pyx_mstate_global->__pyx_kp_u_test_txt, __pyx_mstate_global->__pyx_n_u_w); if (unlikely(!__pyx_mstate_global->__pyx_tuple[0])) __PYX_ERR(1, 191, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[0]);
+  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[0]);
+
   /* "d2d/utils.pxi":6
  * 
  * ParserCls = Union[Type["HTMLParser"], Type["LexborHTMLParser"]]
@@ -31172,9 +31253,9 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
  * FRAGMENT = Literal[
  *     "document",
 */
-  __pyx_mstate_global->__pyx_tuple[0] = PyTuple_Pack(2, __pyx_mstate_global->__pyx_n_u_HTMLParser, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser); if (unlikely(!__pyx_mstate_global->__pyx_tuple[0])) __PYX_ERR(1, 6, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[0]);
-  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[0]);
+  __pyx_mstate_global->__pyx_tuple[1] = PyTuple_Pack(2, __pyx_mstate_global->__pyx_n_u_HTMLParser, __pyx_mstate_global->__pyx_n_u_LexborHTMLParser); if (unlikely(!__pyx_mstate_global->__pyx_tuple[1])) __PYX_ERR(2, 6, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[1]);
+  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[1]);
 
   /* "d2d/utils.pxi":7
  * ParserCls = Union[Type["HTMLParser"], Type["LexborHTMLParser"]]
@@ -31183,9 +31264,9 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
  *     "document",
  *     "fragment",
 */
-  __pyx_mstate_global->__pyx_tuple[1] = PyTuple_Pack(8, __pyx_mstate_global->__pyx_n_u_document, __pyx_mstate_global->__pyx_n_u_fragment, __pyx_mstate_global->__pyx_n_u_head_2, __pyx_mstate_global->__pyx_n_u_body_2, __pyx_mstate_global->__pyx_n_u_head_and_body, __pyx_mstate_global->__pyx_n_u_document_no_head, __pyx_mstate_global->__pyx_n_u_document_no_body, __pyx_mstate_global->__pyx_n_u_document_no_head_no_body); if (unlikely(!__pyx_mstate_global->__pyx_tuple[1])) __PYX_ERR(1, 7, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[1]);
-  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[1]);
+  __pyx_mstate_global->__pyx_tuple[2] = PyTuple_Pack(8, __pyx_mstate_global->__pyx_n_u_document, __pyx_mstate_global->__pyx_n_u_fragment, __pyx_mstate_global->__pyx_n_u_head_2, __pyx_mstate_global->__pyx_n_u_body_2, __pyx_mstate_global->__pyx_n_u_head_and_body, __pyx_mstate_global->__pyx_n_u_document_no_head, __pyx_mstate_global->__pyx_n_u_document_no_body, __pyx_mstate_global->__pyx_n_u_document_no_head_no_body); if (unlikely(!__pyx_mstate_global->__pyx_tuple[2])) __PYX_ERR(2, 7, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[2]);
+  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[2]);
 
   /* "d2d/utils.pxi":19
  * 
@@ -31194,9 +31275,9 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
  *     if isinstance(html, (str, unicode)):
  *         bytes_html = html.encode('UTF-8', errors=decode_errors)
 */
-  __pyx_mstate_global->__pyx_tuple[2] = PyTuple_Pack(1, ((PyObject*)__pyx_mstate_global->__pyx_n_u_ignore)); if (unlikely(!__pyx_mstate_global->__pyx_tuple[2])) __PYX_ERR(1, 19, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[2]);
-  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[2]);
+  __pyx_mstate_global->__pyx_tuple[3] = PyTuple_Pack(1, ((PyObject*)__pyx_mstate_global->__pyx_n_u_ignore)); if (unlikely(!__pyx_mstate_global->__pyx_tuple[3])) __PYX_ERR(2, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[3]);
+  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[3]);
 
   /* "d2d/utils.pxi":38
  * 
@@ -31205,9 +31286,9 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
  *     html: str,
  *     parser_cls: ParserCls,
 */
-  __pyx_mstate_global->__pyx_tuple[3] = PyTuple_Pack(1, Py_None); if (unlikely(!__pyx_mstate_global->__pyx_tuple[3])) __PYX_ERR(1, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[3]);
-  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[3]);
+  __pyx_mstate_global->__pyx_tuple[4] = PyTuple_Pack(1, Py_None); if (unlikely(!__pyx_mstate_global->__pyx_tuple[4])) __PYX_ERR(2, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[4]);
+  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[4]);
 
   /* "d2d/lexbor/attrs.pxi":97
  *             return default
@@ -31216,18 +31297,7 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
  *         """Same as get, but returns empty strings instead of None values for empty attributes."""
  *         try:
 */
-  __pyx_mstate_global->__pyx_tuple[4] = PyTuple_Pack(1, __pyx_mstate_global->__pyx_kp_u__4); if (unlikely(!__pyx_mstate_global->__pyx_tuple[4])) __PYX_ERR(2, 97, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[4]);
-  __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[4]);
-
-  /* "d2d/lexbor/node.pxi":247
- *         return lxbnode
- * 
- *     def traverse_signals_benchmark(self, bool include_text = False, bool skip_empty = False):             # <<<<<<<<<<<<<<
- *         """Pure C traversal benchmark for signals without Python overhead."""
- *         cdef lxb_dom_node_t * root = self.node
-*/
-  __pyx_mstate_global->__pyx_tuple[5] = PyTuple_Pack(2, Py_False, Py_False); if (unlikely(!__pyx_mstate_global->__pyx_tuple[5])) __PYX_ERR(4, 247, __pyx_L1_error)
+  __pyx_mstate_global->__pyx_tuple[5] = PyTuple_Pack(1, __pyx_mstate_global->__pyx_kp_u__4); if (unlikely(!__pyx_mstate_global->__pyx_tuple[5])) __PYX_ERR(3, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[5]);
   __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[5]);
 
@@ -31304,34 +31374,34 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_InitConstants(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   {
-    const struct { const unsigned int length: 11; } index[] = {{1},{34},{27},{30},{56},{28},{30},{32},{22},{25},{17},{40},{21},{31},{31},{384},{46},{745},{33},{739},{25},{39},{44},{38},{39},{4},{179},{16},{23},{642},{24},{20},{64},{80},{5},{584},{3},{1},{0},{2},{1},{1},{1},{8},{13},{5},{8},{20},{19},{14},{24},{19},{23},{13},{7},{8},{53},{6},{30},{2},{5},{5},{23},{9},{7},{24},{89},{97},{61},{14},{5},{6},{9},{8},{10},{10},{16},{25},{34},{36},{20},{22},{21},{21},{23},{17},{35},{37},{23},{29},{22},{28},{16},{34},{36},{32},{22},{28},{20},{26},{28},{33},{36},{32},{23},{27},{21},{21},{28},{10},{28},{30},{39},{37},{14},{32},{34},{40},{32},{36},{18},{28},{7},{19},{8},{6},{9},{20},{15},{12},{4},{5},{25},{15},{11},{17},{18},{4},{9},{21},{10},{4},{10},{10},{4},{6},{10},{10},{8},{17},{18},{5},{15},{11},{5},{3},{10},{7},{28},{11},{10},{3},{9},{11},{11},{12},{11},{10},{6},{13},{9},{4},{7},{12},{8},{5},{13},{17},{7},{8},{16},{16},{24},{8},{7},{6},{6},{20},{1},{8},{14},{10},{4},{5},{10},{8},{5},{15},{15},{9},{8},{9},{8},{3},{9},{17},{11},{12},{5},{8},{8},{8},{4},{13},{4},{8},{7},{1},{6},{8},{12},{10},{13},{8},{11},{12},{12},{5},{4},{8},{3},{4},{6},{6},{7},{8},{5},{16},{13},{10},{15},{3},{8},{4},{7},{4},{4},{9},{5},{10},{13},{10},{14},{10},{3},{3},{11},{16},{11},{12},{14},{12},{11},{10},{29},{14},{12},{7},{5},{2},{9},{10},{17},{13},{6},{6},{4},{19},{15},{6},{10},{8},{9},{4},{4},{9},{12},{10},{12},{19},{4},{10},{9},{5},{5},{6},{3},{7},{6},{5},{10},{10},{11},{11},{3},{11},{6},{4},{8},{4},{17},{17},{13},{12},{5},{26},{4},{6},{15},{15},{7},{11},{6},{12},{3},{5},{6},{0},{94},{83},{35},{108},{69},{33},{197},{2},{11},{19},{31},{12},{215},{103},{201},{135},{1605},{71},{18},{18},{16},{17},{18},{17},{17},{11},{193},{121},{96},{9},{275},{111},{201},{44},{57},{25},{48},{264},{26},{62}};
-    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (5672 bytes) */
-const char* const cstring = "BZh91AY&SY\373\242T\223\000\006G\177\377\377\377\377\377\377\377\377\377\377\377\377\377\377\377\377\377\300@@@@@@@@@@@@\000@\000`\026\337{\327\247-]9[P\3676\324\336w\270\312\207\273\266\271\316\327\274\252\364\367\275\307v\353\246\326\006\253\255\016\252\206\3569v\235\331\256\000=\352\200\000\017\227\300\002PH\202\023MOM1=L\002\033M2hi\232\020e2j\2175OM<D\323h\324\t\355\023\024\365=OQ\275\032\217I\244\375\r\004\324\320J L#A4S4'\251\3454j\217f\242e\017\024\332\232\031\036\246\232h\r=CF\200h\036\243\312h\0002h\320\r\000\323@I\244Sj'\232\246\332M\023\312da\003'\251\352\032i\243 12\000\000\000\000h\000d\000\000\022jB\"\251\376\322L!\246\247\251\251\247\251\243\365OB1\014\010z\231\006\2004`\002b\036\246\214\023\000\206\230i\250\036\243F\204T\310\017SHd\332\t\243F\232\031\006\230!\246\004\302\003\010\003\001\030\002ddd2a\006\214M\006A\"I\246\201\006\204\323CM\032\236\243F\230D\312\237\264\251\355\032MC\365C\324\r\r\032\r\r\000\000\032\006\203F\206\206\201\247\336[\364b\360\354\367\274\372>\373:\207]\275\276]\347\223\320\362\337m\273\240\370\245\027\265\377\255J!\r\261Y\016\013\250v\377\261\367\352K\374}o\363\376\272\301i\376\303\376O\222\177\334\214a\371\006\351V`a\0016\232\026Zye\210\247\226\344\370~6\003\307fp1\304d\tt\300\177\250>T\024\314\020\224\316m'2F\324\022\201P\202\221H\250\201p\023\t\022$Y\222\020!D\262\030\342\211\327\000*\226\016\347\347\004\224s\206\356\325\202\244B*\250\260\213\001H\252\014A\213\021ETQY\036T\231\347\267n[\222\013\001\200\201\367\262\030s,\r\241rg\334h\361\374\010/\336I\235\007\371'\366l\004\317\251%e\326H\2615\366\032\200\227\250!V\303\325m\262\252\"<\357\312\252\373\237\356\312\031\262\207\026\317\016~\001\216p\n\247b\326\357\021\316\220\315\021QI\005R,3\030\021:j$Q\"\240R\205:\226\017;\3246P\026\201.\332Tt+:\321-^\371\244\310\322\341\260a3\210\r\005DU\004\344\355\266\232\200\321\204\222\204\200\234\222\177\004}R\302\376eH\225\357siC\256\202A\rI\230g\022\020\204Yi\356\314\320D#:\332\"\034L\202\302\321+8\342/\230\356P(\t\001\270\346\026Y""\tE\200\306#\030\242\256X!;o*a\\\352\210f\270\026\232(\205\nP\243\303\020\267J\230\027\244\363\264z\367!\251\303\024R\270Pib=\200\266,\311\226\030Z\261capC\367\256'\201M\034\177J\344X\217\2322\331c\203\347\330N\2063+\304X\021\370\025\346\347\250\266\330g5Q\200\271u\032\230\320\306\320\330\027&^\226\022N\002\231\255\203\251\361\220\310u\376k\315\007\031\027\344k|\364\nZ\250i.N\332\002IoH\021\251zO\033\343R\016\241\207\370\317\260R\017\360\237\251N\002\204\377\331\241\253\001I#\220h^\376\177_\t\005\006'\332\374\307d\371k\030\3763\013\226\375q\027\332\364\300j\203\275\224\207\320\261\304\242\\\n1jI\225\243=\2677\332S\353\330ea\026\242M\254\251<\314\202\"\345l\313\360\233\201\020\311-F\372p\3540\344\352;\300\261A7\3143\342\035\225\017\004\035\005Iz\035+\333\024-\211\026\315I+\230\266\322\306\377m\005\261~\230\213\226\264\377\005\231#\251&\305\205\303\025\325G5A\277\225\231{\217j,\177g\033\014,IN\216\"\350\232HU\212\347\256\275\022\302\025ZH\211!\367\335\251\372\037\203\255*\\\261\324nd\355\305\264\351\\\3719f\367E\314e\001l\210\306\216\025K\222\3453T-\262\310e|\331VW$\254\375]\375\035\212\010\233\210\245\3471<Y\366sD\3254-\324\321\2144\323L\t\226I\221D\353\326\036\005\304L\216\360\251H\242\366\224\200\250\232c\371l\n8\247\307\277\200\367F\243\231\237v\207\347\036\206u\374gAu,\262\226?\267\323\263W%0\r\207\020~%\206\362\266\305\306\271\016NK\376o\224=\354l@\271\023\354%\244\322X;\227\023;\315\331\315&c\227\331I\"@\360\331\242(Wq\341\270'\0241\233\021q-\344\317U\245\356\216\365:\t\202\367],\374\352\320\217*Z\2702\336\010.:e\006>\277\3659\367\357\213\002\003\305\272\303\315\335\263\301>ke-}g\351\356\203\261\266\220\332:&VX\221\336\340\275\352\315\225rS\005\351\355<\306\302\204)d&\302\3717|^\013\213\036<\034\203 \321\277\310C\032\256K\337o2n\036\226\3658\367eS=\235WR\271\027u\337\361m\026\021\303\335\363\357<L\341\342-\352\235\333v\363vr\230\354\343\333\364 ]\214\024\301O>\231\237g\354Qm\031\370Z\370\375\230\340\273\263\237JQ\343\370\266l\342\331\3061\232[y\306\256^\342""\216m\207_r\257\215\233\270\t\244\344\317\r\305\264\266\004\007+\022\223\300C\312l/J\211Iq(\307\035Z\306ug\005q\343D\300b\253\n\242+\235[\242v=\016\373\036\000\244\r\tU\024yv\372\204\325\302>)\207\241\201o]J\030\353\035\r\tIr\205$\023Z\246\344\334\356\\\361'\242`\033\004\313\210\215\033\224\226\362\342yU\235\343)q0\010p\350\302\004(a\203\276\013E\321\235\210\222L1cy\360\313\036\020-\205S\204\365\331\352?\000 Z\373.\362\333\357\256&\2114&\023\003o\305\364\345\305j\262RBR\314\361B\370\364\342\035/&\3331zZZ\226\233\355K\2663\327\\E\363\355\362\350.\270\273\206'S\213\035r\374x\370\345\351\371bYW\367\327\264\035\276\327{J\022\227\021#A\347n\344\342<\221\347!\316Bls#C\247.rc\320\327\213R\336\222\211ATUT)`\331s\354\341\245\316B\023\226r\237;\260`nF.bKR\240\026\327\010\302\302\302\237\204NJ\314b\\\"d\026\372\037Psr\271EkN\017S$@\361v\276\220xx\023\207\321\3358!\212\356\344$\233\332\347M^\217h\3509\214\271\020%\242\003:cb_\335\215\313\346\235/\365\025\363\354c\213\215\317\205\315M\277/\027\250\342\364\367\346\3752\372H\036\306|\300s\034\310wM\t\277\272@~\250\243U\025dE\255E{Ivf\3276N\035dV\"\305\261XA\221\204\032\003\225\372\273\336\n{\032|\304\305\023\017{\331\355\264G+\360\320\230\206\203,o\323\344\366g\177C\023\242\344K\213\213m\350\365\255\333\370?F\337s\326g\373\356\254\303N_\003\271\275\023<\314\275\036\237_\253\317\374n\270\232r\376\257iyo\037\313\323L\n\314\023\254\200\225^-\2410\317m)\362\365K\365\335\323\365\262\233z\262\232|>\256\336\375OP\250\037\313\343\027\327b\373|\360\220\244\370iY\240~\235u\034\010'kP\010\200\374^\020\\8*9AY\202\250\325\212\020,\242\230\237\345\265\203[`ct\020\360\366\356\252k\322\301\236\002\027\330e\\\017\243\235Fb\264\256a\025\370\234\244\301\301\346Y\237\232\267\226n\251\340S\226y\2263\"\340\201ff\317\342\246\206\235}\326%\374;\275]<\365\262A \326\023]\325\264@\351\357v\347\004\205%I\222\300\212W\026\210,\343P\231Is\022]\256\325W\357\360\312f\360\321\325\315PU\226\342\354\230\343\364\303\330\274\274{\304I,\353'\344\313\235\266\333LUS""\270_\301\201\301\205|\025\351w6\373` \346\341\3612\342o\245\330g\2249\263\3173nk\247I\226\316<\003\237\315\276\333Jr\353\212A^\227j\313[\007\246\362\317\351\235\304\3678\2617i\256\207$\272\246\330{R\234b_s\t\267^\344\331\305ZR\365\205-c\332/\357\361\356\277\0352\336e\304A~\304\256NM\032 V\234\254\210O\247Sb\026.\364\234\006\266!i\300\340i\273JD\263kF\262\237\353\364,e\\Go|\201`}l\243%\324Q\026A\231\231\335\006\024\333\260|\r!P'\320\013\017z\031\376Z\354Ky\222$QE\026T&\t\025\306,\222E\354\246/&z\264i\204^\204\234\216\036\360\327E4\025\300\304\205\033\234i\244n9x\"\341 64\204\255\341Mi\225\350tKp(\351z\253\206\343{\355\314\327\212\204\323z\264@\317mQZ-\214m\213\0345z\nXH\033\"\240\270\321u\231\245\024xt\364\373>\351\372\353\274\362C}\275\232f\266\223\322IzZ\324\303\257\3653\361j./Vj\211\364&\212\205R\017\344\315\227>\200\311\204dB\034J\237\205;\004\235\361\215\245\217\325\311)\371\201\375fZq|\326\"\255,\374;\341\003\016\224\\u\276#\361\2042A \277\253\251\034\336}\212\355]\t\202\332\255\257\2456K\263\207\206b\322b\010\301E\024\001\353\257\3169\256Y\330\030T\026\2015\203\265\003\002\3719fd)S>WI\341w\207\024S:\2516Y:\355-HHj&\241i\013\006\304q\035K-\0102\221\262\014Ked\223\243\227\252`\346\253\264(IN\267[\tU\333=\346\2363\250\354 \016}\207\232\257`}p\252\276\376\203p@t\314#\303\205\017\315\316 \016\215\325,\300\016\216\253wsv\366|\374\216\376|\327\026\241[^\345\341\254\205\341\001\204\014[\001\274\003\371\233E`\214e\243n\213\001(\342\003\252O\030\035\031\343\013\250\213\214\030+\352\302\202Si^\035\200\005\327kKZ\240\314\257{\226\223t\304*\364\353\255\374\303k\260\250\320\321StbJY\222-\263\256e\300\274\210\341\344\361\354\342(`\364\263\3535\007 \340D'\211\031\344\252?@\016\313\014_3,\265\024M\221d)Gm^\336\371\230\t\034l\247.\311/\201Tm\315l\037D\242\256Tf!!\3409\030D\363\306S\327\326\007X\027\354\236\335\270\266\330j\367\216E\255V\3001\0046\241\316n\335\277\242Io\026]\rr\035\333\221\247\272(\312\2027C\200^\353\325\323lU\000d[e^\240T\250\301\241\2067Qj|\260i,\276\375\303""\223\202QfX\264\262\t\r\364\362D\206\330\335.\311v5\217}k\032Y\332o\265j\334rL\260\252\252\273\372\250\327|\271F1\002\366\231_*\301\234$S6 \243 *\374\327\351\314\251\205\331\032\271\377\330EcW\215\002\223\272D/\327p\325\202\264TVf]7\345qt\237@A\303\220d\227\337\265\031\311u\221\350&Z\344|\303L\001\243R\314\356\t$\3745~Zo\025\223\227\024F9\0268\003\n-\006\213\314\273\357Z\212z\nWB\263\027\225*1\031\033\032cG \303k~\003\\\312\235P\316\373\21732\305\203\246\350\302K\305\307\025q\203\274\333e\\#\371.\031\236\030X\2320D\211\032\344\014\236L\215\320cYs\032hP\"\366e528\357c\202\251\306(\306\302\326]\206\255\001\323Ul\013K\254\262\201\216l3\331c\321\225/\223N\t|\020$\311\372\350\202\266\205GU\257\006K\211xyQ\345\323\313\361\356\027\344\r\347\026Aa\316\243Q\227\201\314\253\2364\327\347\332\363\312\346\225\334\261g=\351v>75\221\231tT\261\364\327\222\236|jnh\345\030\301\263@\305\232A\370\354\304U\007I\025\327|\257R\370fZ\213-.K\025\215\262\000\271\204\306\3303\274\367}NCNv\320\316\256\276j\220x\330\233=~\240\365\223\316\266\335\242\226w\360\"bl\274\212\207%\261B\002\226\301\314\245\223\"ja\206\250\014\325Y\353\367r\230\335^\232\005\374\200\nf\340\273\304\321\343\373\342^t\221\2563K\266\034\233k\326%~\306#\216\276\3269,\257[]\202o8\0244\021~*8\363\301*\254\025\031v\002e8i\254\rmZ\262\212\202]TJ\031\n%'\207\023l\345\274\304\336,\253K\3307\247\2052Y[#\2510\226\231\244\026^\377\027\"!wwo\327\332\032\346wrd\007\247\213eF\003F\323M$7\327\310\034T\340\354i\2432\354\262&\365\010\003Lh\270\024\003\315\261E.6sg\215\3653\247*6fm\210S\223\204B\325\254\340\212\203?\230Od\222\304z\225\177\"4\352zt\251\245\200G36\010\334\270X\301 \2727R\320~@\302&g\2411\312-\250\305s\221!g9\270f\217\027\027g\317\177\321\254\326\2552\2701\325\245\353\222S\304K\211\310\312[1\270P\370\340\210!7\016Q%\026\362+\242\313\032\214RF\010:\354Gd\253C\222\n\231GOVk\213\024\317\242\"\3247\246$\nJpT2I\020\330\352\031\224\272\344\325\256jt3\310\337i\023\230A:\211J\024\2067\025(\2021\232\212\341\033\226\324\3615\226\"\301""\212\016\246d\272\276\375\241X \230\253\0254\270\032\351\205kZ\252\2065\014\3573\324eC\035[2xd\\\204\345TQtE\030\022\204@A\030\034\372\206D\336\336\003\243\273\223\217JE\203\010\013\336s\273,\023%\240\034\311\216\003\322\305\313\355\261/\023*1Z\240U\201\344&\256\207!\003\\\276\311\037\253\241\323\277\343\3367c\254\332`\263\220\221\2341C\004\321\212\301\265X4m\354\231N\341\244\260/Ve\355\355\225&\3059V%Sh\210 B\030\322Q\004\032}\273\202\227*\325\033wq\274\303\361\\\221\216M^S\273&\006\226`\024\266^\263\234\374\255t\341\007\214\363\036\322K\310\230\3332&\302a\257ve\317\232\017;\t\274)\251Z\273\316I\034q\025\344\342\265d\361P\204\224f\026\021\225\345\263\037\001\032'hx\322(\026\205\342^\376\322\240\333\032\371V#6\327\034\200\232\334FA\304\333A\275\333J\002\2105\021\226\021\340\013\017IT\271*\232\245R\356\253\213\255\252\255U\256c<\351\313\010\342\262K;\233\2472\225\225P\245\026Eb\213\0260X\214Y\024@\212B*\310\260\025\210\312\2529\250X\016\200\024\226\234\222H\205R\207\237\225\224\231\324\013\223\243\341n\261q\227\241y\311]\270,/\037A\323\232\205\267\224b\366I \206\205\231*\213\333\n\223\240\272nZU\201\323\221.\273\014\370\255s\306\330\211L\264o\245\230Xi\204\006\343\313\223\006\0133\026>\3205\313\311\257\335iPP\252U\212\023\243F\253\250\346\257\244\347\216p)\003\0335\272\257lP\242\202\001\366\203\264\221\0261K\310B\301\316\255y*\216XY\031YF\332\261c\214\236\342\274\026\252\325\"\n\256\212\260F\234N&\244Y\337\350\337\330\242\276q\312Jk^\3631\275\357\034\243\254c\033*R\243z\233\343_\273\237\215T\273=\324<\311 \200\347\212\370\2008\004F\245\364iBT<\207\017\233@\233:\216n\215=\020\233\271\272j\353\002@-Dv\330\342\320\337\347e{\006AmP\335\244\244\n\266I\262-3Fo\315\214\261q~\032bd\311\255\205\r\2304\307zuw\363\365\211\352\333zjt\370^A\256\032\204\022\030\233M`\353\034\014\2121\217\026!\027#Y\014\243\257\206\021$Q\250\305\025\303\030hE:\262\260|\202\025\321\014\030M@\254Q\320\020(\036\372\220F\237\020\201\235\334w\003\307\210\304\363\2301\313\265H\314\014\022@\231.@9\2312""\014\311\257\035\010\" D\032\203\242B\212\365J!Ar,^)\311H~\367j\254\266\321\r\272\214\225,\3538\364|%\342\356\244\237N\250\0034<\270_0a\310\320\265A\262\274\340\031*,\014V\266r\361M\255PB\313q\006\204\221Y\225%\230\251@\322V\r6\332\317e\320\024\243\026M\036\214\227\202\323\232\260\013K\332\002\271Cf|\223\231\246X\266\006\307\031k\305/B\006\246\330\235\210\265\253\203\022\327\231\322~\263\200\227\0008\013\200pZ\016\374\206\364\032\215c\007W\325p\036\345\302\312G\025\254f\241\022\237ODk\333\307\2709\276}\330X\334%\202\223-\311\315\023\354\304\332\230\007Z\270\226\325\264\332\266\375>\204\203\r9ur\304\360ln\" \304\342E}\006U\202\360\256\210\301\024ql/}\311J\332\035Tix#)$\200%\244]\323+\232B\206-4\330>\021\017f\360_\203%\230&\312\331)\340\311\262V\260\347\320{d\225\263\207x|\270.\200O\000/\3446\363\001\010\326-\007\224\215\312B\347\016s\213\227\344\266\242\301\312\2336m\306\375XJ\313\314\314\357zv^'\203w\341\255\023A\243V\344N\352\240/\356\037\367\034P\367\244b\202\210\035UT\236G\177\325o\356\333\340b\022zC\016\242*\"\212\250\331\352\302\242\207\007/\273\033d\273\"3\224w\220\301\321\2773\377g\021\316:\274B\236\275|\003\003\010Y&;\004\363Z\347\321f\272\224\037\307\354_\"\370B\320,Pa\316\317a\030\025#'\253\377p\354\036l\306\214\224Q\363\360evO_\240Q\305\366(\274CT\242\216\276\365\027\342\307q\341\300\314J\031\031L\335\355\217\340\366\nT\363}0?u%\313d\215`\252\220F<\372\253[\312\022W#\2264\007V;U\223\211\244\334O\321{M\021\033WV%Gg\203\331\343\343o\260\203i\352j\267\t\363\212T\021I^\222e\22215\006tU-\237\026u-,]6\010\016r8\244Pz\366\364\305\214\323\324x\240Z\325O\375)\210\210\230\013Vzl\213\357\325\031\\\265\357\200\375\210\343v4\265O\233\377\006\260\326`\225\305\rG\357\273)\244*\021\025\232\3034g\272J\343\331\310:\376D\252\245s\305\027\014$x\306\324\323\230\320W\226\3325\312\375\317D\0214\213(\356\226E2x\316Y \365UG\203Y\200*\214I\027V\010\252\273\265\353mB\261\"\265_\323?\312H=[\241\242Q\241\014Ig\300\375}b>\340@\252\1775\341\010\033s\023\361\255Xv\030i\030d?]\267x#^""\216\033^\242\312\227Rd\261b\302\327IJB5\343\320\226\273\233C\245\233\021\276\325\201\245\331z\335d\321\252\244\202X\333\322\201%\204\223u\325\306\034wZ(~r\rZ\264\217\327+\037\262\n*UY\027\324oX\204np\225\220\254\032\032\035D\320_gxb\022\r\361\023\373/OF\245X\226-\350\350\256\365\227s;4r\256\342Q6Y3R\212\2555\356j\323)\2335\233\272\246\207PR7HJ/s\306\331\316h=6\025O\300\302<tZ\224\347s<t\365\324b\222.j\227\317\263c\177>\2229M\257\263\214\347\224h)\235\234{E\330S\250R\373V\366\2336\027\n\320\025\025E\300\002\202\177\234\262}\017\302u\272\014eP_\25730t2\357\t\315\247\251A\350v\314\263\371l\007\241\3415\274\035\234\272\013\366\317\371\0245\363\037o{[o\233E9\245]^Kd>\217!\232Q2z7\315\355k\303#\027\177\375\370\034\305\242x\025iy\271\346\032b\241\016\357\210\273\302\350\356\327\343\235\360\3636\025\321:Eo)\367\356\256W_\020\033\362\031:5<8~\373\244\347\304\314\242\371\024z\227\016O\327\025:\\\007\347\317<\372\371\201\371\\\277\00098\246\200\n\026\261!\227P\225\206\335\211\320\223\004\305\331;C\200\014\007\301\363s\343\221<\010:\374\200\230hH#\215\017\241\004\000\345/\245\3260s\030\306\212u\362\177\233\307\200\231\256\007\020\032\\5\005\016\035}\360M)\341\257*\271\200w\010\201\362\017\224>\017\2621\361)\037Ro\232\307i:\307{\024\337M\237nV\326\215N\335\3352\212E)\344z\340\215G\256m\206\003\205l\036\346\327}{\246\010\301\303T\322\302\230\224\222\005\232\010\2014\342Z\205+\203V\2652\207\026f\024\326[K,2\204\207H\252W\224\220\245\205W\314\320!\"\254\247\232&Z\230a@\332C\211~t\307\300\243\177K\036\272\211\301--\207A\362\325N\341\242\272\005\230\221\3172.F\224==\\xJ\320\213q\213\036r\364]\\IR,9\366L\264\265\220\255;\305-\267\373:\373\353\213\3630\003\033\203\214d\2479(k\016\233XBQ\262\366+{\300e\272+;\027uk\016\272w\225W\024Uz\315ji7Y\n\2711\214\034KW\016Vl\255\225\246\320N\033+\006\"\376ig\325\3521l\226\226y\215\236\032\3638\330\214\343\227\237\221Z\363\245\225Jn\267\032\031\335\3633\035\326\266~3\213\002rR\342\233\223&\361fAj[\021\3212G\376.\344\212p\241!\367D\251&";
-    PyObject *data = __Pyx_DecompressString(cstring, 5672, 2);
+    const struct { const unsigned int length: 12; } index[] = {{1},{34},{27},{30},{56},{28},{30},{32},{22},{25},{17},{40},{31},{31},{384},{46},{28},{745},{33},{739},{25},{39},{44},{38},{39},{4},{179},{16},{23},{642},{20},{24},{20},{64},{80},{5},{584},{1},{1},{3},{1},{0},{1},{1},{1},{2},{1},{8},{13},{5},{8},{20},{19},{14},{24},{19},{23},{13},{7},{8},{53},{6},{30},{9},{10},{11},{2},{5},{5},{23},{9},{7},{24},{89},{97},{61},{14},{8},{5},{10},{15},{5},{6},{9},{8},{10},{10},{16},{25},{34},{36},{20},{22},{21},{21},{23},{17},{35},{37},{23},{29},{22},{28},{16},{34},{36},{32},{22},{28},{20},{26},{28},{33},{36},{32},{23},{27},{21},{21},{28},{10},{28},{30},{39},{14},{32},{34},{40},{32},{36},{18},{28},{7},{19},{8},{6},{9},{20},{15},{12},{4},{5},{3},{25},{15},{11},{17},{6},{18},{4},{9},{21},{10},{10},{4},{4},{10},{6},{17},{18},{5},{15},{11},{5},{3},{10},{7},{28},{11},{10},{3},{9},{11},{13},{25},{15},{15},{10},{6},{13},{9},{4},{7},{12},{8},{5},{7},{13},{17},{7},{8},{16},{16},{24},{8},{1},{7},{6},{8},{6},{20},{1},{4},{5},{10},{8},{5},{9},{11},{9},{8},{9},{8},{3},{9},{17},{11},{12},{5},{8},{8},{8},{4},{13},{10},{4},{4},{8},{7},{1},{6},{7},{8},{12},{10},{11},{18},{13},{11},{9},{14},{12},{6},{5},{4},{8},{3},{7},{4},{6},{6},{7},{5},{8},{5},{16},{13},{8},{10},{15},{3},{8},{4},{7},{4},{4},{9},{5},{4},{10},{4},{14},{10},{3},{11},{16},{11},{12},{14},{12},{11},{10},{29},{14},{12},{7},{5},{2},{9},{10},{17},{13},{6},{6},{4},{19},{15},{6},{10},{8},{9},{4},{4},{9},{12},{10},{12},{19},{4},{10},{11},{12},{3},{11},{5},{5},{6},{3},{7},{6},{5},{10},{11},{9},{10},{11},{3},{9},{6},{4},{8},{4},{13},{8},{5},{4},{6},{9},{7},{11},{6},{12},{3},{5},{9},{6},{1},{5},{0},{94},{83},{35},{108},{69},{33},{197},{2},{11},{19},{31},{12},{215},{103},{201},{135},{2321},{71},{18},{18},{16},{17},{18},{17},{17},{11},{193},{121},{96},{9},{275},{111},{44},{57},{25},{48},{264},{26},{62}};
+    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (5900 bytes) */
+const char* const cstring = "BZh91AY&SY8\214\230\274\000\006\225\177\377\377\377\377\377\377\377\377\377\377\377\377\377\377\377\377\376\300@@@@@@@@@@@@\000@\000`\027\334\353\243\341\273i;\214=\255=U\346\367\230\365\335\247W{\336\366\367]v\r\2738\326,\n\252\222I\345V\305w7C\260\260\325U=\342\036\224\000\007\323\000\tB$\310\232&\032h\323$\304\310zh4`L \230\232\003&@5O\322\236\230S\332\006A=S\305=51='\3510\246\202I\010d\310\002$\332iF\236\223\311\221\240\022z\020\323i42hh\000h\003@h\320\003A\220\320\000\r4\002$\3214\247\2424\324\323\365OjC\323)\351\r4\0326Si\232\211\240\364\010\320\304\365\000\320\006@\323\021\220\007\2442\t5$I\352\236S\321\250O\023I\241\351\036\247\250zC\324\310\000\320\000h\000\000\000\000\000hz\230\217$\364\231\001J\t\203S&&\010\304\321\204\323\023M\032\030\004\3010\t\211\200LL\004\304\310h\030\001\032i\240\320$HM\023\010\2152\003I\265\030T\330S\321\246\325=G\221=C#M=@\006\200\000\000\000\000\000\000j\357\26398\033\035\343\233\177\331\346\224\343\342\353\352\232\335\213\227;\031\304\243\262LoE\213\211\nQ\005\2646}\347j\211\273\316\376\267B\323\236\037\334\016\200ta\210\276\367\240gU\355[\013\204\240R\367\"\304\204[\002\346\331\315\334\236\254\214a\200\234\001\204\t\213\257\374\207\372\202\230\002\022\231\276\244\315#j\204\240B\nE\"\304\024A0\264-\264\266\222\344DH\227\022\225\207\376\001^\253&N\256~pX\357\227a3g\250*D\"\250\242\302,\005\221VA\214\030\261\025dPt$\303\014\374\374\232\0302\n\003\005\006O\373<\312i\314\263\202\031\"n0\357\365Z2t\305\223\2459q\345`\021<\313L1\333\"\324\327\342j\002]\360\205c\016\375\327Jq\021\320\373J\177\323\372\262\246y\344\032\270v\233\375\203\3219\273Ao\032M\266v.W)OO!\306\221s\033\033\030\304\206\333Ch\270`f9\230\255J\326\006W\253\316b\245\017\016\334\007x^\027%oueer\277\257\014\354 \301P\220\\4*&\003\200\204\306\333&\235\343\214\374\027\022AF\021k\004\360\002aO\t\205\205\370\262\211\345\0306\316$\036\002\004\221\335wc\0108\260'\027L\tb\031\032\324\334DB\212\211*\221qJ\322\272p\014\013\364=\3048\023\033b\260\306\333\350\033\267\026\333|@D(s,""\361D\357\305\024\t\351@f\237\2273KB\322\321\352\360\267c\030\027\250\306\3607\225\345]uI\020ZUx\364`P\265V\007\343v\230\027\027\254\267\357\322\3060m,\023\033x\230\226\353\364\256E]Q\344\214\253l\036\014\n[m,\316+\310\341*\352o\201-\035M\325@x\270n\r\030\006d\255Nr\363\221a,\033e\021\021\3740\247\237\241;1\266$\240bC\206FW;Q\372\\\273\250\022K\252\220#\003\270k:V\t\2560\332\277`\226\201\177\355\213\2151Q|D&\333$\321\272Rv\354\214\347\355x0\220Pd\372\237\3346\317\217ZGsp\311o\363\240\277\017\323\001\252_\371\244\366\251\306,j\001\nv\214.\335\027\372;{d}\272\0344-\2212\313\264g\210l\021\031+l\277\250\344\010\206Ij9\342\207a\216\2671\336\005\224\023\236\001\315\3209\t\364%\244\246<~\357s\342\212D\213\346\304\232\016jN\307\377]\nF\255\221\033=\313\373\226f\2419>..P\275=\354\017\366i\237\273e\237\332)\326\376\3167\022\222\234\251\0020\211\264\257\0074*c\213Ye]\3559\021$U\215\334\025kV0\241ysG\200\353:\332d\371\365.\252Pkj\204`\347L\032\310\216z\200\314\\\256cVE,\262\274\360\265\327\272\374\325\366\374\376\373\035\316\357\207\231\007\312]\356\211X\t\277V\32544\366\265t,:\251\n\032ZA \321,\311\223j\"(#7P|b\030\030p\245\224c\013LD\031\265I`\315\014\320\004\222D\016\257\304\350\203\310\274\301\306Gsx\333*)\2314\305$C\024P\304\277\276F\246Gfj\266\033\321\362\246\030XF\027'\221(I\304\340\350\335I\214\346Nd\034j\351^r\201\3502\006bigi\025\226\\\373n\"k\207\314\2221/\315\353\360\217\021\021{\320\225\004\2049\001!\020rM31\233\021q5\362(*\347q\337\034\264\231\261t\371\365jY\344F\213&B\270\031oD\027\020\346\207Lp\223\202s&#\225'b\343\301\231\201\240\213\2059KW\262K\330\331\007\023\032\331B\302\324\245.\367A\353\371\276r\016\233V9\263\236\000~\267\307\226-\212\367\336\027\235O7w\177\307q\243\345\302\3102\016v\026>64\244\306$\341\n^\3376\215\310T\223%V.Y\025k9\224\204\r\305\341\347a\340\343\0261\321\351\372\274\306\326vv\227m\017I\261\233\325\303\223x\235\201\227h\225\207\201\262\200\223\324\021\340\230W\322\340>\034\377m\364tU/\272\0133\t\202Vn)\252\364\001\355\336\335\266\355\330D""oK\023c\233\353d\345S\247\235\277\261\034z\363,\327G\257\211\205\370Xb.i)5\020\366\233\013\340Q).\022\213\365*\3263\252\315\345j_\275K\302\372\253\325D\310\326\025w\023GL{K\371\"\2202\222\252(\364\226\341\211\312D\205;\202\323\300\023;]K\242\014*Q\244\t\224\210\226\212\001f\206^!PNi\014w\036\036C\027Ul\262\227\202\220\0248ta\001`,K4\020\216P\016s\262\257M\360\031\225]\030e\217P\n\253\364\375\177\241\216)WY\350\364\344\263=\213\373\330M)\242if*\007\213\343y{\360\301\327Na2p\253\306\346\254?\017%oQ\216\013\351\372\276\257_\016\257\243?c2\353\225\311s5.\246\362\2149\323\226\3426\3773\006\372?\242<Ww$\351tC\323K:\234\304..%\232\306>D\317F\3243\245\300\222\314\315\215}H\372*&\032\250\252\250gK\266\343{\375Q\300G\340\256\002\237\216@07\321\2110':\027\206\252\340\231S\014\034r\304H\230\306\256F\330GH\350\230\3663g\366.\321\003\266\376\340ljZ\375\357\303\2423\275\274E\253\275)\316\347EI\023\262q\030$\034\311\004Iv6k\316F=\346q\206\236\254\360\205\324:8\346=\317_\345\376\317\227\273\177/\255\371P@\341\224P\002\201A\n\351x\032\t\277\263\363\305\212\346\345\030\241:\r\003\006B\225Zi\206*\035\300\2334\025K\322\271\361x\025\263\353\214\r\233\251\347L\366\266\367\326ie\321\333\360<P\253\034L\365\366\352\370\375.]1I\021\021~\221\357\262\326f\r\3766\377\263\033\370\336o\266b\311\014y\224\363\250\"K\226_\227\375L\274\277\224\2313\211\t\352-\334\277\273\334\356'Y\221\034V$\270\353\005\312\201b\333\347\310\023\016\257\310\257\333\263\310\365\246q\366m3\347\307\271\203x\302\351\326\255$\035\034\036\3170\276\273\013\371orB{r\360-\0347wt\016\275L\372\370B\224'\247\266E\336\204\036R%\" \344\245J[\005d\331\033\010\256\325\274v\213{\376\177go0\010\317\307--\357\341\301\317k:9\025h\214\026\315\236g?a\262\237O\221\367\271\241\207)&b\273(\026vp\375\272\356\264\354\356Z\276\327.~>K\032\220K\221P\334G\235Y\331g?\206\230GRT\023\005\201\225qQ\005\214\234UP\223S\023\205\243\352rj\203o\312\337\255\302\270.\320\3071\371G\032k\351j\220\264\231a\217\223n\032\252\304T\266\316\367KH.\222\350%\245\314""\254\334O\330\004\037v?\363\2672\357\237\222\334\001\314\225*Q.\356v5\332P\257&<t\322\312\261*\251Q\273e\354V\035\242\317\347\031\222\337\277\233\257\177>6\227#\311n]\236\353\321\205\304Tk\376\201\350U\007F\371\276e\375Q\353v_\237h\025\026\275G\205c\352\032\030W\336\364yM\205\377W\254Kf\246|\2024\321.\313\254\010\003\215\332\030\213\236\211b\375Y\020\312\251\241\260\371\367\223\\\210\332b\0363\"\177\014\366\210\203\232\217\022\237\320\365\315\017\233i\215\007)\361du|\345\033v(\301\031A\302\315\010\"v\277r\246%\220\253\326\032\253\347T\233\374>\254\313\252\354\251\016L3[B\210^\324Rp\272@\275\370a\301P\204\234\273\342\033\010\246\202\272\0026o\340\247\221\267o+\345'\206kQ9Q7\031R\0033,\302\007\223%\245\261\3458\211\242R\312\304\226\033\326v(\002uWb\014\025\325u<$+ \023v \002C@\030\025x\272tw\017i\272\037O\344?$\246d\262\256u\033\350\022rA{\313Q\351URR\206f\355\345\352J\026\363\005n\374\316d\311\nH.a\232g@\322\243M&\010\341k\327\031\312\305\344)\211#\345k\352Rw\207\354\314W\275j#K=\345\360&\034\310\270\355\275G\230C$\016@\370\272{\210\340\237sK\301\344\336\"\254\245\232w\371U\312o\203\202\222J\210cCcc`\016\373;c\242\343\344\262\340\321@\2663\001U\223\232\006\006\022r\243 %\216\346wZc\243\226\205.\363,\3333\207\271<g\253\356C\333yR\361\372\266L\206N\277M\232\024\213T\n'\254\312\301\316\016 \023I\324\204I\260\241bJF{\310yE\354\262g4\312p\030y.\252\033\310\223cf\342\234\220`\270\200\032\002\265\322\000\027=P\001\240\334Vqi\252\325\266\343\304\336\035<\212\"o\275\2706\304\344\314\007\026\031\036\351\354P\236I\320\250EU|\246\315\202\205\224P\013\232\370\240\363\274H\316\212##\014\024?:\002\202S\344\253\303\260\000\341\225\0133 ).\356\031\023x\204\n\360\356\215\332T1w\220\234\016\010Z\020\320\224\263\244fXL\274\026\304m;\034'\022\333\303\345\367\374\027\231\336,\376\315A\310\341\"\023\322F\354\224\317`\007S\201\354emE\025b\010j#\267\342\236\276\365\206\010G\013-\342\342\345\230{\262\235\215\314\320z\362\213)K\207\210g\014\361\367=\325ed0;\375\000t\001\321\326\246~No\272\233c""\004\327^T\014\340\216ts\234\375\303\240\350\366}\333\326[7\274\371M\035y\324\217\366U\331\0037\216\226\371])\271*\2002/\277W\250\025*0\320\303K\313\014\\j\243\210b\364\343\005\212\206[\332\270\026\241\201=\016\365X\022R\263\256w\310<\222\221\261\216\243\204\253.\323\266`\222I$\232#\014\343\031\204\001\336Rx`p\000\303v\364\t;@I\360f\323\241W,\330\265\231\237\350\"\301\253\306\201I\301M\034x\222tr\032po\024\225ZWB\222\256`\210\020\223\003\313[\300\364\355 \326G\271\345\025\225\3351\365\237\020d\300\014\215\212\346\240=&\226\246\275\244\3155\257\r\350vw\256K\201\225\213a\244\3149*\313\274VUYr\316\016\275(\260\213\223\00322\030.j\265\2415c\232\330\302\366\256\321\343\303\327k\231\t@5uq\336\025ni\265\267\212\2568X?\\\235\005\244Qae3\007Y\223\243J\334\367Q\3174`#S\262\265\212\316(<\311\316\203\210kB\020\n\021\225\300\3275\001\311\354\311\354\300U\265\026\335)6oK\315\323\004\275\330\t2\236\235DX\301U\316\347\203$j\016\240\352:\272\274F\256>\300\274\3035\271\n\364\\\376\262\177\020Cgc\256\324|Y-\307\251#cI.\226\261\254PbxMe\350YZ\367t\355)b8\2060l\334\0322\220\\\315\002\230s\016,\262\307\315?\341\340\245\211\260\234\324\022\201\224\236\001k\005C3&8N\025\333Y\373\3373r\325\245\2643\253\271\3110;LM\236\217\200=\022\232J\276\\\332\255\273\275\351\021@0&n\2048\223\220\021\342p\307\214\237\216)\225\352\376\027\006\215\016^\033\246gm{/\no\000\327\004\303/\2152\205=\250\263\232\024\234\314\225\230\366Nj\306=\362\354\266\223;\316\025\225\3065\332&\346+\033x\016\354\224K\237T\211\322\321U\231\257\025\221\245\230s\356\332\005L\225\253\262\231\n\374\022\241\220\302\235\263\224\345T\271\357\035y\332\032u\333\204\246U\276\226h\326\317\003\307\230J\t\005\226\267\245z\034\276\007o\261\330\247l4\254\257\255\230\265\347\327f\227\253\002,\203\271\350.\256m*R\215\262K\2155&\034\274W\005W3\245\267\246\366\356\032\347\267))\236Zpgm\210T\220\350\344\215:\203$H4u\t\353\222Z\007\274\254j{\344k\241\246\212SQ\002\323Q\265a>}\2078U\266{\351pU\2308\340\303i\342\204\314\035\202{T\317\036,\315\335l""\335\311\256\376\347\212\345aFq\226{\\\224/\005\254\213\313h7\n\036\230\"\010M\303\224IE\274K\\]kQ\235$`\202eQ\333\225\210r\003\316e\035r\270\252\231\357\"\320\223o~$\nJ\220Le\244)cp\3140\214\301\304hj\340`a|(o\270\253TlP\265t\250\"\314\n+D\242\342\354\0356\261_\026\014\211\202\030\227\013\274\331\242s\231\"\202\260U\334p5\315\n\326\267g\014j\037t\354\352\241\235\r\323n\031\375\256|\324#\231UW5b`\243!h\222+\001\00521l\2244Z-\332\201\321\341\337\322\221Q\242\002\367\240\356\345\005\tn\203\241A\240\331I\302\355\260\223\252J\2105@\253\003\323x\226\336WX@\336K\362D\335\332\036\274=,\214SQQb9#\020\311\014\t\221\222\2332\272\300r!\311\301\001om\r\0044`n\253{\272'*\321\212r\230\224\333DA\002\020\306%\020E\216\377\027 [Eb\253n\355y\021\2630\215\030\351\3500\274\332\312^\014\274\272g|\3444\327\232\rG9\326g\230mLm\231\010\2602\\9A\322\301\265\251^\212+\260p<\271\303:\272NK\032\2119\021s:\373\024o)\"\025\nG\230\202\240e\200g\024]\334h\224F>\017\013B\326\035RB\361.\263\206\300\260\2033 :3\200\341\373l\340\300HR\252I!\231UL\325\02511W\322\342\253\352\316\236S\177J\312\250R\213\"\261E\213\030,F,\212 E!\025H\260\025\202%W\002\320\260\033\000\206ImJE$\251\277\235Nf\320Z\371}K\267\205\250\274K\240\226n0\210o8\360\254\215\252\366\027y\351\003\231\013\004\235\225TC\323D\\sZ)\006\314\222\347\264\313r3\007\307\301\214\206\244\235\330\262P&\320\201\314z\222\235\007(QF\217 Jo\200\3438\375\242\231\240\030hZ!\205\370H\223\236\023\223\365\247Bs\006Xi\257$\347\350\305J\250 \037\302\007q\"-b\227\234B\301\322|\030\3169!b\313\025d\313g'9\343\307{x\225\006\347W\022ha\262eX\327-\363:]?\003a\2151\2068#\236~Z\363\367A\200\357l\255\2154\332\033\217\343^\276\237\027l\222\355z\323;\322B\010T4&\007]\212\245\272\370V\372\207z\020\307\212\215\324\266\307\037\027\213g\026\356zEg\t@n.1\230\031\316\023d\363\212\370\356\256\017\n\307\260\326\306O\263\237B\014\004,\251\213\0233\231^\313j\344u\215\245Y\360\314\2225\177'REw\220\322\003\365\355\007h\355\035\002\350\027l.\335\313\222\302\023\337Q[\340=\025\252""\3639K7\205Q\250\025\321V\001\260\031\026\347\202\373\356\366l`h\301A\004\202C+\206\024\036\241e\022'\201H&\330:Qr\021%42\244A\352\322\374\327+uw\330o\317\226\304P\240\241y \211\276\323,\300\r\305\271,\032F\353\200)\017\032n\312\204\354\202\"\004A\274\035\251\n,\334\224B\214\315\242\323\246\222\223^G\027+\013\256\020\335\017\026S\242\334[\207>ioN\243th\335f\327\205\263\350\207\226W\324\032\003N\3750\000\327tB\213k\033\266\324\313W\016\023\260\264y\202H\254\274\003\002\t\306\210IZ4\333j\334\304\302\265b\335\264\027\213\253)\200T\271\240!00\23404~(2g\\b\227\201\003\004\031\204\333b\227\245@\314\223f\321\257\254\351B\351\016\223\244]!\272\177\274Wi\006\3628\006\014\237\310p\270\371\354z\355c5\020\373t\352\273f\310p\006\357?\216qfrS\007\261*Z\352\273x\033\201\200'\322\257S\342\\\\]\316\263jA\216Zp\340\2250ln\" sF\256S\025\202\345\016\\\226\313m`\274\267\231\320a\355\007\271s\334\227\223\003u\372\230_z\361\030\034\367\262^j6\022\020\004\270\005\354\350Y@64\202M+\315f\036\326\372\217\246!\362\363\202\365$o\205/\202\254\235\231\362\202\254\255\021\253\204\361\311,\324\207\200{\254W8'\210\027\030\205\366\006(\016Bh\234\245\234``\027\363a\231\0147\021E9\353?*\207\177\341\323t\016W\375\037\253\003_X\232\347\317a\200\377\001\267\2523jF((\201\270\252\223\221\2706\257\321\016d'\025\222|\243\r\261\025#\n\263C\020\345h^\365\034\213ZKQ\261o^\034\036>\220l\363lK\034~X\315\332\346\211\013\230Y\347 ?\003\266\367\227\033\222\303\225\224=,\361\301\003\220\034{\331\347gd\030\025#\023\325]\342\r\223\325\224\320\020\231~\316)\375s\347\304(\341x\324X~\003\251\346#\227\352\252~\254l\271\376\346b\021\206\373\261\234\247\213\277\317\3428\305+z\366\236GR\030\230\214\247\356@\215\355\324[\034!]-F\210g<z\270\355\330N;=\204\370\252\270{Yb4\026\375\376\237\343\217\266?KOQ\227\367?\020\303\002)_\367\331\035\255>\210\260\235\260\310\304y\000\216\301\345)\376\320\210\220\301\223\305\354\370\300\271=uvM_\375\316CUH\005\002\337;K]\310\255\365\325G\232\337V\214/\355\007\274\324\326\326?\006\301\254\267:""\177S\201F\363i\242\2719\374\347\243\3363[v\233j=\353\315\321\033H\323~\347\251-\251\244pA\361~\227\262\364\033\2569_+r\341\271r\275l\370\343\267\330b\375\226RP\020\242;\001\200t\354\0024\371=\242\323\0165E\321U\325dW@\342\007+\001\375\364\254u\213Kf\332\326\365\026\216\255\231#,\035\204s\376\262\017\203\026\377Q\036\340\320?\253n\034iv\222y\343\260\300X\030\264\343\364\375\033\267|\220\203\204{\206!\265\tmK\253\032%\225W\017D\266\247\213\353\001\022\265\006\211\321GW\242|\353B\275\336C\375\320,\0326\253\365\253WV,\202\243\330\335gU\332M\006+\271\204Q\005r6\2033\273,\016p\331h{\352\327\267\270\016J\247MEJ\353\3626\354\026c1\000\037\023s\303]\267\036\235TM\265J\274u\374\002\350\036\030\305\202\030\316c\354\2054\250\330,8\244\256{x\236f\321\244\320\272\2120\342\236i\231\265\213\236\364\317V\313>~\003\023j\267\226\242R\201\2740\325\220:q\266\273H\314\305!\316\362\323\230%\"\227\252\233\265\231J\215\346\035\266F\022\3169Uv\333fcW q\326\346\0355\245U\260+\234>\204\372\tY\252\267\031\323F+\016\251\274\275*\355\337/\337c|\200E\352\230\326w\233\354\266\254\212\320T+K\255\347\331R\007Y\363\367\353l\330J\326\037\2409\365q\353\2532\2537\366\360\"\357\2140\213L\244\302\256\325>\023\253G\274\235\352\265\321\037\267O\272\177UZ\243{\034\352\317\202\2453\005\026\227\220R\222\277D\267I\266S\330\265\020\254V\022\254j\264\312Fu\037$\321\250\377\332O\350\244\302\376\305\017ZQ\242\232\371\356\034\341`8wwN\036\362\320M\215\334\307\001\230x\213\365y\327\350z\262\203\244\213/\317\277C\331\231ov\177N\203\271\224'\344\320\361\364F\302\313\253\354\313:\033\247s\200\243S7\201\260\363v5\374\033I\257\035\231^\323T}\333\022\367\005N.\211\305\3149A\271\221h3\371\035\360\271\364\246i\340\212Q\213\203*\307\347&\342)\367\242\301\332\030\273,\002@\023\010\362\004\275\242T\232\226\020\200\001a\241\032\364\233Pz\354\"\027\016\246\265\221\006{g\365- \031\"\232\336NaO\335\257\245\356\352\365\373\036\266m\027B\232\034_r\217h\362!\300%\377xx\034\014}\303\215?\224\3101\217 t;I0\366\334\317\243\263#P\313H)""\272\333\241\311/\037\017J\"9\355\212;\344,\207L\216\221#\007\r9\253ic4\224@\226\202 M8\226\241J\350j\356Y\341\234TC\002\025\341\356f\346V]\202L$M+\312HR\302\272w\371dHc\027\205?Pb\232\330f\201\271\016\033\352\303\371\313\311+\034J&\322\345\265:v\243m\334\253\310U$0\262\031\374\251\022\312\177GCO+\013\242\233\031v\026\372C7\"8\240\334\303\261\227\035\346\033\031\211d\305\370&_\2176\375\002\231\t;\277\016\3003\262\020jl\260N{\007\215'v\226P\010\257\314h\325\376\322\367\244\341\206\024p\364o\223\245\324\323\0268v\272k\324\3348\337v\005\025\340\327\276\206\223\271d*\351\254a\304\265t\246.\026\007C\034\346\2232k\271\301?\311\365\325\355\312\343\2327\373\027\324\327\005\262\215\207}\312\371\022\244Am9\254\275\341\306%\220E\255\221\3214G\377\027rE8P\2208\214\230\274";
+    PyObject *data = __Pyx_DecompressString(cstring, 5900, 2);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (5686 bytes) */
-const char* const cstring = "x\332\255Y\313_\333\306\366\207\326\351\205\304I \220\206\244$\225y\3048\005\247$\204\264\004\350u\201&\2717!\230G\323\246I\025a\311\240\",[\222y\264\351\357f\311RK/\275\364\322K/\275\364r\226Z\372O\340O\370}\317\214\374\002\223\366\366\226O\"\215\216f\316\234\367\371\216<\033KI\332ABK;\272\231\222\234m\305\221\364\224\252'\024G\263%\315\262L+\272\240\244\302\216\224\2604\320$EJi\373\222j&\262\273Z\312iy\245\031\032\321\244\244iI\216\262%\205\305[=\245;\212\241\377\212\265\206a\202\261i\331R\3222w%C;\3304-yW\3335\255C\331\326\234lz,\032\215F\032\353t\261pamMJ+\226\255\325\2049\361\316\306\326\t\307l\363v\361\305s)a\032\364\032\372\371\357\271\024uym\237\3127h\307N\274x\262\376\374Y\013A\333M;\207\234,)\266\270'-e\213XF\027\314\254\241J)\323\221\314\264\226\222\222\272\241\315HK\007i\260\325T\330\320v,=\2655.mf\035i\024\3260\263)\265\376\032/%\2300\233\322\023\246\252\215K[&MZ:p,%\341\300E\032\024Li\026\364J9do3)))!@\302\334\345.\020\374\243\347\317K\370\213Y[\366\014\037\321\237\243\03583\322\252\262\337\262b\034<\023FV\305*\276\303\333\267\263\241\211\211\267o\301Y\305\303\304\304<\306\273\212\265\243Y\266\317v\025\376\262RM\234\327\261\256&\300\246\251\036J\373\272\263-\331Y\004\021\324#\316\373\333:\302*\255$4.a:\255\2515f\212nkM\274\276W\214\254\266D\3417#=M\372J\247a-\335\346fU\244}\3150&\020j\273\260X\263&>\303\245\003e7m4\263\234\237\237G\244s#\312\333\316\256!\373\013\306\206HUi\033\374L\t\212\016E\352K\302\234\030\346\317\337)p\242*9fsx\231\233\277\300g<\342\271\014\213~^D\037\353{\360{\315-\224\r)e\027\276\324\242[Q\351\355\220\252\357\r\275\035o\344\224\r\353\030\265\220J\301\353\"\211(\033\261v\274.\220\277|\026\353\347g\357\322u\350\255\2570\375\255(\026vq\340\243:i\242\376\327\210\000H3C\016\250S\350o\031+)\224\310\3244\003\212\n\361\232\370\373.?\311\274\376\374\214'\3642\344oe\255\355\033\207>7\265^&H\315h\2035\017\200\023\234\353\217k\"#\r\345\200\307D\013w?<jl\023J\212\002dS\253m\330$\177-(NY\247%HD\245\221\346|u\310\203+\2344\326b\370H\313\"TE""\231;n\256V\251\304\366\23486\204\240O\235\261\"\nk\313\024\035\215\260\243\331\34162E\023\266-'u\313F\320R\010E\242\nr(\245\312\211m\335P\307j\034#\355\226R\3107v\230\245\307\371\331mMQ\241\217\270Q\316\316\013\rI\000\320\375\233PZ\274\276\313\0276\204{\332\232\225{\310\213\326||\212p\344\315\304\334\203Q\321\002x\005\342\336\267yu\331\325\254-\032\266\276\341\261\257X\360\242a\242\330\"\0325%\261-\231p\265\325\344\321\365ml\215\177Y[Kf\r\2215\304\304Ot\252\371\365\271\033\340\243;(B\310\314C3\013\007\210|\346\245\250\236\250MBIC\252\202\274Dn\016q\256\177*\222Zl\357X\232\366\201@J\303\322\216e\246\266\346\377\005c\213\221\271\235\232\275\233\246w\213\246\306Gm\303M\204\032\361o\n\2120f\206#\247$\210fS\373\226\222\226I\273\261\237\206\304FCo\332L$-\307TMK\317\255[Y\224+[C\364P\307\236\033\222\206\306\205\245\370\253\306\332\241\177I\020\031\225O\033\222\206\245\365V\343Ki\313T\263\t\356iA\226D\371\337\324\022J\226\374\272\315[\201Im\007Eg\037\235\324\002\034\330\243\264=\251o\224;E&\031y\230\333c\177\227\0065\005\376|\245[6S\215|\235=\351_)\261\215\373\\\370$\275\271&Hc\010,Mz8\371u\344\324\264\223\212\372s\037<\274wz.\327\210\273\326\2375u\177\372\364\254\246\010\360\247MO\177\031!-\226MG\023\331\266p\350l\303e\310&U3\364M\236\266\250\333\264\001p\toG)ieieb\352\253)\236$\226F\335\317F\213\337L\030\212mS\222'\201it\303\321\201%\017\323\232\035\245\362\334\234li\314k^\340P6\002\372\361H\010\363\332\255P\344\310X\216\304\013K\252n\021x\333\3435\340;\305\260\265\350\013\016V\025\343'\241\334\233xV\263\016\245\335\254\315\313~\r]EWy !\340\264\204\236\324i{\322\236#O\332L\364\237\377\276w\332h\236\206ns\334u\262\211>\363\351|\032\344\025\261\334\010e\250\222\265lRf\006\020\3114\306a\352\244\2225\034\241Y\013\257\227\260\214F5\023|\340\020\315\341\000\032\025\314\226x\271\027\205\362o+I\037h\tv\002!\346P?\360\007T\220\236p\274\264oZ\206\032j\333\"N$'YdN\372)L\214\303\343\350q\316\241\241\361\001gJ\243\203\3354\335\364$y\202F)S\333\335\324T1\344T;\374\346t\3167R`\214.m""\252B\333\346\327\350w\177\250\313_,\014\353>\356k\002%\034\342\325\351:E\211\211\003Ij\213\320s#Ty7\252#^>G\241\216\204X\000\023TU\324T\033\363\306FUi\363\020\3555\302;a\022\345%kiv\255!\333\331t\332\264\010um\036\362\240\027G.iSI\354\0007D\245\025CSP\206\251\024?\247pr\352\2576\326\277\233\370j\203\227\r\373\314\034\022M\223,\334\260\320K\323\332\261Ea'\025\025\333?P\210\022D\307\010\ruF\025\207\037\340\027C\027\225A\251g\025\355\361\277d\346\177\225\222\"\265d\001\275EV\376Q\032\212\271'\244\374{\020\201\"m[ZrnhH\304\344\354]e^\232\325\347yh\316\336\325\347Cm\321\000\367\000\005lk\247\017\353\341\361\260\022~s\326\344\023Y\361'\362\341\257&\002\326\317\207\347\303\321o\024UEK\243R\346 i\021\001\232=.\361\235'|\274\250\336S\357\212(\275Ks\354h\372@o\242\361\252\335B\212\246\017\017\232&\210\303;\001\277\326\205YG7N\220\242QN\255o\321x\320me\323\320&T3A]\254\366\265\203\262jy\343\3313I\343\207\273$5E\262!\207-\034f\253@\275\026\365+\343PK\021\213v\007N\277\001\337{\030\331J\360r\313\353\021\277\274\343\246x\307\251c\337\2044+\202S\021g\244\242\360k\273\366\374k\373\016\035Wq\033\213\336\371&\202;\216\254\270B\355dT\256}\200\220k\"\217sz]\201\246\303\221\231BP;\265\324[\021\275\277\351<\233\326\023;\004}9\003\202\230\265\257\"\266\340)\216\025b\\\177\365\2277\340\210\350/,\236\025\275\3366\263VB\233\237 \310\264\370b=\366\354\231\274\264\274\360b\361\351\362\343\357Vc\217\237/-\2577r\355\351\343\345\027\253K\013\261\265%\221\205\261z(\236|\216\3122\254n\311r\233\027\226F\300VNp\321\332\316\000\252\261\035\202{g\316\331\322\234S4\356\346S\324\035\355\3604\321n\267~\217\276\234\370s\027\326\326\374\223\263u\212p\226\n\255S\316\320\241eRRO\251\247\311J\352P\336U\234\304v\033a\242\355\227\020U\234dN\226\307Sx\366\014\341[f\234!{\323\034\222\221B\273E\316f\270\216\306\254}\010\304\237~g\333\355h\355\265\212~h\357\223g\200\323\300\237\343&\331\266\022\266L\237\002\025=u\306\234\017\274\347\246\377\300\231\342\324\253\366DH\371\241#G\343\273Pct\226\013\375wg8\217\277\365""\253\203(\252\216)\353)\010\234\345E\277i\253(*/\246\331\232l\353[8-\330\362\246\226Jl\323GL1\25155\376(/\3768)ZB\277\336\337d\002w\250!tzj3\217;\330w\217}\362\375\237\340Q\017\270:\245\225#\325/\305x\036\373A&\327\310O\227W6\326\345\265\247\257\226j\207(\341-q]\200\221\344\225\303\003\374_\304\231O^\006\253U-y\342\353\233\274\036{,\257\277\220\227c\317\227\326\321\0367R\304\350,\235O\344XSY8\245\276b\037\246\022\272\t\377Z&zq\nS\300\261\316\265=\373z\345\243\316\271i\032\252\254jig\233\217\340\245\304\016!\272\315l2\251Y\342*\247\035\213Cf\036?\t%\255$t\347P\226\371\211TFI\245\nL\217\020\000\241%S\003\327\010\025\363j\300/j\275\277\372\217\224\241\374CU\302\260\033?7\240\337\247u\214?\020\256M\265\304\037\"_`\256z\315h2\035\216\216\026\365v\305pjC\002\213\2651\n\001@LT`\033\260\003Kq\225\371\31786=\354\246!#}\035\361\217\235\315\340W\226U\362\271\270\251\246\334\220\007\017\274\3337\340\005\351/\327\215P\273C\r\231\274\320\374LH\346\344sc\336.\327\334\377t\213\354\244\007.l;\334\224\244\237Q\350\330T\273\313\334\215\365\247\204\337?Rj\243\221\320\210R i\240\014%M2\223\376\253&B\244\361\310\343\204\224\243\257\016ZM\313d\3260\270\351e9\231MA_\304\006u\\sk\213j\263\3230\007\255\222\033\241\303\207\242B\310[\010\345\364\266bs\205\351N\006\340wh\306\307d\020\005\362\362\tD$\225\241\022\277[\232\216\342e\342\226\2227\r3\261#~\246\021\215\201\377\014$L\244S\215\367\263\006c\356P\334k\022\362_\340\022Bm\177\314u\346`C@\034q\005\316 \250\201\355\267\234m\203kJW@,\031a\010!D0\236lN k\340\3073\010\177\273\246\23254>\262L\031\373[:\237c\203\013wU\355\252\355\323\345\300!&\364\237\263\344\034\315\224q(\\\210\320#\033\357\302\262\272\352? \205[#R\240Q$\255\2356q\344\305fi\213\276\374ib \316\3132?P\247\017)l|\tpv\220Q\002t\222\225\217\267\265\304\216\235\335\025O8I#I\304\330\367'\r\205\273i\224Mq \252\235\350\000\342\345\236C\300\2358g\262\212!\366\313d5\262\005\335\016-\255\3769\250\336s\344S\335\247N\320\016d_ \213\037\275,\323t\332`\200\023-_tx\273^\301\353P\275v'\370\2153""\206Z\377P\312\373\233o\036\214\374J\321\324\365\3446\035\220\240\250\275\003\320\300#\217\217\270\033\035\305\0223\351\222\265Q\370\360\217\242[|U\344@\243\2016\3707!\336F\304\210g\255\030rX\2139\364c\211\2062Nk1\324UZ'\313\264\201\314\243Gt\024*'\226\210\367f\002\017\372\226\236S\177\300\004g\3332\367\317F\rtp\026_%\263)\025yA\375\201\357\320x\344\374\263\251\235\224\271\237j\302?\331\264\n\023d\211\251o8\250\3035\022h]\347\207\302\203M\231\276\033\313\016\035\177lG\2723.\361\352\344D:\352\023j%\023\223\356D:(\355\033\277\251\312\2243\035\265\354od'\013|\311\276\\,\277`ko\330\233\237\253]7r!\257+x\364\304]\314uz\301\201\\ \267\224\357\315\217\346\367\n\257\212\277\225oW@\274|\364k\256?\267\221\037\316\307\275\236\253\356\313\\,\027\2475O]\334.\037eX\340\263\334\344\261\324\321\335s\344\270\223^\327\205\243I/\330\347\316\203\317\355B\247\230\322\201)^\340\037\357\177u{\335p\356jN\361\272\256\272\353\271k\371\316\374\365B\270\330\353u\367\271\223\356w$\314U7^\355\272t\244\273\03160S\032*-\226;\313W\313\212\027\270|d\273!\227\2639t?r1\365\322\321/\271Nv\3755{\3753\373Y\366\002\027\216f\261*0\305\246\236T.\263\227\nS6\217?\351\350\276\370\347\325\273\346f|\235\246\212\261\343{\035\335\301\243)\274\357\313\305\274`\217{\316}\315\225\272X\214\263\300\203b\3748\332\321=Y\354\024{<\206h\301\033\271\341\334\313|,\037\257\006\257\263\353_\026;\213\275\305\221\242^\372OE\251b\247\337\360\032\273|\352\232\371x\036\224\253\354\352$\224\357\271\235W\013!\257\007\243\317s\031\257\207l\021\243\371\373n\"\007\342\235B\210}1_R\232V\2220\033\271\020\373\354\253Rg\251\227/\361\372'\nq\026\215\261\230\314\344\267\354\255\301\214\335j\377X\241\223Ef\331\354+\366\352'\366\323\026\333\332\366\202\267\363\n\013\317\224B\357c\357;\275\300x!V\370\2768\311:\256\347z\217{:\316\005\331\205A\370\370\373<H\375n\354\370\022'\301\201\271\205\\&\377\217|\246\320U\014\226\226\312\275\357cp\024\273\024\202M\300\352\370\216\260V\306\013^q\357\210 \271pt\377H9\332sW\335\006\265\332\005\263T\273>u\325""\\\230VV\311\343p;\273J\202\304\013j1R\372\246\002\362\205\243G\\\375 \351\326\325\313z\241\236\027\034\312\217\344\025/x\321\013RH\301F\031\267\223\346>t\207\301\246\256\032mwW\260\017\036-\271W]\205]\203K\213\230r3\267\236\207\305\206\330\320?\021Z\203\0258\244\267\212\351\341\\/\305\337P>\304\206\247\213\n\217\003\2505\333\244\026\347\350A\366\004\017\335\336j\327\025v\345^1D\301\201P\202%|\211  EE\360\350+\367\276\253\370K\331\320\267\345Py\262\332\325\307\372 g\265\353:\002/\236\373\245\320\211m\316\327b\255\227\314B+\"\260x\214\014\245\345\036\346Cy\330\300\017\251\376\342\217%\263\362\206\275\332d\233\032\323\222,\271E\026\370\206\007W\223\336,\010?R\246\376\233\242\232\247%\254\034\206\003\003\205g\245@\351qy\322\033Ch\274d/)\177\252\355\337\306Y\374\007\366\303\217^\327\025w\304U\\\007V\257\261\254\355\300\035W\263\227\324q\351\262\027\274\305n\301\206\020\213\"\347~Ni\222\353\232\373\037(\177\361\022\262\205\335 C\367\364\272\237\347;\275\236a6\314\243\2714RJU\276\255(\336\265\001a\304Y\327\3165y\224\226\216\346\343\354\366\014\233\371w\005\366\274\225K\025blb\276\244\226C51\260p4\377\244\360\2708Y\204\204\334\334#\371E\252G#\371\330q\177Gw(\337]\270Q\2042\021\026\231)\205\313\275\236(\206\237\347l\262\366qWG\367\3479\254\222\362\210\257\341<\266\301\236|D\274#\304\t\306\342\027\"\334\242x\277\225S\220.\335\003n\026\221\376\272\320KV\277w\264F\361\300\343\213\335@\272\027a\203n\257\367\ne\263\306m\323\177\223\335\344\301\tFW\007`\331\201\317rS\271\337\013\013\205\21478\234\237\3026\2037\253\370'\321\303^a\255\330\351\215L\262\311\347\210\335\261\331R\314\033C1\362\306\"\325\221p\376\267\3420\215\247\331\364\263J\254\362\232\375H\211\357\215\315\225\342\245\335\312d\005s\277(<\202\321\307aj\342\367\240\360q\341A\361\343\342Tq\257\264V\006\337QO\n\347\235\302du\360\363\\6\277\200\275\245PC\n!\241\223\233\316\367\345c\336@\230\205\277f_\323N\253\354\005\nN\206e,o\000\216\374g\371\\y\003Y\014M\346\370\016\201\342\223\322\267%\245:HF\033\224\362\347\362\033""\205Pa\322\203\010\263\205\014\004\270_L\224\372K\257+\275\225\341\312\032[Ye\253\337\263\357\021\341\t\226@\204\353L\007\3734K\277c\357~?\356\350\370\277\316\330G\270\305>Z\244\333\342GK\037y#wa\256\221Q\222\333\201\273$!\362\310\303b\246\364qi\266\234\251\234\253\254\263\370\2527\022-(\205_\021f!o\344\013H@\353\240\326\350W\1770\021sBS\010\247\205\342\273\362dy\2512\300\342kl\355GX\230\336\204\363\nR\347|1T\234.\335*g\310\210\031Ng\267)\353g+Y\266N\332T%T\363\302L1\016\0374\315yT\232,=\303\306?\260\rj[\236t\273A{\305^R\232\267\320\220\375;l\307h\241\311\354\265\311\314t\273y\264\313H~\016f\206\276w\330\0354\223\322\273\312\003\266B\251\335F\244\033\267P\377\357#i\006Pt\013\333E\245H\324\353\203\271G(\276\203\221Boa\0344\330\201B\265N\213\"{I\367&\032\273\003I\330,\"\265y=\213,\225\343\236\204\230\367$\252\352R\210\274\366[a\230\306w\013\277\263Y\270\037\306\025\215L\241\245\267\331h\0149:\210\002\310\031\213X\344\034\023\364\004\245\374r\216\3021Hi6Q\312\224;\005\337\220'\241F\325\307\244\223Q\n\221\257\275fZ\252\024+\375\\\231l\246\261\3507\245\014\373'\212\340j-\364)\236\2417\2172\022\341\20678\312F\221\206%\322\361\246\004\372t\241\257\000\325\220\225\305mX:#\314\377\250\240x#\350\026\210\241g\3104\004h\023e\031\245\253\205\302\246\270\215|\322\375\"\217\277(\233xZ\351\365F\220\274\250\000\200\016#\2435\336\tz\272\307\356=\251tV\006\331\006\222\347\2457\3625\242w\002\021\335)JC\010\205\201|Y\n\226c^+\345\022 V\013\205}\205\2358s6\374\200\307\006^g\252c\024Y\013\010\236\311\312\022\213o`\243\352\030\311;\203\002\243xc\224\203'\236\253cB\370\3104\025&\244\2437F\rZ\024.>\3424\352\004t\251\325\235,\312\237\203d\352\303\264z\005\242z\362 \3771\232\341\340\315\206\013z\373\t\375P\353\372\2700\013]\316\225\326\021*\375\250\306\271_\021\226!\257\237\260\302\211g\261n\312\265\0001\372Q\371s\263y\2730\312K\301\305>\002\232\2007\227\010\232\364\001\027y\227?E\033\347l\272\317\327\220\316\236\273F\250\222\303\223\313\300\276\017r\347\320\3165x\377F\361Q)Y~\\y\004'\240\027""\335\020\330\370\001\033\000\032+\0007\035\337:E\031\257S\"\374y\314\177\006d\005hjY\302\333m\023\333\\\220\020\347\373\230\220b\232#\210O\363\231\032\341\353\\\214\005\026\313\261\343\340_\200\030\242\372\022ll\202\0300\003\033\344h\014\370\260ZC\003@hh\216\350\261\301\342b\351\037%\224^\264\206\027\225C\016\036\352\000\215c\342S,8\002\310\367\347_\025,\274\255ql\340\n\026xVy\212X#\230\364Y\313\221\245\017.\374\2150!j}\3602?\201\364p\024\226\305\373Or*\340:\245+\220=\220Kn\021}'\236\337*\254\026l\3121\232G\207\212\351\334\025x\266\375\341f\205\255\360\032\037l:H\234\330\364/lU;h\020\000?\177\364\205\033g\035\203\334 \034\201\363\340\212\323\201f\306\215#\360\002=\254'\304\217\036\301b\254\312\317Q}.wo\306\r`\320\240\020\330\275\201\335\377\225W\376\327\327m\347\342\234F\200\366\177x)\236\037\003\340d\252\364\340]\354\005<\3270\3759\352x\363\303\373N\200\260s\227\216\326\335k\224\005^ H\207,\234\022\307\301\027B\357\035\275t\227\010B\0236EL\300\246\204.\t\234\\+\234\003J\n\024\037\227\036\242\256b.Y\233]\276\213\2122\t\342\243\362V\005X\256\205\242\260\300\034\233\243\262IHo\235\300\033\000\037\301\300\313G\232@\361\034\257{\300\274O\362\374x\366;ND\265b\337#bb8\277\316\"T\"cXy\221\322s\216\227+\021\024Ts\256x\375\327\334\337Q\340\234\302t\261\017\035\220\203=\352}\353lr\001\310\"F\375\255\037\201?8^xR$>W\tP.\360\252X_t\235\252\021\331\020\033?\310}L\365\355\252\277\013\013p\314\332M\031N\220\335O\014R\241\207\312\030\257X\227{\370\375}g5\2003'\223\276,^\200\021v\010\367\004\350\360>\300\013%,\367\316}H\t\207\274e\223\337\226\243l\205\307%6\241\243*mB\212g\220\025>G\326q\215]CU\243\265\016\316\034\342\224\216\022\032\270 \016\226k\310\364k\250z\003\305\317\250g\"\003\316_\240\234E\036\204\274s\237\324\327]\346\225*T\275\020\364\002\227\2166\335.:\353?(\256\0263\325\000\305M\323\245\353\250\0331\322-Ng\027\216\036\270\235\210\347\005R\234\362\354\"\242\003\332\363\263d\233g*l_#\203\273Q\177\340\335\213U\376\201!\340>\345\347D\036\242\335dH5\027\341\210\262A\321\341""\375V\212\230\003\364\334B\013\371O\027\217~lz\342\316\341\343\252\2504_\024\346J\235\307C\265\252~\036\025\371a!B'\363\317s\007\200eR\307\271.\004\375\232\373\021\235\244\331\315\231\322\355\362'\345\315\n\377\306\222\245\257'\271{tl\027\226\304\345\216\033s\343\377\017k?D\210";
-    PyObject *data = __Pyx_DecompressString(cstring, 5686, 1);
+    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (5926 bytes) */
+const char* const cstring = "x\332\325YK{\323F\367OZ\323&\301@\022\240\004\032@6\001;41\004\002\201\020\322\327\220@i\271\205\004\322r\251\220m\331QQ,G\222s\351\345yYf\251\245\227Zj\351\245\227^z9K-\375\021\370\010\377\337\231\221o\211\241}\333n\376y@\032\215\316\234\231s\316\357\334\344\271d^R\267\323j\301\326\214\274d\257)\266\244\3453ZZ\261UKRM\3230\023w\225|\314\226\322\246\2129I\221\362\352\226\2241\322\305u5ow\274Ru\225\346\244\254aJ\266\222\223b\342\255\226\327lE\327~\305Z]7\300\3300-)k\032\353\222\256n\247\014S^W\327\rsG\266T\273X\210'\022\211\361\326:M,\274\273\274,\025\024\323R\033\207\331\363\316\302\326i\333\350\362v\341\311#)m\350\364\032\362\005\357\371)\232\347\265\202Y\276A7v\342\305w+\217\036vL\250\353\005{\207OK\212%\356YS\311\021\313\304\342v\001\034\324\014\324e\331\246\226\317MH\251\242-\235\207\340F1\237i\276\306K\t\332*\346\265\264\221Q'\244\234AD\213\333\266\251\244mXC\205,y\325\204\010y\233Tkd%%/\366J\033\353\\\333\202\177b`@\302_\322\314Y\263|D\177\266\272m\317J\317\224\255\216\025\023\340\231\326\213\031\254\342;\274};\027\231\234|\373\026\2343x\230\234\234\307x]1\337\251\246\025\260}\006\323\230\3716\316+X\3278@\312\310\354H[\232\275&YE\340\005\342\021\347\2555\r\010*(i\225\237\260PP3\rf\212f\251m\274^(zQ]$\244\315J\017\262\201\320\005hK\263\244<\364\241H[\252\256O\002U\353\320X\273$\001\303\305me\275\240\267\263\234\237\237\007\250\271\022\3455{]\227\203\005\361(\211*\255\201\237!A\320\350xsI\214O\306\370\363=E\323\261\225m\264#\311H\375\002\233qp\3633,\004.\220hQ\033\0055/\031E\233\016\237\305\344\254t_\333\304T\303d\344\024ye\035vV\023\271\204\3646\232\3216\243o'Z\256eAsz\003Yy B\370\0229%\326N4\017\033,\237\303\372\371\271Kt\215\276\r\224A\177O\025\023\273\330\260_sj\262\371\327B\007N3K\306i\316\320\337c\254$\230\221\031\210\002b\211\343\265\361\017\340\260\227y\363\371!\367\353\3078\177'kuK\337\t\270e\232\321\202\304L\264Xsp\354\341\334|\\\026\216\251+\333\034/\035\334\003\3504\330\246\225<\201'\24566l;\177\0030\373\264\323\001 \021p\244\333\2018d\301\247|*\336""\241\370\361\216E\010\21627\334\355F\300\022\333\363\311x\024\016\221\377\310\212\004\264-\023:Z\220$\352X\2273%\322\226%g5\323\002\240\tB\343\t\005\376\225\317\310\3515M\317\304\033\034\307\273-%wh\3550G\217\363sk\252\222\201<\342F\376</$\244\003`>\270\t\241\305\353K|a\353p\017:=v\023>\323\351\253\017\000G\236S\214M(\025\231\200G'n}\213G\236u\325\314\321\260\363\r\307\276b\302\212\272\201\230\0134\252JzM2`j\263\315\242+k\330\032\377\212\226\232-\352\302k\210I\020\004(\3647i\237\203\217f#@\3013w\214\"\014 \274\227\207\251\246\243\266\035J\212f\024\370%|3\312\271\376%$u\350\3366U\365\023@*@\323\266i\344s\363\337C\331bd\254\345\347.\025\350\335\202\241\362QW\270\t\250\021\3776P\304@\031\033\337w\202D1\277e*\005\231\244\213\277\212\212\215\242o\272\020\222\224\361\214\252\026n\257\230E\204+K\005z(q\337\216J\321\t\241)\376\252\2656\372\275\204##*\252Q\351\234\264\322\251|\251`\032\231b\232[ZLK\"5\244\324\264R$\273\256\3614aPJB\320\331BB5Q\025l\222\333\356\2257\301\215\"\323\0319\314\255\370\277%AC\200\277\036\351\036\033\371\226\277\316\355\265\257\224^\303\375vl\357|{L\220\342\000\226*\315L\335\034\337G\266W\320\200\366\332\314\225\375\264\\\"n\332\200j\372\352\365\375Tm\010\010\310\256_\277<NR<6lUx\333\335\035{\r&\2037eT]Kq\267E\334\246\rP\263\360t\224\227\236.>\235\234\2761\315\235\304T)3ZH\377\251\264\256X\0269y\026\365\216\246\333\032J\312\235\202j%(<\267;[\001t\355\013l\362FT\200\034\t1\036\273\025B\216\214\345p\274\230\224\321L\252\3416y\014\270\247\350\226\232x\302kVE\177%\204{\263TT\315\035i\275h\361\260\337\250\274\022\3178\220\00085\255e5\332\236\244\347\005(m&\362\317\377\236;-$O]\263xM\2667\211>\014\3469\031\316+\260\334\2022D)\232\026\t3\213\362\311\320'\240\352\254R\324m!Y\007\257UhF\245\230\t>0\210j\363:\032\021\314\222x\270\027\201\362_\013I\237H\tV\032\020\263)\037\004\003\nH\337\361Zj\3130\365L\244k\212\330\343\234\244\221\333\322\253\0301\216M \307\331;\272\312\007\234)\215\266\327\013t\323\262d\t\032\345\ru=\245f\304\220\317Z\2617\373}\276\345\002q""\272t\211\n]\223_+\337\375\251,\17730,\223\214\000\211\222~\307\323_V7\266V\202Z\260\255P\341e_s^#\344\030\350U\3629\252\266[\360\345\031\252Y!s\032\205\262\024\360\001&\210\264\210\263\026\350\342\3473Rj\007)w\234g\307,BN\321T\255F\222\266\212\205\202aR%\226\332\341\216 \2721)\205S\242\226HHOuUAh\246\360\374\210 f7_=_\2717y\3439\017%\326G\375J$R\322zKk\253\206\371\316\022\301\236DT\254\240\001\021a\211\332\016\025\261'#\232%\3244\272&\242\205\322\3644\332\343\237x\353\377\344\246\302\335dQ\216\013O\3753\327\024\264{N\371\357T\t\212\264f\252\331\333\321\250\300\351\334%e^\232\323\3469\\\347.i\363\221\256\025\002\267\000\201\2703\373\307\264\330DL\211\275\371\030\361\036O\371\013>\362w\235#\361-8\314\337\232\035\210\315\307\224L\006\231\216\"\234\r_\006\010TkB\342\233O\006ed\346J\346\222\000\352%\242\261\022\205m\255m\216\007\363\216\251Dag\273\215@\264\366T\017v.,\332\232\276g*\221\340\263\315-Z\017\232\245\244tu2c\244)\2715\276\205\220c=~\376\360\241\244\362\236/K\271\222\324\310\253\031^}gP\014\233\224\306\364\0355O,\272\365\250A^\27623\236E\323?i\241\367\024\003\n\"|\264\245j\2715;\227\3461\232\0071~\371\235+\352w>\033\3776\242\232\343h\245\3706\031d\013u\335\232\177m]\244\376\027\267x\342\342\267\343\270\243\007\306\025J\311&\344\306\307\013\271!\320\004\237o\212\327\326Q\031y\240\336n\370\346SQ0\2645\310\005-\375\216\352e\316\200\352\322\306\027\025K\360\024\275\210\0307_\375\355\rx\031\3657\026\317\211\002\3012\212fZ\235\007\326\354\204\275mOR\275E\377'\321\303\344\362|\224Qa8^\217\024\355\354\344\215\205'+\311\207\017\345\305\307w\237,<x|\377\336\263\344\375G\213\217WZ.\373\340\376\343'\317\026\357&\227\027\2053'\233p\336\373\234\220e\330\306\224\345./L\225jf9\315\005\350J\201\202\tY\305\376\004MN\265\367\315q0\354\233}\247\356\354\237\264\272\255\337\244\0176\001\355\335\345\345\240)7\367M|L\204N\222\217\310\320A\224\325\362\231\375\323J~G^W\354\364Z\227\303$\272/\241Y\321$\355\215\262\373J\345\217\034\276\203\342#go\243\2413\222\003t\234\263\275\023@~W?""\325\037\354\177gY\335\346\272K\225\370\324\336{\333\213\375=\005/\311d\313L[2}\201T\264\374Gh>\361\236\253\376\023\355\312\276W\335'q\312Ou3\255ON\255\321\307L\030\274\373\210\361\370\333 \206\210\300l\033\262\226\307\201\213<q\004[u\242\376\317 \377\347x\357@u3\375\311T\376!<P\317\325\205\216\333.\320\274\265\367\375_\340\321\304Rs\246\223#\205&E\177\224\374Q&\255\313\017\036?}\276\"/?x\271\330h\275\204!\304\365\256n\311\362\323\235m\374_@\247(?\006\253gjv\3177;y%y_^y\"?N>Z\\A\366|\236\347\214\354\217\212\275\307\203\332\234~\237\006\304W0\305\332\311\2475\00364\r\344\354<\010\301\267\311\273\373&\315\350\226B\315\313\017bQ6\245\222\217\327\320\034\ti\244A\212\325\274i\225\021\032)\222\322#6\001DdJ\346*\025\311\334\253\371%\323\314\246\301#y\032\377\226\225\326\255\326\017\023\310\375\005\r\343O\300\256-&\004C\340\036\212i\372~\233\222\320]\232\224\311\271\034\215\2074*\267N\216\215\027\206N_\370\032\217\246\261E\217(y\022\242\022\242\354\227Q\305U\346?\tY\364\260^\200\024\364\211%\350]\333\253eY\316\020\004\304\r\365RAWv2\206\334:8\036x\021\320\252:HQrS[\215;\344\225\311\020\355\317T\340\354}n\321\255s\025\251\301w`5O\247\346W\215\254M\207\357Vue\203\314\220\317\264R\004\215\310\003\262:\002\014U^r\243\030\223E\tFg\247\017\024jC\210lQ\327\271\td9[\314C\034`\2042\250\221\313Q\254\265[\322\322*\271\005!>\024aA\316\001\266\2055\305\342\362\320\235\344\343w\234\227\217I^\030H\020\340\201@\254\344\250;\340$$\226\256\346\371\335T5\0241\006ny\016\000B)\225\204\342' \021\375\371OL\234{\033:\332\201\"\247t#\375N\326(\312\007>\205qC\026\014\371\017|i\014\204;r7\301S1\217\243\221s\004\357\251\356\020\325\216\270\242\344\300?:+\025\037\270\345\3545\235\353\212\256\364[\210\261Et\353pnY`{o\316\302\264\212\276\232;\244\274\016#S'\312GE]%\275\256\233\206\214\363\230\032\247\265r2\377\306\336\274\252[t\331\266\211\031\375\347\2549\347<\334\325\310\353;\002\013\364\323N'`E\r\013\347\267\nFA\226\013&}aT\305@\364\3402o\322\013;\024@\202\375\320\214\310i\245\240\321\311\370xMM\277""\263\212\353\342\t\3359\374H\214\0030\320P`\205F\305<\257]\325=9C\274\334\344\206%\316\033EE\027\373m\024U\222\234n;\246\332\374\354\324\314R\362\276|\325\234P\267\345\340@&o\347L\303\260\273\024\004{\362\277H\367V3\3467\253\373\306\235*v\264%\231\346\007Y\236\021\003\365`\024\004\223\266<)w\311\231T\227Z\357PA\360h\303G\353\360#-\303\207V1E\235,\035\223\276\271\310\031\265`\257ah\n.t)Z\2007\376\021\370\304\227M^\221\264\312\022\336n\311|}ch\n\005g\024\254\347#\n\223\240\310\321/7<K\320@\313\320rY\246GYn4\023M\375\360\007\342\265\2068K\247\024\0378\233\256R\314\277\313\033[\371\266\322\246X\300\216j\021\320k\250\001\0058\257\301\371\205$\020\025\371\326\226\t\277\322x\013\271\235\222\351\343\263lS;d\331\322\305\t\211\202\227l\217\3674\t\032\261\022D\027\307{\310\275[?\332\312\004\375\036L\211p\336t8\026\272\314./T\237\260\3457\354\315\317\365\276S\245\210\337\027\336\375\316Y(\365\372\341\221R\250\264\350\016\271\347\335M\357e\371\267\352\205\032&\217\354\376Z:Vz\356\236s\227\374\301\343\316j)YZ\2425\017\034\334\216\354n\260\320\327\245\251\017RO\377\340\256\355L\371}\007w\247\374\360Qg\036|.x\275\202\244\007$~\350\313\367\277:CN\254t\274\244\370}\307\235\225\322\t\267\327=\351\305\312C~\377Qg\312\271G\2079\356,\325\373\016\357j\316\006\033\231\255D+\013\325\336\352\361\252\342\207\216\354ZN\304\341lv\234\317\034\220\036\336\375\245\324\313N\276f\257\177f?\313~\350\340\356\034V\205\246\331\364w\265#lUaJ\352\303\027=\375\207\376\272x'\234\215@\246\351r\362\303\225\236\376\360\3564\336\037-%\375\360\240s\300y\315\205:T^b\241k\345\245\017\211\236\376\251r\257\330\343>\216\026>U:WZu\223\356R=|\222\235\274\\\356-\017\225\307\312Z\345\2775\245\216\235~\303k\354\362\225c\270K.f\216\263\343S\020~\360\202\233\361\"\376 FgK\033\376 \351\"I\364[N\272\204\311\213^\204}3_Q\332V\322a\236\227\"\354\353\033\225\336\312\020_\342\037\233\364\226X\"\311\2222\223\337\262\267:\323\327\353\307\342^/\033\237cs/\331\313W\354U\216\345\326\374\360\005Wa\261\331J\344}\362}\257\037\232\360""\222\336\213\362\024\3539Y\032\3720\330s \314\016\216\302\306/\\L\035s\222\037\016\363)\030\260t\267\264\341~\351nx}\345pe\261:\364>\tC\261\303\021\350\004\254>\\\024\332\332\360\303\303\316E\001\222\203\273Ww\225\335M\347\231\323\232\255\367A-\365\276\257\234L)F+\353dq\230\235\035\247\203,y\231\362x\345\333\032\246\017\356\336\342\342\207I\266\276!6\004\361\374p\324\035s\025?|\310\017\023\244\240\243\r\247\227hg\234s`\323\024\215\266\273$\330\207w\027\235\343\216\302N\300\244e\220\234.\255\270\320X\224E\377\003h\215\326`\220\241:\310c\245!\302_\324\215\260s\327\313\n\307\001\304\232k\023\213s\364q\3664\207\356P\275o\230\r_)G\010\034\200\0224\021\234\010\007$T\204wo8W\035%X\312\242w\252\221\352T\275\357(;\212s\326\373N\002xK\245_\274^l3\320\300\332\020\251\205V\214C\343IR\224Z\232q#.t\020@\352X\371\247\212Q{\303^\246XJej\226es\244\201o9\270\332\344fa\330\221<\365\007B5wKh9\006\003\206\274\207\225P\345~u\312\217\003\032\253l\225\374\247\336\375\355\022[\372\221\375\370\223\3377\354\2149\212cC\353\r\226\215\035\270\341\032\372\222z\016\037\361\303g\330\031\350\020\307\"\344\\-)m\347:\341\374\027\302\037:\014oa\247H\321\203C\316Y\267\327\037<\307\316q4W\306*\371\332\235\232\342\237\030\021J\234s\254R\233Ei\351yw\211]\230e\263?\324\240\3173\245\274\227d\223\363\225L5\022\034\243\3367\346.P\364\031s\223\037Fz\372\245\322\006\251\370\014\241\222\237\231\034\255O\302\266}\t\017\266>G\372\305\2056\214B\377\004\003\032\307\335\215\017}=\210N\023%\245Tt\223\244\006\202\361s\302\301\260s\336\331(\035 \236\303\31670\245J\\\206\235I\342\rdD9\021\033\036\343\353\3703\361<\006\367\276\343\374B{\037\206{l8\007a\351;\2455Wq\177/O\021\274\224\017\303=\375\003\204\252\220\223D\3209\356j\036\017L\177P \032\246\303\260\263\267+K\025h\270\237\260{\2364TG\024\230\206]\216\235f\2479\326\261\331\361\021g\253\224\206@#$\341\010\324\346\217\000{\376I\311\375\334\275\005g\213\370#Q7\346\r!\376\200d\306\213xS\376\251\210{\324\375\301\263\312\261\312\321\312\303Z\250\226$\"\020\200\253?r\221Hq""\001\367\223\243\245\351\322\246\273\014E\217\302z\367\252\n\273\217(\363\332\037\215\"\310Z \224.\260\013\311\352\020\205\332\332\220/\305Y\034q\254\262Y]BD\227\316\271\323 :\357\331\345\353\330(\351\217\305\334m\354\032-/T\276\000\325VU\255\335b/~b?\275\364\343\343\376\304|%\rN\347\253f\355\024[\026\361\354u}\202\342\342\370T\371h\371N9S\271\000\217>Q;P{\305~\344\347\370\3642)\346\332\336T\207\226\316\262\263W\330\225E\234/\305\276K\263\364\032[\323\374\221\257K\327\240\256)\177\224\026\314\224#\260\322\350\331\3226\322\310r\371s<H\227\274\355\362\006\030E\246\312\007+S\320\331g\265(\264\006\to#V&+\313\325\317\341Nc\227\274\rv9Y=]\323\331K\312N,\225\0264\003\225H\345*\235\223\323\224\217T\376\250}\317^P\212\246\304\306I\210\357\335\212\005\204\0136\377\251\036\"1E\254W\004\315\201\362R9-TIl\006*\223\325b\355>[^a+\317\005Eoc\203\215\366gv\031\221\251sb\241\232\254K\204\231\261\333\225\325j\262\272T\037\273^\316\021\344 &\000B\352\340H\202r\3769\006\"\335l?\303\236=g\317_\370\361o\274\353\260o\322\237\230)oT\372Q\r\244j\003\354\031\341\002\326\334o\374U\266\202\220\366\343\237\255kZ\377\344\270w\260<U~X\375\254\032\255&I\240\333^\030\376\263\\\371\274\302m\276\301\3427+\247\253zk-\247\031\000\020\256B\337C\234\306;R\376\243\372}-\207\023\263\027\253\365\021JO\243\327\312\253\260\376R}4\341\345`\033\005\261\244\3453uh\010q\335}\202\315\177\250lT\303\010z)\366\224G[\342\210\243\235\226J[n\332;\205}r\000Q/\351k\306;\207h;\366\2157\345=\252\234\201\201\223\365\346\303\257l\351\231/Mz\257\021E/\0209^\370\221\270\3679n\022\035\362P\371\r/{@\363\n\261\3668y\301\377k\232Y\230\351K\356\026x\375\006\211\277\373+6\211p\331\316\272.\305X\354\373Z\204\375@\036\004\214\272\252w\025\231`\354\"\273H\356\237\255%Q\031\214M\260\tJ\332\327kC5\216Q\033Djy\272\274\r\276\321\352B\355\213\232R\333b/\000x\004\013\312\304m\250\273\n\273>\002\"\277$\212U\177\342&\035\035\310V\352\301\260\010\264\305AEa\n&\234\366\270\311\307\376I \275\2010\222\252\206\252\367j\021\362\037\370\001\242\003""\216\226\241\303S\270\352\365\343\323\345\305\312pe\266\272\312E\214\323\306\177\000\245\2578g\362\025\177\354|\313;\000\301?\274$\2058\204\214\204\267VV\304$\017 spY\350\345\2427QV\260\216\364\213\342a\240\032\257\321\211\221\3206\002\327\352\003\363\263\004l\342\003\006C\307\220\252\376p\357\272HW\024@h\356\370Wu\356W!\357;\234\220\242\330(\331k\264\231k\346\\\323\033\306i\177C\264\234C<\037\256\335`\313\3606\036$\211\266>\022a\021^C\210\0053\274\252\027\316G\207W\370\366ur.\177t\334\033\342\274\3753\347\341\215\007\003\027\013\327\026\330\323%\n\357\026\234s\3163Q\237K\027\275\250wGx0\311x\305{\346m\225S\354\306\003(l\224\202\340(6m\344\303\035\010\260\300.?\252-\241\204\021|\330\271\231\262\2118!E\334\257\240\022\300\2174*\036\200k\264\022\365 \307\\\303\313io\023\310E8=\215|T\262\335\251\372\261\023N\221\252o\177\344dK]\207\006\251!bGc\320\312\020\025Q_\241\030\371\234\212\306\306\003\035\351\320\341\335\027\316\024\n\242\303Tf\037E\215\357\037A\201Al\246\374\376\201F\325\276\351,S\207\304K\355#\350\343\256QY\203z\346:b\317\255J\266z\2372\361*\312\273S\242\317\273\306F\320Yx\350\001>\234\33173\321\234\031\347\317\361\340\031\355\027\032\200\216%\274tlc[\nS\367\364>)Nq\235W\303\320Rc\342f)\311BHM\037\302\177\243\\\016<\024-P[\271\0145\260Q\336Y\240\327\2517*[t\033\310}\250 \303\310G_\"Y\216\335d7\237\324vx!\334l6x\177\267\217\005\257f\335c\356K\216\235\006\307V\215\314B\017k\017\220%\250\036\375\272\243\375\246\362\3557\352o\000\317\360\021\336M\017\362\216\242\210\367_\2242h=)(\242KE\025^Zp\017\240\027\314\001\213\026\257H\302\242A\276^\032\206e\2737\352O\331S\312`\244\275C\037\331\364ol\325h\232\251\231\034\330\375\306Yb=\243\\!\274\233\344\340Z\242\346|\326Y\002\360B\203l0\302\333h\344\330:\377&p\324\341\346\335\240j\327o\315P\343v\n\273\177\357*\377\364uWZT\365\324\234\375\203\227\342\371>9d\235\036\374CCh5U\220?\202K\266?\274\357E\352?pxw\3059A^\340\207\302\364\301\300\271W\232\000_\034zsw\325Y\244v\220\372\007`\002:\245N\311.]wOx\007\020\267C\345\373\225""\031\2442\320\222\266\331\221K\210\366S\230\274U\315\325\320Tw\314(,\204\326\006\275\0019\006um\001\236\350\320\203\344\375\334\321\217\014\362\373\373\336z\010\335\020\223.\243\306\274U}G%D\210\276\337\214\360\256\000\033\376\356\314\020N\001w6u\247\232\240\370\010sN\261\020o\242\372\005\206\020n\032\034Y\317\tv\002\301\200\326\332h;\305\207\032D\236\320A\361ma\031\016r\002\301b\244\3745\225G\000\316\300A\202:\340\023\361\017|\321\\w\204;x\244~0\354\207\016\357\246\234>\372\334s\255\374\254\274Q\017\221\272\333.}\273\375Pm\277h\320\017\356^sz\001\203\273$8\301\363\020\224\n\351\371\347\204.\317\024\017n\002\370\375p[\270\361\241:\377\306\024r\036\360O\005\334\262\375\244\310Li\034\231v\243mFC|\356\234\0214\310\235\035s\221\340\351\320\356OmO\3348|\\\027\016\372\215w\033\211$\332\010\206\003\010d3\3368}\234\241vc\003\315\365\201>`e\331\371\214\272Pvz\026U\336\027(k\371g\266\"}@+]\241/7B\223\270\\D\377\270\364\177g'P}";
+    PyObject *data = __Pyx_DecompressString(cstring, 5926, 1);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #else /* compression: none (12757 bytes) */
-const char* const bytes = "<An exception that indicates error.Can't create a new documentCan't create element for tag 'Can't initalize allocators from lexbor_memory_setup(...)Can't initialize CSS parser.Can't initialize CSS selector.Can't initialize DOM collection.Can't locate elements.Can't parse CSS selector.Can't parse HTML.Can't parse empty HTML as HTML fragment.Could not open file: Expected a string, but %s foundExpected str or unicode, got %sExtract the inner content of an HTML comment string.\n\n    Args:\n        text: Raw HTML comment, including the ``<!--`` and ``-->`` markers.\n\n    Returns:\n        The comment body with surrounding whitespace stripped.\n\n    Raises:\n        ValueError: If the input is not a well-formed HTML comment.\n\n    Examples:\n        >>> extract_html_comment(\"<!-- hello -->\")\n        'hello'\n    Failed to initialize object for HTML Document.Given an HTML tag name, e.g. `\"div\"`, create a single empty node for that tag,\n        e.g. `\"<div></div>\"`.\n\n        Parameters\n        ----------\n        tag : str\n            Name of the tag to create.\n\n        Returns\n        -------\n        LexborNode\n            Newly created element node.\n        Raises\n        ------\n        SelectolaxError\n            If the element cannot be created.\n\n        Examples\n        --------\n        >>> parser = LexborHTMLParser(\"<div></div>\")\n        >>> new_node = parser.create_node(\"span\")\n        >>> new_node.tag_name\n        'span'\n        >>> parser.css_first(\"div\").append_child(new_node)\n        >>> parser.html\n        '<html><head></head><body><div><span></span></div></body></html>'\n        Input is not a valid HTML commentIterates over all text nodes and merges all text nodes that are close to each other.\n\n        This is useful for text extraction.\n        Use it when you need to strip HTML tags and merge \"dangling\" text.\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser(\"<div><p><strong>J</strong>""ohn</p><p>Doe</p></div>\")\n        >>> node = tree.css_first('div')\n        >>> tree.unwrap_tags([\"strong\"])\n        >>> tree.text(deep=True, separator=\" \", strip=True)\n        \"J ohn Doe\" # Text extraction produces an extra space because the strong tag was removed.\n        >>> node.merge_text_nodes()\n        >>> tree.text(deep=True, separator=\" \", strip=True)\n        \"John Doe\"\n\n        Returns\n        -------\n        None\n        <LexborHTMLParser chars='LexborHTMLParser.create_node (line 719)LexborHTMLParser.merge_text_nodes (line 572)LexborHTMLParser.strip_tags (line 436)LexborHTMLParser.unwrap_tags (line 660)NoneNote that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Optional[Parser]Query must be a string.Remove specified tags from the node.\n\n        Parameters\n        ----------\n        tags : list of str\n            List of tags to remove.\n        recursive : bool, default False\n            Whenever to delete all its child nodes\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser('<html><head></head><body><script></script><div>Hello world!</div></body></html>')\n        >>> tags = ['head', 'style', 'script', 'xmp', 'iframe', 'noembed', 'noframes']\n        >>> tree.strip_tags(tags)\n        >>> tree.html\n        '<html><body><div>Hello world!</div></body></html>'\n\n        Returns\n        -------\n        None\n        Tag name cannot be emptyTag name is too longThe specified HTML input is too large to be processed (%d bytes)This features is not supported by the lexbor backend. Please use Modest backend.UTF-8Unwraps specified tags from the HTML tree.\n\n        Works the same as the ``unwrap`` method, but applied to a list of tags.\n\n        Parameters\n        ----------\n        tags : list\n            List of tags to remove.\n        delete_empty : bool\n            Whenever to"" delete empty tags.\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser(\"<div><a href=\"\">Hello</a> <i>world</i>!</div>\")\n        >>> tree.body.unwrap_tags(['i','a'])\n        >>> tree.body.html\n        '<body><div>Hello world!</div></body>'\n\n        Returns\n        -------\n        None\n        ></>'>'.?add_note attributes, <body-commentd2d/lexbor/attrs.pxid2d/lexbor/node.pxid2d/lexbor.pyxd2d/lexbor/selection.pxid2d/lexbor/util.pxid2d/lexbor/../utils.pxid2d/utils.pxidisable-doctypedocument is NULL even after html was parsed correctlyenableextract_html_comment (line 27)gc<head<html<html|<body|<head(?!er)isenabled items>\\s*<!--\\s*(.*?)\\s*-->\\s*self._fragment_document,self.document cannot be converted to a Python object for picklingself.css_selectors,self.parser,self.selectors cannot be converted to a Python object for picklingself.node cannot be converted to a Python object for pickling<stringsource>-textDOTALL_ENCODINGFRAGMENTHTMLParserIGNORECASELexborAttributesLexborAttributes.__iter__LexborAttributes.__reduce_cython__LexborAttributes.__setstate_cython__LexborAttributes.getLexborAttributes.itemsLexborAttributes.keysLexborAttributes.sgetLexborAttributes.valuesLexborCSSSelectorLexborCSSSelector.__reduce_cython__LexborCSSSelector.__setstate_cython__LexborCSSSelector._findLexborCSSSelector.any_matchesLexborCSSSelector.findLexborCSSSelector.find_firstLexborHTMLParserLexborHTMLParser.__reduce_cython__LexborHTMLParser.__setstate_cython__LexborHTMLParser.any_css_matchesLexborHTMLParser.cloneLexborHTMLParser.create_nodeLexborHTMLParser.cssLexborHTMLParser.css_firstLexborHTMLParser.css_matchesLexborHTMLParser.merge_text_nodesLexborHTMLParser.script_srcs_containLexborHTMLParser.scripts_containLexborHTMLParser.selectLexborHTMLParser.strip_tagsLexborHTMLParser.tagsLexborHTMLParser.textLexborHTMLParser.unwrap_tagsLexborNodeLexborNode.__reduce_cython__LexborNode.__setstate_cython__LexborNode.convert_html_to_instructionsLexborNode.traverse_sig""nals_benchmarkLexborSelectorLexborSelector.__reduce_cython__LexborSelector.__setstate_cython__LexborSelector.any_attribute_longer_thanLexborSelector.any_text_containsLexborSelector.attribute_longer_thanLexborSelector.cssLexborSelector.text_containsLiteralMAX_HTML_INPUT_SIZEOptionalParserParserCls__Pyx_PyDict_NextRefSelectolaxError_TAG_TO_NAMETypeUnionany_attribute_longer_thanany_css_matchesany_matchesany_text_containsasyncio.coroutinesattrattributeattribute_longer_thanattributesbodybold_depthbold_stackboolbufferbuffer_ptrbytes_htmlcapacity__class_getitem__cline_in_tracebackclonecloned_documentcloned_nodecloseclscollectioncompileconvert_html_to_instructionscreate_nodecreate_tagcsscss_firstcss_matchescurrent_altcurrent_hrefcurrent_srcd2d.lexbordecodedecode_errorsdecomposedeepdefaultdelete_empty__dict___dictdo_create_tagdo_parse_fragment__doc__documentdocument_no_bodydocument_no_headdocument_no_head_no_bodydom_nodeelementencodeerrorsextract_html_commentffilenamefilename_bytesfilename_cfind_findfind_firstfinditerflagsfont_size_depthfont_size_stackfrag_typefragmentfullmatch__func__getgetLoggerget_fragment_type__getitem____getstate__grouphas_bodyhas_headhas_htmlheadhead_and_bodyhtmlhtml_lenhtml_reiignorein_blockinclude_textinner_html_is_coroutineis_emptyis_fragmentitalic_depthitalic_stackitemsiter__iter__keykeyslengthloggerlogging__main__matchmerge_text_nodes__metaclass____module____mro_entries__msg__name__name__new__nextnodenode_textnodesonly_firstparent_mem_idparent_ptrparse_fragmentparser_clspoppos__prepare__preprocess_inputpybyte_name__pyx_capi____pyx_checksum__pyx_result__pyx_state__pyx_type__pyx_unpickle_LexborSelector__pyx_vtable____qualname__queriesqueryrerecursive__reduce____reduce_cython____reduce_ex__resultreturnrootscript_srcs_containscripts_containselectselectolaxselectorselectorsselfsendseparator__set_name__setdefault__setstate____setstate_cython__sgetskip_emptyskip_nodestartstatestatusstrstr_lenstrictstripstrip_tagsstyle_attrstyle_flagsstyle_valuetagtag_eff""ectstag_idtags__test__texttext_center_depthtext_center_stacktext_containstext_contentthrowtraverse_signals_benchmarktreetypingunderline_depthunderline_stackunknownunwrap_tagsupdateuse_setstatevalvaluevaluesint (lxb_char_t const *, size_t)\000int (lxb_dom_node_t *)\000_is_whitespace_only\000is_empty_text_node\320\0040\3200D\300O\320S]\320]^\340\010\032\230!\330\010\014\210H\220D\230\001\330\014\030\230\004\230E\240\021\240%\240v\250Z\260{\300&\310\001\330\014\017\210z\230\024\230U\240#\240Q\330\020\025\220W\230A\230Q\330\010\014\210I\220Q\330\010\017\210q\320\004\033\2301\360 \000\t\020\210t\2201\330\010\013\2101\330\014\023\220>\240\021\240&\250\001\330\010\017\210q\320\000\033\2301\330\004\007\200z\220\021\220'\230\025\230a\330\010\025\220T\230\027\240\001\240\031\250'\260\021\330\t\023\2201\220F\230!\330\010\025\220Q\340\010\016\210i\220q\320\030:\270\"\270D\300\001\300\025\300a\330\004\017\210s\220!\2201\330\004\007\200y\220\002\220!\330\010\016\210j\230\001\320\031\\\320\\^\320^_\330\004\013\210<\220q\320\0044\3204H\310\017\320Wa\320ab\360\006\000\t\r\210H\220D\230\001\330\014\030\230\004\230E\240\021\240%\240v\250Z\260{\300&\310\001\330\014\017\210z\230\024\230U\240#\240Q\330\020\027\220q\330\010\017\210q\320\0044\260A\3602\000\t\014\2104\210z\230\023\230A\330\014\020\220\005\220\\\240\021\240&\250\r\260Q\320\0045\260Q\360.\000\t1\260\001\360\006\000\t\r\210G\2201\330\014\032\230#\230W\240A\240Q\340\014\031\320\0310\260\001\260\021\260$\260i\270\177\310a\340\014\017\210{\230#\230Q\330\020\026\220o\240Q\240a\340\014\025\320\0251\260\021\330\020&\240d\250!\330\020\021\330\020\037\230q\330\020\023\2201\220A\340\014\017\210w\220c\230\021\330\020*\250!\320+>\270a\330\020\026\220o\240Q\240a\340\014\020\220\005\220U\230!\320\0338\270\001\270\021\330\020\023\2201\330\024-\250Q\320.A\320A_\320_`\320`l\320lm\340\024(\250\001\320)<\320<Z\320Z[\320[g\320gh\330\014&\240a\320':\270!\200A\200\001\330\004,\250A\250V\2601\320\000\031\230\021\360\020\000\005\014\320\013\034\230A""\230V\2401\320\000\024\220A\360\016\000\005\014\320\013\033\2301\230C\230q\240\007\240q\250\010\260\014\270E\300\021\200A\340\010\016\320\016!\240\021\240!\200A\360*\000\t\014\2104\210q\330\014\022\220*\230A\230Q\330\010\013\2103\210a\210v\220R\220q\330\014\022\220*\230A\230Q\340\0100\260\001\340\010\026\220d\230'\240\021\240!\340\010\025\220Q\330\010\025\320\025,\250A\250Q\250d\260)\270?\310!\340\010\013\210;\220c\230\021\330\014\023\2201\330\010\021\320\021-\250Q\330\014\"\240$\240a\330\014\r\330\014\033\2301\330\014\017\210q\220\001\340\010\013\2107\220#\220Q\330\014&\240a\320':\270!\330\014\022\220/\240\021\240!\340\010\014\210E\220\025\220a\320\0274\260A\260Q\330\014\035\230T\240\021\330\020\"\320\"@\300\001\300\034\310Q\330\020\021\340\014\022\220'\230\021\230!\330\010\"\240!\320#6\260a\330\010\017\210q\200A\360<\000\t\014\2104\210q\330\014\022\220/\240\021\240!\330\010\026\220c\230\027\240\001\240\021\340\010\022\320\0222\260!\330\014\020\220\001\330\014!\240\021\330\014\017\210q\220\001\330\014\r\360\006\000\t\014\2108\2203\220a\330\014\022\220/\240\021\320\"B\300!\3001\340\010\023\320\023&\240a\340\010\031\230\024\230Q\230j\250\001\200A\360\n\000\t\014\2104\210z\230\021\230'\240\021\330\014\022\220)\2301\230A\340\010\026\220e\2307\240!\2401\330\010\031\320\0310\260\001\260\024\260Y\270o\310]\320Zb\320be\320ef\320fg\340\010\013\210?\230#\230Q\330\014\022\220/\240\021\240!\340\010\014\320\014\034\230A\330\010\014\210K\220q\330\010\013\2101\330\014\025\320\025'\240q\250\004\250L\270\004\270G\3001\330(<\320<W\320W^\320^_\340\014\025\320\025'\240q\250\004\250L\270\004\270G\3001\330(<\320<Q\320QX\320XY\330\010\022\220$\220a\220t\2301\330\010\014\210K\220q\330\010\014\320\014\034\230A\330\010,\250A\250Q\330\010\017\210q\200A\360 \000\016\017\330\014\036\320\0366\260a\340\010\013\320\013\033\2303\230a\330\014\022\220/\240\021\240!\340\010\027\220\177\240a\340\r\016\330\014\032\320\0326\260a\330\020\021\220\037\240\001\330\020#\320#8\270\001\270\021\270$\270n\310B""\310a\330\027\030\360\006\000\t\014\210<\220s\230!\330\014\022\220/\240\021\240!\340\r\016\330\014%\240Q\320&:\320:K\3101\340\010\036\230n\250A\320->\270d\300!\330\010\017\210q\200A\360\006\000\t%\240H\250G\2601\260A\330\010&\240a\340\010$\240D\250\001\330\010$\240A\360\024\000\t!\240\t\250\032\2601\330\010)\320):\270'\300\021\330\010\032\230!\330\010\037\230s\240!\2401\360\010\000\t\037\230a\340\010 \240\001\340\010#\2401\340\010%\240Q\340\010#\2401\360\006\000\t)\250\001\330\010'\240q\330\010'\240q\360\006\000\t\036\230Q\330\010\036\230a\360\016\000\t\030\220u\230A\230\\\250\021\330\010\013\2102\210S\220\001\330\014\022\220'\230\021\320\0321\260\021\260!\340\010\t\330\021\022\330\020\026\220e\2303\230a\330\024\035\320\0354\260A\260Q\360\006\000\025\030\220q\330\030\033\2304\230}\250C\250q\330\034#\2404\240q\330\034\035\340\034\035\340 #\2404\240v\250S\260\001\330$1\3201M\310Q\330(<\270A\330(5\260Q\330()\340$'\240{\260#\260Q\330(6\3206L\310A\310\\\320YZ\320Z[\330(=\270Q\270m\3101\310A\330(+\250;\260a\330,8\270\001\340 #\2405\250\003\2505\260\003\2604\260v\270S\300\001\330$%\330 '\240t\2501\340\034\037\230u\240C\240q\330 !\330\034#\2404\240q\330\034\035\360\006\000\025\030\220t\2306\240\023\240A\330\030'\320'9\3209L\310A\310R\320Ol\320lq\320qr\330\030#\320#@\300\005\300U\310!\340\030\033\230=\250\003\2505\260\004\260H\270B\270a\340\034'\240q\330\034 \240\005\240U\250!\2501\330 #\240<\250q\260\003\2603\260c\270\024\270\\\310\021\310#\310S\320PR\320RV\320Vb\320bc\320cf\320fi\320il\320lp\320p|\320|}\360\000\000~\001A\002\360\000\000A\002D\002\360\000\000D\002E\002\330$/\250q\330$%\340\034\037\230t\2401\340 #\2404\240q\330$7\260q\270\003\270<\300q\310\005\310T\320QR\330$.\250a\250z\270\021\270!\330$+\2501\330$/\250q\360\006\000%8\260q\270\003\270<\300q\310\005\310T\320QR\330$.\250a\250z\270\021\270!\330$+\2501\360\006\000!4\2601\260C\260|\3001\300E\310\030\320QS\320SY\320YZ\360\006\000!'\240a\240q\250\n\260!\2606\270\036\300q\330 '\240q\360\006\000!'\320&B\300!\300<""\310u\320Tb\320bc\340 *\250!\250:\260Q\260a\330 '\240q\360\006\000!'\320&;\2701\270L\310\005\310X\320Ua\320ab\330 &\320&;\2701\270L\310\005\310Z\320We\320ef\330 &\320&;\2701\270L\310\005\310]\320Zk\320kl\330 &\320&;\2701\270L\310\005\310_\320\\o\320op\330 &\320&;\2701\270L\310\005\310]\320Zk\320kl\360\006\000!$\240=\260\003\2601\330$*\320*>\270a\270|\3105\320PX\320XY\340 *\250!\250:\260Q\260a\330 '\240q\360\006\000\032\036\230V\2403\240a\340\030-\250Q\250h\260a\260q\360\006\000\031\034\230;\240a\330\034)\250\021\250,\260a\260|\3001\330\030\033\230;\240a\330\034)\250\021\250.\270\001\270\036\300q\330\030\033\230;\240a\330\034)\250\021\320*;\2701\320<M\310Q\360\006\000\031\034\230;\240a\330\034)\320)E\300Q\330 4\260A\330 -\250Q\330 !\340\034\037\230{\250#\250Q\330 /\250}\320<R\320RS\320S_\320_`\320`a\360\006\000\031&\320%A\300\021\330\0340\260\001\330\034)\250\021\330\034\035\360\006\000\031\034\230;\240c\250\021\330\034*\320*@\300\001\300\034\310Q\310a\330\0341\260\021\260-\270q\300\001\340\034\037\230{\250!\330 ,\250A\340\034\037\230{\250!\330 -\250Q\250l\270!\270<\300q\330\034\037\230{\250!\330 -\250Q\250n\270A\270^\3101\330\034\037\230{\250!\330 -\250Q\320.?\270q\320@Q\320QR\360\006\000\025\030\220t\230=\250\003\2501\330\030\037\230t\2401\360\006\000\031\032\330\034%\320%<\270A\270Q\360\006\000\035 \230t\2406\250\023\250A\330 5\260Q\260h\270a\270q\360\006\000!$\240;\250a\330$2\260!\2601\260L\300\001\330 #\240;\250a\330$2\260!\2601\260N\300!\330 #\240;\250a\330$2\260!\2601\3204E\300Q\330 #\240;\250a\330$3\2601\360\006\000!.\320-I\310\021\330$8\270\001\330$1\260\021\330$%\360\006\000!$\240;\250c\260\021\330$2\3202H\310\001\310\034\320UV\320VW\330$9\270\021\270-\300q\310\001\340$'\240{\260!\330(6\260a\260q\270\014\300A\330$'\240{\260!\330(6\260a\260q\270\016\300a\330$'\240{\260!\330(6\260a\260q\3208I\310\021\360\006\000!$\320#5\260Q\260a\330$'\240q\340(;\2701\270C\270|\3101\310E\320QU\320UV\340(2\260!\260:\270Q\270a\330(/\250q\330(2\260!\260:\270Q\270a\330(/\250q""\340(3\2601\360\006\000)6\260Q\330(7\260q\330(:\270!\330(<\270A\330(:\270!\330(7\260q\330(6\260a\330(6\260a\340\034\037\230u\240C\240u\250C\250t\2606\270\023\270A\330 !\330\034#\2404\240q\340\030\033\2305\240\003\2401\330\034\035\330\030\037\230t\2401\360\006\000\021\024\2201\330\024'\240q\250\003\250<\260q\270\005\270T\300\021\330\024\036\230a\230z\250\021\250!\330\024\033\2301\330\024\036\230a\230z\250\021\250!\330\024\033\2301\360\006\000\021\024\2204\220r\230\021\330\024\032\230!\230<\240s\250%\250q\360\006\000\r\023\220!\2201\200A\340\016\025\220Q\330\023\031\230\021\330\017\026\220a\330\024\033\2301\330\t\n\360*\000\t\014\2104\210v\220S\230\001\330\014\023\2201\330\010\017\210t\2205\230\005\230Q\230e\2406\250\032\260;\270f\300G\310;\320VW\200A\360\032\000\t\020\210t\2205\320\030(\250\001\250\021\200A\360\036\000\t\020\210t\2205\320\030(\250\001\250\021\200A\360,\000\t\020\210t\2205\320\030)\250\021\200A\360(\000\t\020\210t\2205\230\004\230A\230Q\200A\360\036\000\t\020\210t\2205\320\030,\250A\250Q\200A\360\032\000\t\020\210t\2205\230\014\240A\240Q\200A\330\010\017\210t\2206\230\021\230'\240\026\240q\200A\330\010\017\210t\2209\230A\320\004D\300A\360\014\000\t\014\2104\210z\230\021\230'\240\021\330\014\022\220)\2301\230A\340\010\026\220e\2307\240!\2401\330\010\031\320\0310\260\001\260\024\260Y\270o\310]\320Zc\320cf\320fg\320gh\340\010\013\210?\230#\230Q\330\014\033\2301\320\034-\250Q\330\014\024\220A\340\010\014\210K\220q\330\010\021\320\021#\2401\240D\250\014\260D\270\007\270q\330$9\3209O\310y\320XY\330\010\013\2107\220#\220Q\330\0140\260\001\260\021\330\014\033\2301\320\034-\250Q\330\014\024\220A\340\010\021\220\037\240\001\240\024\240Z\250r\260\021\330\010\014\210K\220q\330\010,\250A\250Q\330\010\017\210q\320\004L\310I\320UV\360\n\000\t\033\230!\330\010\014\210H\220D\230\001\330\014\023\2204\220{\240$\240a\240q\330\014\017\210t\2201\330\020\021\330\014\017\210u\220D\230\006\230d\240&\250\003\2501\330\020\027\220t\2301\230D\240\005\240Q\240g\250R\250s\260!\2601""\330\014\017\210s\220!\2206\230\022\2301\330\020\025\220W\230A\230Q\330\010\014\210I\220Q\330\010\017\210q\320\004P\320PY\320YZ\360\014\000\t\r\210H\220D\230\001\330\014\023\2204\220{\240$\240a\240q\330\014\017\210u\220D\230\006\230d\240&\250\003\2501\330\020\027\220t\2301\230D\240\005\240Q\240g\250R\250s\260!\2601\330\014\017\210s\220!\2206\230\022\2301\330\020\027\220q\330\010\017\210q\200\001\330\004\n\210+\220Q\320\000\034\320\034-\250Q\360\020\000\005\014\2104\210v\220Q\330\004\013\210:\220Q\220a\330\004\020\320\020!\240\021\240&\250\014\260A\340\004\007\200z\220\023\220A\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\017\210q\220\004\220G\2304\230q\340\010\017\210q\330\r\021\220\025\220e\2301\230M\250\021\330\r\021\220\025\220e\2301\230M\250\021\200\001\360\010\000\005\016\210T\220\027\230\004\230A\330\004\014\210G\2201\220F\230,\240a\330\004\007\200v\210W\220E\230\024\230Q\330\010\022\220!\330\010\027\220q\340\010\027\220t\2306\240\027\250\005\250S\260\004\260G\2707\300!\330\004\007\200q\330\010\017\320\017/\250t\2601\260G\270;\300g\310Q\340\010\017\320\017/\250t\2601\260G\270;\300a\320\004=\320=V\320VW\340\010%\240T\250\021\330\010%\240Q\360\010\000\t\017\210e\2203\220a\330\014\031\230\024\230Q\330\014\034\230H\240A\340\014\017\210}\230C\230t\2406\250\023\250A\330\020\023\2204\220{\240#\240T\320);\2701\270A\360\010\000\r\020\210t\220=\240\003\2401\330\020\027\220t\2301\360\006\000\021\022\330\024\027\220}\240C\240t\2506\260\023\260A\330""\030\033\2304\230{\250#\250T\3201C\3001\300A\330\034)\250\024\250Q\330\034,\250H\260A\360\010\000\025\030\220u\230C\230u\240C\240t\2506\260\023\260A\330\030\031\330\024\033\2304\230q\340\020\023\2205\230\003\2301\330\024\025\330\020\027\220t\2301\320\004 \240\001\340\010\t\330\014\022\220$\220a\220q\330\014\017\210t\2203\220a\330\020\026\220a\330\014\023\2201\330\017\020\330\014\023\2201\200\001\340\004\037\230q\320 0\260\013\270;\300k\320QR\330\004\023\220>\240\030\250\021\250!\330\004\007\200|\2207\230!\330\0100\260\001\3201B\300.\320PQ\330\004\013\2101\320\004\037\230q\330\010\t\330\014\023\2204\220q\230\001\330\017\020\330\014\023\2201\320\000\027\320\027(\250\001\330\004\007\200t\2101\330\010\016\210j\230\001\230\021\330\004\013\320\013\034\230A\230S\240\001\240\027\250\001\250\030\260\033\270A\270Q\200\001\330\n\013\330\020\021\330\004\n\210!\330\005\006\330\004\007\200t\2101\330\010\017\210z\230\021\230!\340\013\014\330\004\016\210b\220\010\230\001\320\0315\260R\260q\340\004\017\210q\330\004\017\210q\330\004\017\210q\330\004\010\210\t\220\027\230\t\240\021\240!\330\010\013\2105\220\001\220\023\220C\220q\330\014\027\220q\330\r\022\220!\2203\220c\230\021\330\014\027\220q\330\r\022\220!\2203\220c\230\021\330\014\027\220q\340\010\013\2109\220D\230\t\240\024\240Q\330\014\r\340\004\007\200y\220\004\220I\230T\240\021\330\010\017\210q\330\t\022\220$\220d\230)\2404\240q\330\010\017\210q\330\t\022\220$\220i\230t\2404\240q\330\010\017\210q\330\t\022\220$\220d\230)\2404\240t\2501\330\010\017\210q\330\t\022\220$\220d\230!\330\010\017\210q\330\t\r\210Y\220d\230!\330\010\017\210q\330\t\022\220$\220a\330\010\017\210q\340\010\017\210q\320\004+\250=\270\001\360\"\000\t\020\210t\2205\230\n\240!\2407\250)\2601\320\000\037\230x\240q\360 \000\005\010\200v\210S\220\002\220*\230A\320\035:\270&\300\006\300b\310\001\330\010\017\210u\220F\230!\2302\230V\2401\330\004\n\210!\330\004\n\210*\220A\220Q";
+    #else /* compression: none (13348 bytes) */
+const char* const bytes = "<An exception that indicates error.Can't create a new documentCan't create element for tag 'Can't initalize allocators from lexbor_memory_setup(...)Can't initialize CSS parser.Can't initialize CSS selector.Can't initialize DOM collection.Can't locate elements.Can't parse CSS selector.Can't parse HTML.Can't parse empty HTML as HTML fragment.Expected a string, but %s foundExpected str or unicode, got %sExtract the inner content of an HTML comment string.\n\n    Args:\n        text: Raw HTML comment, including the ``<!--`` and ``-->`` markers.\n\n    Returns:\n        The comment body with surrounding whitespace stripped.\n\n    Raises:\n        ValueError: If the input is not a well-formed HTML comment.\n\n    Examples:\n        >>> extract_html_comment(\"<!-- hello -->\")\n        'hello'\n    Failed to initialize object for HTML Document.Failed to open output file: Given an HTML tag name, e.g. `\"div\"`, create a single empty node for that tag,\n        e.g. `\"<div></div>\"`.\n\n        Parameters\n        ----------\n        tag : str\n            Name of the tag to create.\n\n        Returns\n        -------\n        LexborNode\n            Newly created element node.\n        Raises\n        ------\n        SelectolaxError\n            If the element cannot be created.\n\n        Examples\n        --------\n        >>> parser = LexborHTMLParser(\"<div></div>\")\n        >>> new_node = parser.create_node(\"span\")\n        >>> new_node.tag_name\n        'span'\n        >>> parser.css_first(\"div\").append_child(new_node)\n        >>> parser.html\n        '<html><head></head><body><div><span></span></div></body></html>'\n        Input is not a valid HTML commentIterates over all text nodes and merges all text nodes that are close to each other.\n\n        This is useful for text extraction.\n        Use it when you need to strip HTML tags and merge \"dangling\" text.\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser(\"<div><p><strong>J</""strong>ohn</p><p>Doe</p></div>\")\n        >>> node = tree.css_first('div')\n        >>> tree.unwrap_tags([\"strong\"])\n        >>> tree.text(deep=True, separator=\" \", strip=True)\n        \"J ohn Doe\" # Text extraction produces an extra space because the strong tag was removed.\n        >>> node.merge_text_nodes()\n        >>> tree.text(deep=True, separator=\" \", strip=True)\n        \"John Doe\"\n\n        Returns\n        -------\n        None\n        <LexborHTMLParser chars='LexborHTMLParser.create_node (line 719)LexborHTMLParser.merge_text_nodes (line 572)LexborHTMLParser.strip_tags (line 436)LexborHTMLParser.unwrap_tags (line 660)NoneNote that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Optional[Parser]Query must be a string.Remove specified tags from the node.\n\n        Parameters\n        ----------\n        tags : list of str\n            List of tags to remove.\n        recursive : bool, default False\n            Whenever to delete all its child nodes\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser('<html><head></head><body><script></script><div>Hello world!</div></body></html>')\n        >>> tags = ['head', 'style', 'script', 'xmp', 'iframe', 'noembed', 'noframes']\n        >>> tree.strip_tags(tags)\n        >>> tree.html\n        '<html><body><div>Hello world!</div></body></html>'\n\n        Returns\n        -------\n        None\n        Style stack overflowTag name cannot be emptyTag name is too longThe specified HTML input is too large to be processed (%d bytes)This features is not supported by the lexbor backend. Please use Modest backend.UTF-8Unwraps specified tags from the HTML tree.\n\n        Works the same as the ``unwrap`` method, but applied to a list of tags.\n\n        Parameters\n        ----------\n        tags : list\n            List of tags to remove.\n        delete_empty : bo""ol\n            Whenever to delete empty tags.\n\n        Examples\n        --------\n\n        >>> tree = LexborHTMLParser(\"<div><a href=\"\">Hello</a> <i>world</i>!</div>\")\n        >>> tree.body.unwrap_tags(['i','a'])\n        >>> tree.body.html\n        '<body><div>Hello world!</div></body>'\n\n        Returns\n        -------\n        None\n        .?></>;:\n'>'add_note attributes, <body-commentd2d/lexbor/attrs.pxid2d/lexbor/node.pxid2d/lexbor.pyxd2d/lexbor/selection.pxid2d/lexbor/util.pxid2d/lexbor/../utils.pxid2d/utils.pxidisable-doctypedocument is NULL even after html was parsed correctlyenableextract_html_comment (line 27)font-sizefont-stylefont-weightgc<head<html<html|<body|<head(?!er)isenabled items>\\s*<!--\\s*(.*?)\\s*-->\\s*self._fragment_document,self.document cannot be converted to a Python object for picklingself.css_selectors,self.parser,self.selectors cannot be converted to a Python object for picklingself.node cannot be converted to a Python object for pickling<stringsource>test.txt-texttext-aligntext-decorationutf-8DOTALL_ENCODINGFRAGMENTHTMLParserIGNORECASELexborAttributesLexborAttributes.__iter__LexborAttributes.__reduce_cython__LexborAttributes.__setstate_cython__LexborAttributes.getLexborAttributes.itemsLexborAttributes.keysLexborAttributes.sgetLexborAttributes.valuesLexborCSSSelectorLexborCSSSelector.__reduce_cython__LexborCSSSelector.__setstate_cython__LexborCSSSelector._findLexborCSSSelector.any_matchesLexborCSSSelector.findLexborCSSSelector.find_firstLexborHTMLParserLexborHTMLParser.__reduce_cython__LexborHTMLParser.__setstate_cython__LexborHTMLParser.any_css_matchesLexborHTMLParser.cloneLexborHTMLParser.create_nodeLexborHTMLParser.cssLexborHTMLParser.css_firstLexborHTMLParser.css_matchesLexborHTMLParser.merge_text_nodesLexborHTMLParser.script_srcs_containLexborHTMLParser.scripts_containLexborHTMLParser.selectLexborHTMLParser.strip_tagsLexborHTMLParser.tagsLexborHTMLParser.textLexborHTMLParser.unwrap_tagsLexborNodeLexborNode.__reduce_c""ython__LexborNode.__setstate_cython__LexborNode.convert_html_to_instructionsLexborSelectorLexborSelector.__reduce_cython__LexborSelector.__setstate_cython__LexborSelector.any_attribute_longer_thanLexborSelector.any_text_containsLexborSelector.attribute_longer_thanLexborSelector.cssLexborSelector.text_containsLiteralMAX_HTML_INPUT_SIZEOptionalParserParserCls__Pyx_PyDict_NextRefSelectolaxError_TAG_TO_NAMETypeUnionaltany_attribute_longer_thanany_css_matchesany_matchesany_text_containsappendasyncio.coroutinesattrattributeattribute_longer_thanattributesbase_attrsbodyboolbytes_htmlcenter__class_getitem__cline_in_tracebackclonecloned_documentcloned_nodecloseclscollectioncompileconvert_html_to_instructionscreate_nodecreate_tagcsscss_firstcss_matchescurrent_attrscurrent_cell_instructionscurrent_colspancurrent_rowspand2d.lexbordecodedecode_errorsdecomposedeepdefaultdelete_empty__dict___dictdisplaydo_create_tagdo_parse_fragment__doc__documentdocument_no_bodydocument_no_headdocument_no_head_no_bodydom_nodeeelementencodeencodingerrorsextract_html_commentffind_findfind_firstfinditerflagsfont_sizefont_weightfrag_typefragmentfullmatch__func__getgetLoggerget_fragment_type__getitem____getstate__grouphas_bodyhas_headhas_htmlheadhead_and_bodyheader_taghrefhtmlhtml_lenhtml_reiignorein_cellin_tableinclude_textinner_htmlinstructioninstructions_block_is_coroutineis_fragmentis_italicis_text_centeris_underlineitalicitemsiter__iter__keykey_lenkeyslengthloggerlogginglower__main__matchmerge_text_nodes__metaclass__modified__module____mro_entries__msg__name__name__new__nextnodenode_textnodesnoneonly_firstopenparse_fragmentparser_clspop__prepare__preprocess_inputpybyte_name__pyx_capi____pyx_checksum__pyx_result__pyx_state__pyx_type__pyx_unpickle_LexborSelector__pyx_vtable____qualname__queriesqueryrerecursive__reduce____reduce_cython____reduce_ex__resultreturnrootscript_srcs_containscripts_containselectselectolaxselectorselectorsselfsendseparator__set_name__setdefault__setstate____setstate_cython__""sgetskip_emptyskip_mem_idskip_subtreesrcstack_depthstartstatestatusstrstr_lenstrictstripstrip_tagsstyle_stackstyle_strtable_datatable_spanstagtag_bytestag_idtags__test__texttext_containstext_strthrowtreetypingunderlineunknownunwrap_tagsupdateuse_setstatevalvaluevalue_lenvalueswwriteint (lxb_char_t const *, size_t)\000int (lxb_dom_node_t *)\000_is_whitespace_only\000is_empty_text_node\320\0040\3200D\300O\320S]\320]^\340\010\032\230!\330\010\014\210H\220D\230\001\330\014\030\230\004\230E\240\021\240%\240v\250Z\260{\300&\310\001\330\014\017\210z\230\024\230U\240#\240Q\330\020\025\220W\230A\230Q\330\010\014\210I\220Q\330\010\017\210q\320\004\033\2301\360 \000\t\020\210t\2201\330\010\013\2101\330\014\023\220>\240\021\240&\250\001\330\010\017\210q\320\000\033\2301\330\004\007\200z\220\021\220'\230\025\230a\330\010\025\220T\230\027\240\001\240\031\250'\260\021\330\t\023\2201\220F\230!\330\010\025\220Q\340\010\016\210i\220q\320\030:\270\"\270D\300\001\300\025\300a\330\004\017\210s\220!\2201\330\004\007\200y\220\002\220!\330\010\016\210j\230\001\320\031\\\320\\^\320^_\330\004\013\210<\220q\320\0044\3204H\310\017\320Wa\320ab\360\006\000\t\r\210H\220D\230\001\330\014\030\230\004\230E\240\021\240%\240v\250Z\260{\300&\310\001\330\014\017\210z\230\024\230U\240#\240Q\330\020\027\220q\330\010\017\210q\320\0044\260A\3602\000\t\014\2104\210z\230\023\230A\330\014\020\220\005\220\\\240\021\240&\250\r\260Q\320\0045\260Q\360.\000\t1\260\001\360\006\000\t\r\210G\2201\330\014\032\230#\230W\240A\240Q\340\014\031\320\0310\260\001\260\021\260$\260i\270\177\310a\340\014\017\210{\230#\230Q\330\020\026\220o\240Q\240a\340\014\025\320\0251\260\021\330\020&\240d\250!\330\020\021\330\020\037\230q\330\020\023\2201\220A\340\014\017\210w\220c\230\021\330\020*\250!\320+>\270a\330\020\026\220o\240Q\240a\340\014\020\220\005\220U\230!\320\0338\270\001\270\021\330\020\023\2201\330\024-\250Q\320.A\320A_\320_`\320`l\320lm\340\024(\250\001\320)<\320<Z\320Z[\320[g\320gh\330\014&\240a\320':\270!\200A\200\001""\330\004,\250A\250V\2601\320\000\031\230\021\360\020\000\005\014\320\013\034\230A\230V\2401\320\000\024\220A\360\016\000\005\014\320\013\033\2301\230C\230q\240\007\240q\250\010\260\014\270E\300\021\200A\340\010\016\320\016!\240\021\240!\200A\360*\000\t\014\2104\210q\330\014\022\220*\230A\230Q\330\010\013\2103\210a\210v\220R\220q\330\014\022\220*\230A\230Q\340\0100\260\001\340\010\026\220d\230'\240\021\240!\340\010\025\220Q\330\010\025\320\025,\250A\250Q\250d\260)\270?\310!\340\010\013\210;\220c\230\021\330\014\023\2201\330\010\021\320\021-\250Q\330\014\"\240$\240a\330\014\r\330\014\033\2301\330\014\017\210q\220\001\340\010\013\2107\220#\220Q\330\014&\240a\320':\270!\330\014\022\220/\240\021\240!\340\010\014\210E\220\025\220a\320\0274\260A\260Q\330\014\035\230T\240\021\330\020\"\320\"@\300\001\300\034\310Q\330\020\021\340\014\022\220'\230\021\230!\330\010\"\240!\320#6\260a\330\010\017\210q\200A\360<\000\t\014\2104\210q\330\014\022\220/\240\021\240!\330\010\026\220c\230\027\240\001\240\021\340\010\022\320\0222\260!\330\014\020\220\001\330\014!\240\021\330\014\017\210q\220\001\330\014\r\360\006\000\t\014\2108\2203\220a\330\014\022\220/\240\021\320\"B\300!\3001\340\010\023\320\023&\240a\340\010\031\230\024\230Q\230j\250\001\200A\360\n\000\t\014\2104\210z\230\021\230'\240\021\330\014\022\220)\2301\230A\340\010\026\220e\2307\240!\2401\330\010\031\320\0310\260\001\260\024\260Y\270o\310]\320Zb\320be\320ef\320fg\340\010\013\210?\230#\230Q\330\014\022\220/\240\021\240!\340\010\014\320\014\034\230A\330\010\014\210K\220q\330\010\013\2101\330\014\025\320\025'\240q\250\004\250L\270\004\270G\3001\330(<\320<W\320W^\320^_\340\014\025\320\025'\240q\250\004\250L\270\004\270G\3001\330(<\320<Q\320QX\320XY\330\010\022\220$\220a\220t\2301\330\010\014\210K\220q\330\010\014\320\014\034\230A\330\010,\250A\250Q\330\010\017\210q\200A\360 \000\016\017\330\014\036\320\0366\260a\340\010\013\320\013\033\2303\230a\330\014\022\220/\240\021\240!\340\010\027\220\177\240a\340\r\016\330\014\032\320\0326""\260a\330\020\021\220\037\240\001\330\020#\320#8\270\001\270\021\270$\270n\310B\310a\330\027\030\360\006\000\t\014\210<\220s\230!\330\014\022\220/\240\021\240!\340\r\016\330\014%\240Q\320&:\320:K\3101\340\010\036\230n\250A\320->\270d\300!\330\010\017\210q\200A\340\010$\240D\250\001\330\010$\240A\360\030\000\t \230q\360\n\000\t\036\230Q\330\010\034\230A\330\010\037\230q\330\010 \240\001\330\010.\250a\330\010#\2401\330\010#\2401\360\006\000\t\"\240\021\330\010\"\240!\360\006\000\t(\240q\360\010\000\t\023\220,\230a\230u\240A\330\010\022\220*\230A\230U\240!\330\010\022\220%\220q\230\005\230Q\330\010\022\220+\230Q\230e\2401\330\010\022\220-\230q\330\010\022\320\022\"\240!\330\010\022\320\022$\240A\330\010\022\320\022\"\240!\360\006\000\t\024\2201\220B\220j\240\001\330\010\016\210a\210q\220\013\2301\230B\230h\240a\240|\2601\330\010\026\220a\360\022\000\t\n\330\014\020\220\004\220A\220\\\240\025\240i\250q\330\010\017\210}\230A\330\014\022\220,\230a\320\037=\270Q\270a\340\010\t\340\014\022\220%\220s\230!\340\020\023\2204\220q\330\024\035\320\0354\260A\260Q\360\006\000\025\030\220w\230c\240\021\330\030#\2401\330\030%\240Q\330\030&\240a\330\031 \240\003\240;\250d\260!\330\030\"\240'\250\021\250!\330\030#\2407\250!\2501\330\032!\240\023\240K\250s\260'\270\023\270L\310\004\310A\330\030\"\240!\330\0304\260A\330\030*\250!\330\030*\250!\360\006\000\031\034\2304\230v\240S\250\001\330\034#\320#F\300a\320G[\320[\\\330\034\"\240%\240s\250!\330 &\320&A\300\021\300&\310\001\310\021\330 (\320(>\270a\270v\300Q\300a\330 #\2404\240s\250%\250t\2606\270\023\270A\330$'\240x\250s\260\"\260D\270\006\270a\270w\300e\310;\320VY\320YZ\330()\330,>\270c\300\021\300%\300r\310\032\320SZ\320Z[\320[\\\340,>\270a\330)1\260\023\260B\260d\270&\300\001\300\027\310\005\310[\320X[\320[\\\330()\330,>\270c\300\021\300%\300r\310\032\320SZ\320Z[\320[\\\340,>\270a\330 '\240t\2501\360\006\000\025\030\220w\230c\240\021\330\030\037\320\0372\3202E\300Q\300b\320Hc\320ch\320hi\330\030\033\2305\240\003\2401\330\034'\240t""\2507\260!\2601\330\034\037\230x\240v\250S\260\003\2601\330 /\250x\260q\360\006\000!1\260\013\2701\270L\310\002\310\"\310A\330 #\240=\260\014\270A\270S\300\003\3001\330$/\250q\3200A\300\035\310l\320Za\320ab\320bc\330 #\240=\260\n\270!\2703\270c\300\021\330$/\250q\260\017\270}\310J\320V]\320]^\320^_\330 #\240=\260\013\2701\270C\270s\300!\330$/\250q\3200@\300\r\310[\320X_\320_`\320`a\330 #\240=\260\005\260Q\260c\270\023\270A\330$/\250q\260\n\270-\300u\310G\320ST\320TU\330 #\240=\260\001\330$/\250q\260\017\270q\330 #\240=\260\001\330$/\250q\3200B\300!\330 #\240=\260\001\330$/\250q\3200D\300A\340 #\2401\330$=\270W\300A\300Q\340$6\260g\270Q\270a\360\006\000\032!\240\003\2401\330\030&\240a\330\030\033\2304\230v\240S\250\001\330\034#\320#F\300a\320G[\320[\\\330\034\"\240%\240s\250!\330 &\320&A\300\021\300&\310\001\310\021\330 (\320(>\270a\270v\300Q\300a\330 #\2404\240s\250!\330$'\240x\250s\260\"\260D\270\006\270a\270w\300e\3107\320RU\320UV\330(+\2506\260\023\260A\330,7\260q\270\t\300\025\300b\310\n\320RY\320YZ\320Z[\330)1\260\023\260B\260d\270&\300\001\300\027\310\005\310W\320TW\320WX\330(+\2506\260\023\260A\330,7\260q\270\t\300\025\300b\310\n\320RY\320YZ\320Z[\330 '\240t\2501\360\006\000\031)\250\013\2601\260L\300\002\300\"\300A\330\030\033\230=\250\014\260A\260S\270\003\2701\330\034'\240q\320(9\270\035\300l\320RY\320YZ\320Z[\330\030\033\230=\250\n\260!\2603\260c\270\021\330\034'\240q\250\017\260}\300J\310g\320UV\320VW\340\030\033\2301\330\0345\260W\270A\270Q\340\034.\250g\260Q\260a\360\010\000\031\034\2304\230v\240S\250\001\340\034\"\240!\2401\240O\2601\260K\270q\300\014\310B\310b\320PX\320XY\330\034'\240q\360\006\000\035 \230w\240c\250\032\2603\260g\270S\300\001\330 #\2407\250#\250Q\330$+\2501\250M\270\036\300u\310A\340$+\2501\250M\270\036\300z\320QR\330 -\250\\\270\021\270&\300\001\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025\270a\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025""\270a\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025\270a\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025\270a\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025\270a\330 +\2501\330!(\250\003\2501\330 '\240q\250\r\260]\300&\310\001\330 -\250[\270\001\270\025\270a\330 +\2501\330!(\250\003\250:\260S\270\007\270s\300!\330 -\250]\270!\330 +\2501\330!(\250\003\250:\260S\270\007\270s\300!\330 -\320-=\270Q\330 +\2501\330!(\250\003\2501\340 '\320'J\310!\320K_\320_`\330 &\240e\2503\250a\330$*\320*E\300Q\300f\310A\310Q\330$,\320,B\300!\3006\310\021\310!\330$'\240t\2503\250e\2604\260x\270s\300\"\300D\310\006\310a\310w\320V[\320[c\320cf\320fg\330(+\2506\260\023\260A\330,3\2601\260M\300\027\310\007\310w\320VW\330,9\270\025\270a\270w\300a\340,9\270\025\270a\270u\300A\330(3\2601\330()\330$+\2504\250q\360\006\000\035$\320#F\300a\320G[\320[\\\330\034\"\240%\240s\250!\330 &\320&A\300\021\300&\310\001\310\021\330 (\320(>\270a\270v\300Q\300a\330 #\2404\240s\250%\250t\2608\2703\270b\300\004\300F\310!\3107\320RW\320W`\320`c\320cd\330$'\240v\250S\260\001\330(4\260E\270\022\270:\300W\310A\310Q\330(+\2504\250}\270A\270[\310\001\310\021\330,7\260q\330$%\330 '\240t\2501\360\006\000\035 \230}\250A\330 /\250q\330 .\250h\260a\360\006\000\035 \230q\330 #\240<\250s\260!\330$*\250,\260a\260q\330 +\2501\250L\270\n\300(\310!\330 &\240a\240q\250\013\2601\260L\300\010\310\001\310\037\320XY\330 /\250q\360\006\000\021\024\2204\220}\240C\240q\330\024\033\2304\230q\360\006\000\025\026\340\030\033\230=\250\004\250H\260E\270\023\270A\330\034+\2501\330\034*\250!\360\006\000\031\034\230<\240r\250\022\2504\250{\270!\270<\300r\310\022\3108\320SV\320V^\320^_\330\034+\2501\340\030!\320!8\270\001\270\021\360\006\000\031\034\2307\240#\240Q\330\034.\250g\260Q\330 .\250a\330 /\250q\340\034'\240q\330\034)\250\021\330\034*\250!\330\036%\240S\250\013\2603\260g\270S\300\014\310D\320PQ\330\034""\037\230s\240!\240<\250r\260\021\330 *\250\"\250B\250g\260Q\260a\330 +\2502\250R\250w\260b\3208I\310\021\330\034&\240a\330\0348\270\001\360\006\000\031\034\2304\230y\250\004\250D\3200M\310Q\310a\330\034\037\230s\240!\320#7\260r\270\021\330 !\240\026\240q\250\003\2501\250A\330 !\240\026\240q\250\001\330 5\260Q\340\030\033\2305\240\003\2405\250\003\2504\250v\260S\270\001\330\034\035\330\030\037\230t\2401\340\024\027\220u\230C\230q\330\030\031\330\024\033\2304\230q\360\006\000\r\020\210s\220!\320\023'\240r\250\021\330\020\021\220\026\220q\230\003\2301\230A\330\020\021\220\026\220q\230\001\360\006\000\r\016\210V\2201\200A\340\016\025\220Q\330\023\031\230\021\330\017\026\220a\330\024\033\2301\330\t\n\360*\000\t\014\2104\210v\220S\230\001\330\014\023\2201\330\010\017\210t\2205\230\005\230Q\230e\2406\250\032\260;\270f\300G\310;\320VW\200A\360\032\000\t\020\210t\2205\320\030(\250\001\250\021\200A\360\036\000\t\020\210t\2205\320\030(\250\001\250\021\200A\360,\000\t\020\210t\2205\320\030)\250\021\200A\360(\000\t\020\210t\2205\230\004\230A\230Q\200A\360\036\000\t\020\210t\2205\320\030,\250A\250Q\200A\360\032\000\t\020\210t\2205\230\014\240A\240Q\200A\330\010\017\210t\2206\230\021\230'\240\026\240q\200A\330\010\017\210t\2209\230A\320\004D\300A\360\014\000\t\014\2104\210z\230\021\230'\240\021\330\014\022\220)\2301\230A\340\010\026\220e\2307\240!\2401\330\010\031\320\0310\260\001\260\024\260Y\270o\310]\320Zc\320cf\320fg\320gh\340\010\013\210?\230#\230Q\330\014\033\2301\320\034-\250Q\330\014\024\220A\340\010\014\210K\220q\330\010\021\320\021#\2401\240D\250\014\260D\270\007\270q\330$9\3209O\310y\320XY\330\010\013\2107\220#\220Q\330\0140\260\001\260\021\330\014\033\2301\320\034-\250Q\330\014\024\220A\340\010\021\220\037\240\001\240\024\240Z\250r\260\021\330\010\014\210K\220q\330\010,\250A\250Q\330\010\017\210q\320\004L\310I\320UV\360\n\000\t\033\230!\330\010\014\210H\220D\230\001\330\014\023\2204\220{\240$\240a\240q\330\014\017\210t\2201\330\020\021\330\014\017\210u\220D\230\006""\230d\240&\250\003\2501\330\020\027\220t\2301\230D\240\005\240Q\240g\250R\250s\260!\2601\330\014\017\210s\220!\2206\230\022\2301\330\020\025\220W\230A\230Q\330\010\014\210I\220Q\330\010\017\210q\320\004P\320PY\320YZ\360\014\000\t\r\210H\220D\230\001\330\014\023\2204\220{\240$\240a\240q\330\014\017\210u\220D\230\006\230d\240&\250\003\2501\330\020\027\220t\2301\230D\240\005\240Q\240g\250R\250s\260!\2601\330\014\017\210s\220!\2206\230\022\2301\330\020\027\220q\330\010\017\210q\200\001\330\004\n\210+\220Q\320\000\034\320\034-\250Q\360\020\000\005\014\2104\210v\220Q\330\004\013\210:\220Q\220a\330\004\020\320\020!\240\021\240&\250\014\260A\340\004\007\200z\220\023\220A\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\004\007\200z\220\023\220A\330\010\014\210E\220\032\2301\230J\240a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\014\210E\220\032\2301\230J\240a\330\010\017\210q\220\004\220A\330\t\023\2203\220a\330\010\017\210q\220\004\220G\2304\230q\340\010\017\210q\330\r\021\220\025\220e\2301\230M\250\021\330\r\021\220\025\220e\2301\230M\250\021\200\001\360\010\000\005\016\210T\220\027\230\004\230A\330\004\014\210G\2201\220F\230,\240a\330\004\007\200v\210W\220E\230\024\230Q\330\010\022\220!\330\010\027\220q\340\010\027\220t\2306\240\027\250\005\250S\260\004\260G\2707\300!\330\004\007\200q\330\010\017\320\017/\250t\2601\260G\270;\300g\310Q\340\010\017\320\017/\250t\2601\260G\270;\300a\320\004 \240\001\340\010\t\330\014\022\220$\220a\220q\330\014\017\210t\2203\220a\330\020\026\220a\330\014\023\2201\330\017\020\330\014\023\2201\200\001\340\004\037\230q\320 0\260\013\270;\300k\320QR\330\004\023\220>\240\030\250\021\250!\330\004\007\200|\2207\230!\330\0100""\260\001\3201B\300.\320PQ\330\004\013\2101\320\004\037\230q\330\010\t\330\014\023\2204\220q\230\001\330\017\020\330\014\023\2201\320\000\027\320\027(\250\001\330\004\007\200t\2101\330\010\016\210j\230\001\230\021\330\004\013\320\013\034\230A\230S\240\001\240\027\250\001\250\030\260\033\270A\270Q\200\001\330\n\013\330\020\021\330\004\n\210!\330\005\006\330\004\007\200t\2101\330\010\017\210z\230\021\230!\340\013\014\330\004\016\210b\220\010\230\001\320\0315\260R\260q\340\004\017\210q\330\004\017\210q\330\004\017\210q\330\004\010\210\t\220\027\230\t\240\021\240!\330\010\013\2105\220\001\220\023\220C\220q\330\014\027\220q\330\r\022\220!\2203\220c\230\021\330\014\027\220q\330\r\022\220!\2203\220c\230\021\330\014\027\220q\340\010\013\2109\220D\230\t\240\024\240Q\330\014\r\340\004\007\200y\220\004\220I\230T\240\021\330\010\017\210q\330\t\022\220$\220d\230)\2404\240q\330\010\017\210q\330\t\022\220$\220i\230t\2404\240q\330\010\017\210q\330\t\022\220$\220d\230)\2404\240t\2501\330\010\017\210q\330\t\022\220$\220d\230!\330\010\017\210q\330\t\r\210Y\220d\230!\330\010\017\210q\330\t\022\220$\220a\330\010\017\210q\340\010\017\210q\320\004+\250=\270\001\360\"\000\t\020\210t\2205\230\n\240!\2407\250)\2601\320\000\037\230x\240q\360 \000\005\010\200v\210S\220\002\220*\230A\320\035:\270&\300\006\300b\310\001\330\010\017\210u\220F\230!\2302\230V\2401\330\004\n\210!\330\004\n\210*\220A\220Q";
     PyObject *data = NULL;
     CYTHON_UNUSED_VAR(__Pyx_DecompressString);
     #endif
     PyObject **stringtab = __pyx_mstate->__pyx_string_tab;
     Py_ssize_t pos = 0;
-    for (int i = 0; i < 327; i++) {
+    for (int i = 0; i < 348; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyUnicode_DecodeUTF8(bytes + pos, bytes_length, NULL);
-      if (likely(string) && i >= 71) PyUnicode_InternInPlace(&string);
+      if (likely(string) && i >= 82) PyUnicode_InternInPlace(&string);
       if (unlikely(!string)) {
         Py_XDECREF(data);
         __PYX_ERR(0, 1, __pyx_L1_error)
@@ -31339,7 +31409,7 @@ const char* const bytes = "<An exception that indicates error.Can't create a new
       stringtab[i] = string;
       pos += bytes_length;
     }
-    for (int i = 327; i < 368; i++) {
+    for (int i = 348; i < 388; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyBytes_FromStringAndSize(bytes + pos, bytes_length);
       stringtab[i] = string;
@@ -31350,15 +31420,15 @@ const char* const bytes = "<An exception that indicates error.Can't create a new
       }
     }
     Py_XDECREF(data);
-    for (Py_ssize_t i = 0; i < 368; i++) {
+    for (Py_ssize_t i = 0; i < 388; i++) {
       if (unlikely(PyObject_Hash(stringtab[i]) == -1)) {
         __PYX_ERR(0, 1, __pyx_L1_error)
       }
     }
     #if CYTHON_IMMORTAL_CONSTANTS
     {
-      PyObject **table = stringtab + 327;
-      for (Py_ssize_t i=0; i<41; ++i) {
+      PyObject **table = stringtab + 348;
+      for (Py_ssize_t i=0; i<40; ++i) {
         #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
         #if PY_VERSION_HEX < 0x030E0000
         if (_Py_IsOwnedByCurrentThread(table[i]) && Py_REFCNT(table[i]) == 1)
@@ -31386,8 +31456,8 @@ const char* const bytes = "<An exception that indicates error.Can't create a new
   {
     PyObject **numbertab = __pyx_mstate->__pyx_number_tab + 1;
     int8_t const cint_constants_1[] = {1,2,4,5};
-    int32_t const cint_constants_4[] = {2097152L,207486590L};
-    for (int i = 0; i < 6; i++) {
+    int32_t const cint_constants_4[] = {207486590L};
+    for (int i = 0; i < 5; i++) {
       numbertab[i] = PyLong_FromLong((i < 4 ? cint_constants_1[i - 0] : cint_constants_4[i - 4]));
       if (unlikely(!numbertab[i])) __PYX_ERR(0, 1, __pyx_L1_error)
     }
@@ -31395,7 +31465,7 @@ const char* const bytes = "<An exception that indicates error.Can't create a new
   #if CYTHON_IMMORTAL_CONSTANTS
   {
     PyObject **table = __pyx_mstate->__pyx_number_tab;
-    for (Py_ssize_t i=0; i<7; ++i) {
+    for (Py_ssize_t i=0; i<6; ++i) {
       #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
       #if PY_VERSION_HEX < 0x030E0000
       if (_Py_IsOwnedByCurrentThread(table[i]) && Py_REFCNT(table[i]) == 1)
@@ -31420,7 +31490,7 @@ typedef struct {
     unsigned int argcount : 3;
     unsigned int num_posonly_args : 1;
     unsigned int num_kwonly_args : 1;
-    unsigned int nlocals : 6;
+    unsigned int nlocals : 5;
     unsigned int flags : 10;
     unsigned int first_line : 10;
 } __Pyx_PyCode_New_function_description;
@@ -31499,209 +31569,204 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate_global->__pyx_codeobj_tab[11] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[11])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 7, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 247};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_include_text, __pyx_mstate->__pyx_n_u_skip_empty, __pyx_mstate->__pyx_n_u_root, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_parent_ptr, __pyx_mstate->__pyx_n_u_parent_mem_id};
-    __pyx_mstate_global->__pyx_codeobj_tab[12] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_node_pxi, __pyx_mstate->__pyx_n_u_traverse_signals_benchmark, __pyx_mstate->__pyx_kp_b_iso88591_VVW_T_Q_e3a_Q_HA_Ct6_A_4_T_1A_t, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[12])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 35, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 283};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_filename, __pyx_mstate->__pyx_n_u_filename_bytes, __pyx_mstate->__pyx_n_u_filename_c, __pyx_mstate->__pyx_n_u_root, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_style_attr, __pyx_mstate->__pyx_n_u_style_value, __pyx_mstate->__pyx_n_u_text_content, __pyx_mstate->__pyx_n_u_str_len, __pyx_mstate->__pyx_n_u_tag_id, __pyx_mstate->__pyx_n_u_i, __pyx_mstate->__pyx_n_u_is_empty, __pyx_mstate->__pyx_n_u_buffer, __pyx_mstate->__pyx_n_u_buffer_ptr, __pyx_mstate->__pyx_n_u_pos, __pyx_mstate->__pyx_n_u_capacity, __pyx_mstate->__pyx_n_u_bold_stack, __pyx_mstate->__pyx_n_u_bold_depth, __pyx_mstate->__pyx_n_u_italic_stack, __pyx_mstate->__pyx_n_u_italic_depth, __pyx_mstate->__pyx_n_u_underline_stack, __pyx_mstate->__pyx_n_u_underline_depth, __pyx_mstate->__pyx_n_u_text_center_stack, __pyx_mstate->__pyx_n_u_text_center_depth, __pyx_mstate->__pyx_n_u_font_size_stack, __pyx_mstate->__pyx_n_u_font_size_depth, __pyx_mstate->__pyx_n_u_current_href, __pyx_mstate->__pyx_n_u_current_src, __pyx_mstate->__pyx_n_u_current_alt, __pyx_mstate->__pyx_n_u_in_block, __pyx_mstate->__pyx_n_u_skip_node, __pyx_mstate->__pyx_n_u_style_flags, __pyx_mstate->__pyx_n_u_tag_effects, __pyx_mstate->__pyx_n_u_f};
-    __pyx_mstate_global->__pyx_codeobj_tab[13] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_node_pxi, __pyx_mstate->__pyx_n_u_convert_html_to_instructions, __pyx_mstate->__pyx_kp_b_iso88591_A_HG1A_a_D_A_1_s_1_a_1_Q_1_q_q_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[13])) goto bad;
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 31, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 132};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_root, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_attr, __pyx_mstate->__pyx_n_u_key, __pyx_mstate->__pyx_n_u_value, __pyx_mstate->__pyx_n_u_key_len, __pyx_mstate->__pyx_n_u_value_len, __pyx_mstate->__pyx_n_u_tag_id, __pyx_mstate->__pyx_n_u_text, __pyx_mstate->__pyx_n_u_style_stack, __pyx_mstate->__pyx_n_u_stack_depth, __pyx_mstate->__pyx_n_u_current_attrs, __pyx_mstate->__pyx_n_u_modified, __pyx_mstate->__pyx_n_u_in_table, __pyx_mstate->__pyx_n_u_in_cell, __pyx_mstate->__pyx_n_u_table_data, __pyx_mstate->__pyx_n_u_table_spans, __pyx_mstate->__pyx_n_u_current_cell_instructions, __pyx_mstate->__pyx_n_u_current_rowspan, __pyx_mstate->__pyx_n_u_current_colspan, __pyx_mstate->__pyx_n_u_skip_subtree, __pyx_mstate->__pyx_n_u_skip_mem_id, __pyx_mstate->__pyx_n_u_instructions_block, __pyx_mstate->__pyx_n_u_base_attrs, __pyx_mstate->__pyx_n_u_instruction, __pyx_mstate->__pyx_n_u_text_str, __pyx_mstate->__pyx_n_u_style_str, __pyx_mstate->__pyx_n_u_tag_bytes, __pyx_mstate->__pyx_n_u_f, __pyx_mstate->__pyx_n_u_e};
+    __pyx_mstate_global->__pyx_codeobj_tab[12] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_node_pxi, __pyx_mstate->__pyx_n_u_convert_html_to_instructions, __pyx_mstate->__pyx_kp_b_iso88591_A_D_A_q_Q_A_q_a_1_1_q_auA_AU_q_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[12])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 1};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[14] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[14])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[13] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[13])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 3};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_pyx_state};
-    __pyx_mstate_global->__pyx_codeobj_tab[15] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[15])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[14] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[14])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 41};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_node};
-    __pyx_mstate_global->__pyx_codeobj_tab[16] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find, __pyx_mstate->__pyx_kp_b_iso88591_A_t6_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[16])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[15] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find, __pyx_mstate->__pyx_kp_b_iso88591_A_t6_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[15])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 44};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_node};
-    __pyx_mstate_global->__pyx_codeobj_tab[17] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find_first, __pyx_mstate->__pyx_kp_b_iso88591_A_t6_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[17])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[16] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find_first, __pyx_mstate->__pyx_kp_b_iso88591_A_t6_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[16])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {4, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 47};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_only_first};
-    __pyx_mstate_global->__pyx_codeobj_tab[18] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find_2, __pyx_mstate->__pyx_kp_b_iso88591_A_4z_1A_e7_1_0_Yo_Zbbeeffg_Q_A_K, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[18])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[17] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_find_2, __pyx_mstate->__pyx_kp_b_iso88591_A_4z_1A_e7_1_0_Yo_Zbbeeffg_Q_A_K, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[17])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 75};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_node};
-    __pyx_mstate_global->__pyx_codeobj_tab[19] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_matches, __pyx_mstate->__pyx_kp_b_iso88591_DA_4z_1A_e7_1_0_Yo_Zccffggh_Q_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[19])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[18] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_matches, __pyx_mstate->__pyx_kp_b_iso88591_DA_4z_1A_e7_1_0_Yo_Zccffggh_Q_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[18])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 1};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[20] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[20])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[19] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[19])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 3};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_pyx_state};
-    __pyx_mstate_global->__pyx_codeobj_tab[21] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[21])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[20] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[20])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 127};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query};
-    __pyx_mstate_global->__pyx_codeobj_tab[22] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_css, __pyx_mstate->__pyx_kp_b_iso88591_A_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[22])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[21] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_css, __pyx_mstate->__pyx_kp_b_iso88591_A_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[21])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {5, 0, 0, 8, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 141};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_text_2, __pyx_mstate->__pyx_n_u_deep, __pyx_mstate->__pyx_n_u_separator, __pyx_mstate->__pyx_n_u_strip, __pyx_mstate->__pyx_n_u_nodes, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_node_text};
-    __pyx_mstate_global->__pyx_codeobj_tab[23] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_text_contains, __pyx_mstate->__pyx_kp_b_iso88591_00DOS_HD_E_vZ_z_U_Q_WAQ_IQ_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[23])) goto bad;
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_text, __pyx_mstate->__pyx_n_u_deep, __pyx_mstate->__pyx_n_u_separator, __pyx_mstate->__pyx_n_u_strip, __pyx_mstate->__pyx_n_u_nodes, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_node_text};
+    __pyx_mstate_global->__pyx_codeobj_tab[22] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_text_contains, __pyx_mstate->__pyx_kp_b_iso88591_00DOS_HD_E_vZ_z_U_Q_WAQ_IQ_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[22])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {5, 0, 0, 7, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 151};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_text_2, __pyx_mstate->__pyx_n_u_deep, __pyx_mstate->__pyx_n_u_separator, __pyx_mstate->__pyx_n_u_strip, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_node_text};
-    __pyx_mstate_global->__pyx_codeobj_tab[24] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_text_contains, __pyx_mstate->__pyx_kp_b_iso88591_44H_Waab_HD_E_vZ_z_U_Q_q_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[24])) goto bad;
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_text, __pyx_mstate->__pyx_n_u_deep, __pyx_mstate->__pyx_n_u_separator, __pyx_mstate->__pyx_n_u_strip, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_node_text};
+    __pyx_mstate_global->__pyx_codeobj_tab[23] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_text_contains, __pyx_mstate->__pyx_kp_b_iso88591_44H_Waab_HD_E_vZ_z_U_Q_q_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[23])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {4, 0, 0, 7, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 160};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_attribute, __pyx_mstate->__pyx_n_u_length, __pyx_mstate->__pyx_n_u_start, __pyx_mstate->__pyx_n_u_nodes, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_attr};
-    __pyx_mstate_global->__pyx_codeobj_tab[25] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_attribute_longer_than, __pyx_mstate->__pyx_kp_b_iso88591_LIUV_HD_4_aq_t1_uD_d_1_t1D_QgRs, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[25])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[24] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_attribute_longer_than, __pyx_mstate->__pyx_kp_b_iso88591_LIUV_HD_4_aq_t1_uD_d_1_t1D_QgRs, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[24])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {4, 0, 0, 6, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 177};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_attribute, __pyx_mstate->__pyx_n_u_length, __pyx_mstate->__pyx_n_u_start, __pyx_mstate->__pyx_n_u_node, __pyx_mstate->__pyx_n_u_attr};
-    __pyx_mstate_global->__pyx_codeobj_tab[26] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_attribute_longer_than, __pyx_mstate->__pyx_kp_b_iso88591_PPYYZ_HD_4_aq_uD_d_1_t1D_QgRs_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[26])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[25] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_selection_pxi, __pyx_mstate->__pyx_n_u_any_attribute_longer_than, __pyx_mstate->__pyx_kp_b_iso88591_PPYYZ_HD_4_aq_uD_d_1_t1D_QgRs_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[25])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 1};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_state, __pyx_mstate->__pyx_n_u_dict_2, __pyx_mstate->__pyx_n_u_use_setstate};
-    __pyx_mstate_global->__pyx_codeobj_tab[27] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_T_A_G1F_a_vWE_Q_q_t6_S_G7_q_t1G, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[27])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[26] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_T_A_G1F_a_vWE_Q_q_t6_S_G7_q_t1G, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[26])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 16};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_pyx_state};
-    __pyx_mstate_global->__pyx_codeobj_tab[28] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_AV1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[28])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[27] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_AV1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[27])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 19};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_html, __pyx_mstate->__pyx_n_u_decode_errors, __pyx_mstate->__pyx_n_u_bytes_html, __pyx_mstate->__pyx_n_u_html_len};
-    __pyx_mstate_global->__pyx_codeobj_tab[29] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_preprocess_input, __pyx_mstate->__pyx_kp_b_iso88591_1_z_a_T_1F_Q_iq_D_a_s_1_y_j___q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[29])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[28] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_preprocess_input, __pyx_mstate->__pyx_kp_b_iso88591_1_z_a_T_1F_Q_iq_D_a_s_1_y_j___q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[28])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 32};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_tag, __pyx_mstate->__pyx_n_u_parser_cls};
-    __pyx_mstate_global->__pyx_codeobj_tab[30] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_do_create_tag, __pyx_mstate->__pyx_kp_b_iso88591_t1_j_AS_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[30])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[29] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_do_create_tag, __pyx_mstate->__pyx_kp_b_iso88591_t1_j_AS_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[29])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 9, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 38};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_html, __pyx_mstate->__pyx_n_u_parser_cls, __pyx_mstate->__pyx_n_u_tree, __pyx_mstate->__pyx_n_u_re, __pyx_mstate->__pyx_n_u_html_re, __pyx_mstate->__pyx_n_u_has_html, __pyx_mstate->__pyx_n_u_has_head, __pyx_mstate->__pyx_n_u_has_body, __pyx_mstate->__pyx_n_u_match};
-    __pyx_mstate_global->__pyx_codeobj_tab[31] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_get_fragment_type, __pyx_mstate->__pyx_kp_b_iso88591_t1_z_b_5Rq_q_q_q_5_Cq_q_3c_q_3c, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[31])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[30] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_get_fragment_type, __pyx_mstate->__pyx_kp_b_iso88591_t1_z_b_5Rq_q_q_q_5_Cq_q_3c_q_3c, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[30])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 81};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_html, __pyx_mstate->__pyx_n_u_parser_cls, __pyx_mstate->__pyx_n_u_tree, __pyx_mstate->__pyx_n_u_frag_type};
-    __pyx_mstate_global->__pyx_codeobj_tab[32] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_do_parse_fragment, __pyx_mstate->__pyx_kp_b_iso88591_Q_4vQ_Qa_A_z_A_q_A_z_A_E_1Ja_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[32])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[31] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_utils_pxi, __pyx_mstate->__pyx_n_u_do_parse_fragment, __pyx_mstate->__pyx_kp_b_iso88591_Q_4vQ_Qa_A_z_A_q_A_z_A_E_1Ja_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[31])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 6};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_tag};
-    __pyx_mstate_global->__pyx_codeobj_tab[33] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_create_tag, __pyx_mstate->__pyx_kp_b_iso88591_A_1Cq_q_E, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[33])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[32] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_create_tag, __pyx_mstate->__pyx_kp_b_iso88591_A_1Cq_q_E, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[32])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 16};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_html};
-    __pyx_mstate_global->__pyx_codeobj_tab[34] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_parse_fragment, __pyx_mstate->__pyx_kp_b_iso88591_AV1_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[34])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[33] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_parse_fragment, __pyx_mstate->__pyx_kp_b_iso88591_AV1_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[33])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 27};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_text_2, __pyx_mstate->__pyx_n_u_msg, __pyx_mstate->__pyx_n_u_match};
-    __pyx_mstate_global->__pyx_codeobj_tab[35] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_extract_html_comment, __pyx_mstate->__pyx_kp_b_iso88591_xq_vS_A_b_uF_2V1_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[35])) goto bad;
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_text, __pyx_mstate->__pyx_n_u_msg, __pyx_mstate->__pyx_n_u_match};
+    __pyx_mstate_global->__pyx_codeobj_tab[34] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_util_pxi, __pyx_mstate->__pyx_n_u_extract_html_comment, __pyx_mstate->__pyx_kp_b_iso88591_xq_vS_A_b_uF_2V1_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[34])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 8, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 292};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_name_2, __pyx_mstate->__pyx_n_u_collection, __pyx_mstate->__pyx_n_u_status, __pyx_mstate->__pyx_n_u_pybyte_name, __pyx_mstate->__pyx_n_u_result, __pyx_mstate->__pyx_n_u_i, __pyx_mstate->__pyx_n_u_node};
-    __pyx_mstate_global->__pyx_codeobj_tab[36] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_tags, __pyx_mstate->__pyx_kp_b_iso88591_A_4q_AQ_3avRq_AQ_0_d_Q_AQd_c_1_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[36])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[35] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_tags, __pyx_mstate->__pyx_kp_b_iso88591_A_4q_AQ_3avRq_AQ_0_d_Q_AQd_c_1_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[35])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {5, 0, 0, 5, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 346};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_deep, __pyx_mstate->__pyx_n_u_separator, __pyx_mstate->__pyx_n_u_strip, __pyx_mstate->__pyx_n_u_skip_empty};
-    __pyx_mstate_global->__pyx_codeobj_tab[37] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_text_2, __pyx_mstate->__pyx_kp_b_iso88591_A_Q_a_1_4vS_1_t5_Qe6_fG_VW, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[37])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[36] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_text, __pyx_mstate->__pyx_kp_b_iso88591_A_Q_a_1_4vS_1_t5_Qe6_fG_VW, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[36])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 395};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query};
-    __pyx_mstate_global->__pyx_codeobj_tab[38] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[38])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[37] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[37])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {4, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 417};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_default, __pyx_mstate->__pyx_n_u_strict};
-    __pyx_mstate_global->__pyx_codeobj_tab[39] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css_first, __pyx_mstate->__pyx_kp_b_iso88591_t5_7_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[39])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[38] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css_first, __pyx_mstate->__pyx_kp_b_iso88591_t5_7_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[38])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 8, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 436};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_tags, __pyx_mstate->__pyx_n_u_recursive, __pyx_mstate->__pyx_n_u_collection, __pyx_mstate->__pyx_n_u_status, __pyx_mstate->__pyx_n_u_tag, __pyx_mstate->__pyx_n_u_pybyte_name, __pyx_mstate->__pyx_n_u_i};
-    __pyx_mstate_global->__pyx_codeobj_tab[40] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_strip_tags, __pyx_mstate->__pyx_kp_b_iso88591_5Q_1_G1_WAQ_0_i_a_Q_oQa_1_d_q_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[40])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[39] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_strip_tags, __pyx_mstate->__pyx_kp_b_iso88591_5Q_1_G1_WAQ_0_i_a_Q_oQa_1_d_q_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[39])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 487};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query, __pyx_mstate->__pyx_n_u_node};
-    __pyx_mstate_global->__pyx_codeobj_tab[41] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_select, __pyx_mstate->__pyx_kp_b_iso88591_1_t1_1_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[41])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[40] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_select, __pyx_mstate->__pyx_kp_b_iso88591_1_t1_1_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[40])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 508};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_selectors};
-    __pyx_mstate_global->__pyx_codeobj_tab[42] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_any_css_matches, __pyx_mstate->__pyx_kp_b_iso88591_A_t5, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[42])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[41] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_any_css_matches, __pyx_mstate->__pyx_kp_b_iso88591_A_t5, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[41])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 523};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_query};
-    __pyx_mstate_global->__pyx_codeobj_tab[43] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_scripts_contain, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[43])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[42] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_scripts_contain, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[42])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 540};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_queries};
-    __pyx_mstate_global->__pyx_codeobj_tab[44] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_script_srcs_contain, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[44])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[43] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_script_srcs_contain, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[43])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 557};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_selector};
-    __pyx_mstate_global->__pyx_codeobj_tab[45] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css_matches, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ_3, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[45])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[44] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_css_matches, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_AQ_3, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[44])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 572};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[46] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_merge_text_nodes, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_3, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[46])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[45] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_merge_text_nodes, __pyx_mstate->__pyx_kp_b_iso88591_A_t5_3, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[45])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 620};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_cloned_document, __pyx_mstate->__pyx_n_u_cloned_node, __pyx_mstate->__pyx_n_u_cls};
-    __pyx_mstate_global->__pyx_codeobj_tab[47] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_clone, __pyx_mstate->__pyx_kp_b_iso88591_A_6a_3a_a_6a_8_nBa_s_Q_K1_nA_d_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[47])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[46] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_clone, __pyx_mstate->__pyx_kp_b_iso88591_A_6a_3a_a_6a_8_nBa_s_Q_K1_nA_d_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[46])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 660};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_tags, __pyx_mstate->__pyx_n_u_delete_empty};
-    __pyx_mstate_global->__pyx_codeobj_tab[48] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_unwrap_tags, __pyx_mstate->__pyx_kp_b_iso88591_4A2_4z_A_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[48])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[47] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_unwrap_tags, __pyx_mstate->__pyx_kp_b_iso88591_4A2_4z_A_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[47])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 5, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 719};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_tag, __pyx_mstate->__pyx_n_u_element, __pyx_mstate->__pyx_n_u_dom_node, __pyx_mstate->__pyx_n_u_pybyte_name};
-    __pyx_mstate_global->__pyx_codeobj_tab[49] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_create_node, __pyx_mstate->__pyx_kp_b_iso88591_A_4q_c_2_q_83a_B_1_a_Qj, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[49])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[48] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_d2d_lexbor_pyx, __pyx_mstate->__pyx_n_u_create_node, __pyx_mstate->__pyx_kp_b_iso88591_A_4q_c_2_q_83a_B_1_a_Qj, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[48])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 1};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[50] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[50])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[49] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_reduce_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[49])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 3};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_pyx_state};
-    __pyx_mstate_global->__pyx_codeobj_tab[51] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[51])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[50] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[50])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 4};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_pyx_type, __pyx_mstate->__pyx_n_u_pyx_checksum, __pyx_mstate->__pyx_n_u_pyx_state, __pyx_mstate->__pyx_n_u_pyx_result};
-    __pyx_mstate_global->__pyx_codeobj_tab[52] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_pyx_unpickle_LexborSelector, __pyx_mstate->__pyx_kp_b_iso88591_q_0_kQR_7_0_1B_PQ_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[52])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[51] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_pyx_unpickle_LexborSelector, __pyx_mstate->__pyx_kp_b_iso88591_q_0_kQR_7_0_1B_PQ_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[51])) goto bad;
   }
   Py_DECREF(tuple_dedup_map);
   return 0;
@@ -31784,6 +31849,155 @@ end:
     return (__Pyx_RefNannyAPIStruct *)r;
 }
 #endif
+
+/* PyErrExceptionMatches (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
+    Py_ssize_t i, n;
+    n = PyTuple_GET_SIZE(tuple);
+    for (i=0; i<n; i++) {
+        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
+    }
+    for (i=0; i<n; i++) {
+        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
+    }
+    return 0;
+}
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
+    int result;
+    PyObject *exc_type;
+#if PY_VERSION_HEX >= 0x030C00A6
+    PyObject *current_exception = tstate->current_exception;
+    if (unlikely(!current_exception)) return 0;
+    exc_type = (PyObject*) Py_TYPE(current_exception);
+    if (exc_type == err) return 1;
+#else
+    exc_type = tstate->curexc_type;
+    if (exc_type == err) return 1;
+    if (unlikely(!exc_type)) return 0;
+#endif
+    #if CYTHON_AVOID_BORROWED_REFS
+    Py_INCREF(exc_type);
+    #endif
+    if (unlikely(PyTuple_Check(err))) {
+        result = __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
+    } else {
+        result = __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
+    }
+    #if CYTHON_AVOID_BORROWED_REFS
+    Py_DECREF(exc_type);
+    #endif
+    return result;
+}
+#endif
+
+/* PyErrFetchRestore (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+#if PY_VERSION_HEX >= 0x030C00A6
+    PyObject *tmp_value;
+    assert(type == NULL || (value != NULL && type == (PyObject*) Py_TYPE(value)));
+    if (value) {
+        #if CYTHON_COMPILING_IN_CPYTHON
+        if (unlikely(((PyBaseExceptionObject*) value)->traceback != tb))
+        #endif
+            PyException_SetTraceback(value, tb);
+    }
+    tmp_value = tstate->current_exception;
+    tstate->current_exception = value;
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+#else
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+#endif
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+#if PY_VERSION_HEX >= 0x030C00A6
+    PyObject* exc_value;
+    exc_value = tstate->current_exception;
+    tstate->current_exception = 0;
+    *value = exc_value;
+    *type = NULL;
+    *tb = NULL;
+    if (exc_value) {
+        *type = (PyObject*) Py_TYPE(exc_value);
+        Py_INCREF(*type);
+        #if CYTHON_COMPILING_IN_CPYTHON
+        *tb = ((PyBaseExceptionObject*) exc_value)->traceback;
+        Py_XINCREF(*tb);
+        #else
+        *tb = PyException_GetTraceback(exc_value);
+        #endif
+    }
+#else
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+#endif
+}
+#endif
+
+/* PyObjectGetAttrStr (used by PyObjectGetAttrStrNoError) */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_getattro))
+        return tp->tp_getattro(obj, attr_name);
+    return PyObject_GetAttr(obj, attr_name);
+}
+#endif
+
+/* PyObjectGetAttrStrNoError (used by GetBuiltinName) */
+#if __PYX_LIMITED_VERSION_HEX < 0x030d0000
+static void __Pyx_PyObject_GetAttrStr_ClearAttributeError(void) {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    if (likely(__Pyx_PyErr_ExceptionMatches(PyExc_AttributeError)))
+        __Pyx_PyErr_Clear();
+}
+#endif
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, PyObject* attr_name) {
+    PyObject *result;
+#if __PYX_LIMITED_VERSION_HEX >= 0x030d0000
+    (void) PyObject_GetOptionalAttr(obj, attr_name, &result);
+    return result;
+#else
+#if CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_TYPE_SLOTS
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_getattro == PyObject_GenericGetAttr)) {
+        return _PyObject_GenericGetAttrWithDict(obj, attr_name, NULL, 1);
+    }
+#endif
+    result = __Pyx_PyObject_GetAttrStr(obj, attr_name);
+    if (unlikely(!result)) {
+        __Pyx_PyObject_GetAttrStr_ClearAttributeError();
+    }
+    return result;
+#endif
+}
+
+/* GetBuiltinName */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
+    PyObject* result = __Pyx_PyObject_GetAttrStrNoError(__pyx_mstate_global->__pyx_b, name);
+    if (unlikely(!result) && !PyErr_Occurred()) {
+        PyErr_Format(PyExc_NameError,
+            "name '%U' is not defined", name);
+    }
+    return result;
+}
 
 /* TupleAndListFromArray (used by fastcall) */
 #if !CYTHON_COMPILING_IN_CPYTHON && CYTHON_METH_FASTCALL
@@ -32146,16 +32360,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     PyObject *args[2] = {NULL, arg};
     return __Pyx_PyObject_FastCall(func, args+1, 1 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
 }
-
-/* PyObjectGetAttrStr (used by UnpackUnboundCMethod) */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
-    PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_getattro))
-        return tp->tp_getattro(obj, attr_name);
-    return PyObject_GetAttr(obj, attr_name);
-}
-#endif
 
 /* UnpackUnboundCMethod (used by CallUnboundCMethod0) */
 #if CYTHON_COMPILING_IN_LIMITED_API && __PYX_LIMITED_VERSION_HEX < 0x030C0000
@@ -32869,65 +33073,6 @@ static PyObject *__Pyx_Object_VectorcallMethod_CallFromBuilder(PyObject *name, P
 }
 #endif
 
-/* PyErrFetchRestore (used by RaiseException) */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-#if PY_VERSION_HEX >= 0x030C00A6
-    PyObject *tmp_value;
-    assert(type == NULL || (value != NULL && type == (PyObject*) Py_TYPE(value)));
-    if (value) {
-        #if CYTHON_COMPILING_IN_CPYTHON
-        if (unlikely(((PyBaseExceptionObject*) value)->traceback != tb))
-        #endif
-            PyException_SetTraceback(value, tb);
-    }
-    tmp_value = tstate->current_exception;
-    tstate->current_exception = value;
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(type);
-    Py_XDECREF(tb);
-#else
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-#endif
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-#if PY_VERSION_HEX >= 0x030C00A6
-    PyObject* exc_value;
-    exc_value = tstate->current_exception;
-    tstate->current_exception = 0;
-    *value = exc_value;
-    *type = NULL;
-    *tb = NULL;
-    if (exc_value) {
-        *type = (PyObject*) Py_TYPE(exc_value);
-        Py_INCREF(*type);
-        #if CYTHON_COMPILING_IN_CPYTHON
-        *tb = ((PyBaseExceptionObject*) exc_value)->traceback;
-        Py_XINCREF(*tb);
-        #else
-        *tb = PyException_GetTraceback(exc_value);
-        #endif
-    }
-#else
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-#endif
-}
-#endif
-
 /* RaiseException */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
     PyObject* owned_instance = NULL;
@@ -33034,86 +33179,6 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 bad:
     Py_XDECREF(owned_instance);
     return;
-}
-
-/* PyErrExceptionMatches (used by PyObjectGetAttrStrNoError) */
-#if CYTHON_FAST_THREAD_STATE
-static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
-    Py_ssize_t i, n;
-    n = PyTuple_GET_SIZE(tuple);
-    for (i=0; i<n; i++) {
-        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
-    }
-    for (i=0; i<n; i++) {
-        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
-    }
-    return 0;
-}
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
-    int result;
-    PyObject *exc_type;
-#if PY_VERSION_HEX >= 0x030C00A6
-    PyObject *current_exception = tstate->current_exception;
-    if (unlikely(!current_exception)) return 0;
-    exc_type = (PyObject*) Py_TYPE(current_exception);
-    if (exc_type == err) return 1;
-#else
-    exc_type = tstate->curexc_type;
-    if (exc_type == err) return 1;
-    if (unlikely(!exc_type)) return 0;
-#endif
-    #if CYTHON_AVOID_BORROWED_REFS
-    Py_INCREF(exc_type);
-    #endif
-    if (unlikely(PyTuple_Check(err))) {
-        result = __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
-    } else {
-        result = __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
-    }
-    #if CYTHON_AVOID_BORROWED_REFS
-    Py_DECREF(exc_type);
-    #endif
-    return result;
-}
-#endif
-
-/* PyObjectGetAttrStrNoError (used by GetBuiltinName) */
-#if __PYX_LIMITED_VERSION_HEX < 0x030d0000
-static void __Pyx_PyObject_GetAttrStr_ClearAttributeError(void) {
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    if (likely(__Pyx_PyErr_ExceptionMatches(PyExc_AttributeError)))
-        __Pyx_PyErr_Clear();
-}
-#endif
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, PyObject* attr_name) {
-    PyObject *result;
-#if __PYX_LIMITED_VERSION_HEX >= 0x030d0000
-    (void) PyObject_GetOptionalAttr(obj, attr_name, &result);
-    return result;
-#else
-#if CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_TYPE_SLOTS
-    PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_getattro == PyObject_GenericGetAttr)) {
-        return _PyObject_GenericGetAttrWithDict(obj, attr_name, NULL, 1);
-    }
-#endif
-    result = __Pyx_PyObject_GetAttrStr(obj, attr_name);
-    if (unlikely(!result)) {
-        __Pyx_PyObject_GetAttrStr_ClearAttributeError();
-    }
-    return result;
-#endif
-}
-
-/* GetBuiltinName (used by GetModuleGlobalName) */
-static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
-    PyObject* result = __Pyx_PyObject_GetAttrStrNoError(__pyx_mstate_global->__pyx_b, name);
-    if (unlikely(!result) && !PyErr_Occurred()) {
-        PyErr_Format(PyExc_NameError,
-            "name '%U' is not defined", name);
-    }
-    return result;
 }
 
 /* PyDictVersioning (used by GetModuleGlobalName) */
@@ -34108,20 +34173,15 @@ static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_Py_ssize_t(Py_ssize_t
     return __Pyx_PyUnicode_BuildFromAscii(ulength, dpos, (int) length, prepend_sign, padding_char);
 }
 
-/* PyUnicode_Unicode */
-static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj) {
-    if (unlikely(obj == Py_None))
-        obj = __pyx_mstate_global->__pyx_kp_u_None;
-    return __Pyx_NewRef(obj);
-}
-
-/* ErrOccurredWithGIL */
-static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void) {
-  int err;
-  PyGILState_STATE _save = PyGILState_Ensure();
-  err = !!PyErr_Occurred();
-  PyGILState_Release(_save);
-  return err;
+/* RaiseUnexpectedTypeError */
+static int
+__Pyx_RaiseUnexpectedTypeError(const char *expected, PyObject *obj)
+{
+    __Pyx_TypeName obj_type_name = __Pyx_PyType_GetFullyQualifiedName(Py_TYPE(obj));
+    PyErr_Format(PyExc_TypeError, "Expected %s, got " __Pyx_FMT_TYPENAME,
+                 expected, obj_type_name);
+    __Pyx_DECREF_TypeName(obj_type_name);
+    return 0;
 }
 
 /* SwapException */
@@ -34178,6 +34238,177 @@ static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value,
 }
 #endif
 
+/* decode_c_string */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
+         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    Py_ssize_t length;
+    if (unlikely((start < 0) | (stop < 0))) {
+        size_t slen = strlen(cstring);
+        if (unlikely(slen > (size_t) PY_SSIZE_T_MAX)) {
+            PyErr_SetString(PyExc_OverflowError,
+                            "c-string too long to convert to Python");
+            return NULL;
+        }
+        length = (Py_ssize_t) slen;
+        if (start < 0) {
+            start += length;
+            if (start < 0)
+                start = 0;
+        }
+        if (stop < 0)
+            stop += length;
+    }
+    if (unlikely(stop <= start))
+        return __Pyx_NewRef(__pyx_mstate_global->__pyx_empty_unicode);
+    length = stop - start;
+    cstring += start;
+    if (decode_func) {
+        return decode_func(cstring, length, errors);
+    } else {
+        return PyUnicode_Decode(cstring, length, encoding, errors);
+    }
+}
+
+/* PyObjectCall2Args (used by PyObjectCallMethod1) */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args[3] = {NULL, arg1, arg2};
+    return __Pyx_PyObject_FastCall(function, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
+}
+
+/* PyObjectGetMethod (used by PyObjectCallMethod1) */
+#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
+    PyObject *attr;
+#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
+    __Pyx_TypeName type_name;
+    PyTypeObject *tp = Py_TYPE(obj);
+    PyObject *descr;
+    descrgetfunc f = NULL;
+    PyObject **dictptr, *dict;
+    int meth_found = 0;
+    assert (*method == NULL);
+    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
+        attr = __Pyx_PyObject_GetAttrStr(obj, name);
+        goto try_unpack;
+    }
+    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
+        return 0;
+    }
+    descr = _PyType_Lookup(tp, name);
+    if (likely(descr != NULL)) {
+        Py_INCREF(descr);
+#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
+        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
+#else
+        #ifdef __Pyx_CyFunction_USED
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
+        #else
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
+        #endif
+#endif
+        {
+            meth_found = 1;
+        } else {
+            f = Py_TYPE(descr)->tp_descr_get;
+            if (f != NULL && PyDescr_IsData(descr)) {
+                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+                Py_DECREF(descr);
+                goto try_unpack;
+            }
+        }
+    }
+    dictptr = _PyObject_GetDictPtr(obj);
+    if (dictptr != NULL && (dict = *dictptr) != NULL) {
+        Py_INCREF(dict);
+        attr = __Pyx_PyDict_GetItemStr(dict, name);
+        if (attr != NULL) {
+            Py_INCREF(attr);
+            Py_DECREF(dict);
+            Py_XDECREF(descr);
+            goto try_unpack;
+        }
+        Py_DECREF(dict);
+    }
+    if (meth_found) {
+        *method = descr;
+        return 1;
+    }
+    if (f != NULL) {
+        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+        Py_DECREF(descr);
+        goto try_unpack;
+    }
+    if (likely(descr != NULL)) {
+        *method = descr;
+        return 0;
+    }
+    type_name = __Pyx_PyType_GetFullyQualifiedName(tp);
+    PyErr_Format(PyExc_AttributeError,
+                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
+                 type_name, name);
+    __Pyx_DECREF_TypeName(type_name);
+    return 0;
+#else
+    attr = __Pyx_PyObject_GetAttrStr(obj, name);
+    goto try_unpack;
+#endif
+try_unpack:
+#if CYTHON_UNPACK_METHODS
+    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
+        PyObject *function = PyMethod_GET_FUNCTION(attr);
+        Py_INCREF(function);
+        Py_DECREF(attr);
+        *method = function;
+        return 1;
+    }
+#endif
+    *method = attr;
+    return 0;
+}
+#endif
+
+/* PyObjectCallMethod1 (used by append) */
+#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+static PyObject* __Pyx__PyObject_CallMethod1(PyObject* method, PyObject* arg) {
+    PyObject *result = __Pyx_PyObject_CallOneArg(method, arg);
+    Py_DECREF(method);
+    return result;
+}
+#endif
+static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg) {
+#if CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000))
+    PyObject *args[2] = {obj, arg};
+    (void) __Pyx_PyObject_CallOneArg;
+    (void) __Pyx_PyObject_Call2Args;
+    return PyObject_VectorcallMethod(method_name, args, 2 | PY_VECTORCALL_ARGUMENTS_OFFSET, NULL);
+#else
+    PyObject *method = NULL, *result;
+    int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
+    if (likely(is_method)) {
+        result = __Pyx_PyObject_Call2Args(method, obj, arg);
+        Py_DECREF(method);
+        return result;
+    }
+    if (unlikely(!method)) return NULL;
+    return __Pyx__PyObject_CallMethod1(method, arg);
+#endif
+}
+
+/* append */
+static CYTHON_INLINE int __Pyx_PyObject_Append(PyObject* L, PyObject* x) {
+    if (likely(PyList_CheckExact(L))) {
+        if (unlikely(__Pyx_PyList_Append(L, x) < 0)) return -1;
+    } else {
+        PyObject* retval = __Pyx_PyObject_CallMethod1(L, __pyx_mstate_global->__pyx_n_u_append, x);
+        if (unlikely(!retval))
+            return -1;
+        Py_DECREF(retval);
+    }
+    return 0;
+}
+
 /* ExtTypeTest */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
     __Pyx_TypeName obj_type_name;
@@ -34195,17 +34426,6 @@ static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
                  obj_type_name, type_name);
     __Pyx_DECREF_TypeName(obj_type_name);
     __Pyx_DECREF_TypeName(type_name);
-    return 0;
-}
-
-/* RaiseUnexpectedTypeError */
-static int
-__Pyx_RaiseUnexpectedTypeError(const char *expected, PyObject *obj)
-{
-    __Pyx_TypeName obj_type_name = __Pyx_PyType_GetFullyQualifiedName(Py_TYPE(obj));
-    PyErr_Format(PyExc_TypeError, "Expected %s, got " __Pyx_FMT_TYPENAME,
-                 expected, obj_type_name);
-    __Pyx_DECREF_TypeName(obj_type_name);
     return 0;
 }
 
@@ -34341,6 +34561,15 @@ static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
     return __Pyx_IterFinish();
 }
 
+/* ErrOccurredWithGIL */
+static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void) {
+  int err;
+  PyGILState_STATE _save = PyGILState_Ensure();
+  err = !!PyErr_Occurred();
+  PyGILState_Release(_save);
+  return err;
+}
+
 /* PyObjectSetAttrStr */
 #if CYTHON_USE_TYPE_SLOTS
 static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
@@ -34350,6 +34579,13 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
     return PyObject_SetAttr(obj, attr_name, value);
 }
 #endif
+
+/* PyUnicode_Unicode */
+static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj) {
+    if (unlikely(obj == Py_None))
+        obj = __pyx_mstate_global->__pyx_kp_u_None;
+    return __Pyx_NewRef(obj);
+}
 
 /* AllocateExtensionType */
 static PyObject *__Pyx_AllocateExtensionType(PyTypeObject *t, int is_final) {
@@ -34594,98 +34830,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
     PyObject *arg[2] = {NULL, NULL};
     return __Pyx_PyObject_FastCall(func, arg + 1, 0 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
 }
-
-/* PyObjectGetMethod (used by PyObjectCallMethod0) */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
-    PyObject *attr;
-#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
-    __Pyx_TypeName type_name;
-    PyTypeObject *tp = Py_TYPE(obj);
-    PyObject *descr;
-    descrgetfunc f = NULL;
-    PyObject **dictptr, *dict;
-    int meth_found = 0;
-    assert (*method == NULL);
-    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
-        attr = __Pyx_PyObject_GetAttrStr(obj, name);
-        goto try_unpack;
-    }
-    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
-        return 0;
-    }
-    descr = _PyType_Lookup(tp, name);
-    if (likely(descr != NULL)) {
-        Py_INCREF(descr);
-#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
-        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
-#else
-        #ifdef __Pyx_CyFunction_USED
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
-        #else
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
-        #endif
-#endif
-        {
-            meth_found = 1;
-        } else {
-            f = Py_TYPE(descr)->tp_descr_get;
-            if (f != NULL && PyDescr_IsData(descr)) {
-                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-                Py_DECREF(descr);
-                goto try_unpack;
-            }
-        }
-    }
-    dictptr = _PyObject_GetDictPtr(obj);
-    if (dictptr != NULL && (dict = *dictptr) != NULL) {
-        Py_INCREF(dict);
-        attr = __Pyx_PyDict_GetItemStr(dict, name);
-        if (attr != NULL) {
-            Py_INCREF(attr);
-            Py_DECREF(dict);
-            Py_XDECREF(descr);
-            goto try_unpack;
-        }
-        Py_DECREF(dict);
-    }
-    if (meth_found) {
-        *method = descr;
-        return 1;
-    }
-    if (f != NULL) {
-        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-        Py_DECREF(descr);
-        goto try_unpack;
-    }
-    if (likely(descr != NULL)) {
-        *method = descr;
-        return 0;
-    }
-    type_name = __Pyx_PyType_GetFullyQualifiedName(tp);
-    PyErr_Format(PyExc_AttributeError,
-                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
-                 type_name, name);
-    __Pyx_DECREF_TypeName(type_name);
-    return 0;
-#else
-    attr = __Pyx_PyObject_GetAttrStr(obj, name);
-    goto try_unpack;
-#endif
-try_unpack:
-#if CYTHON_UNPACK_METHODS
-    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
-        PyObject *function = PyMethod_GET_FUNCTION(attr);
-        Py_INCREF(function);
-        Py_DECREF(attr);
-        *method = function;
-        return 1;
-    }
-#endif
-    *method = attr;
-    return 0;
-}
-#endif
 
 /* PyObjectCallMethod0 (used by PyType_Ready) */
 static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
@@ -35364,12 +35508,6 @@ static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bas
     return (PyObject*) metaclass;
 }
 
-/* PyObjectCall2Args (used by Py3ClassCreate) */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args[3] = {NULL, arg1, arg2};
-    return __Pyx_PyObject_FastCall(function, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
-}
-
 /* PyObjectLookupSpecial (used by Py3ClassCreate) */
 #if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
 static CYTHON_INLINE PyObject* __Pyx__PyObject_LookupSpecial(PyObject* obj, PyObject* attr_name, int with_error) {
@@ -35459,7 +35597,7 @@ static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
         if (unlikely(!module_name_str)) { goto modbad; }
         module_name = PyUnicode_FromString(module_name_str);
         if (unlikely(!module_name)) { goto modbad; }
-        module_dot = PyUnicode_Concat(module_name, __pyx_mstate_global->__pyx_kp_u__7);
+        module_dot = PyUnicode_Concat(module_name, __pyx_mstate_global->__pyx_kp_u__10);
         if (unlikely(!module_dot)) { goto modbad; }
         full_name = PyUnicode_Concat(module_dot, name);
         if (unlikely(!full_name)) { goto modbad; }
@@ -38099,33 +38237,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value) {
     }
 }
 
-/* PyObjectCallMethod1 */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static PyObject* __Pyx__PyObject_CallMethod1(PyObject* method, PyObject* arg) {
-    PyObject *result = __Pyx_PyObject_CallOneArg(method, arg);
-    Py_DECREF(method);
-    return result;
-}
-#endif
-static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg) {
-#if CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000))
-    PyObject *args[2] = {obj, arg};
-    (void) __Pyx_PyObject_CallOneArg;
-    (void) __Pyx_PyObject_Call2Args;
-    return PyObject_VectorcallMethod(method_name, args, 2 | PY_VECTORCALL_ARGUMENTS_OFFSET, NULL);
-#else
-    PyObject *method = NULL, *result;
-    int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
-    if (likely(is_method)) {
-        result = __Pyx_PyObject_Call2Args(method, obj, arg);
-        Py_DECREF(method);
-        return result;
-    }
-    if (unlikely(!method)) return NULL;
-    return __Pyx__PyObject_CallMethod1(method, arg);
-#endif
-}
-
 /* UpdateUnpickledDict */
 static int __Pyx__UpdateUnpickledDict(PyObject *obj, PyObject *state, Py_ssize_t index) {
     PyObject *state_dict = __Pyx_PySequence_ITEM(state, index);
@@ -38209,7 +38320,7 @@ __Pyx_PyType_GetFullyQualifiedName(PyTypeObject* tp)
         result = name;
         name = NULL;
     } else {
-        result = __Pyx_NewRef(__pyx_mstate_global->__pyx_kp_u__8);
+        result = __Pyx_NewRef(__pyx_mstate_global->__pyx_kp_u__11);
     }
     goto done;
 }

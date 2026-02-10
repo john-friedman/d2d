@@ -249,15 +249,27 @@ cdef extern from "lexbor/html/html.h" nogil:
     lxb_html_element_t* lxb_html_element_inner_html_set(lxb_html_element_t *element,
                                                         const lxb_char_t *html, size_t size)
 
+cdef struct InstructionAttrs:
+    char font_weight[32]
+    char font_size[32]
+    char href[512]
+    char header_tag[8]
+    bint is_italic
+    bint is_underline
+    bint is_text_center
+    bint display_none
+
 cdef class LexborNode:
     cdef:
         lxb_dom_node_t *node
         public LexborHTMLParser parser
-        cdef bint _is_fragment_root
+        bint _is_fragment_root
 
     @staticmethod
     cdef LexborNode new(lxb_dom_node_t *node, LexborHTMLParser parser)
     cdef void set_as_fragment_root(self)
+    cdef inline bint _check_new_instruction_block(self, lxb_tag_id_t tag_id)
+    cdef bint _parse_style(self, str style, InstructionAttrs* attrs)
     
 
 
